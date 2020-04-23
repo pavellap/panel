@@ -1,0 +1,35 @@
+.profiles-wrapper {
+    width: 70%;
+    margin: 0 auto;
+    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+    padding-bottom: 30px;
+}
+.profiles-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    font-size: 16px;
+    border-bottom: 1px solid #e7e8ec;
+    padding: 15px 20px;
+    color: #555555;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.profiles-header h4 {
+    margin: 0;
+}
+
+.profiles-header div {
+    background-color: rgb(75, 200, 0);
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 8px;
+}
+
+.profiles-header div span {
+    color: #fff;
+    font-weight: bolder;
+    margin-right: 10px;
+}
+

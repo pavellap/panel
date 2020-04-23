@@ -1,0 +1,10 @@
+.configuration-item {
+    display: inline-flex;
+    justify-content: center;
+    width: 140px;
+    border-radius: 8px;
+    background-color: #7883d6;
+    padding: 10px 20px;
+    color: #fff;
+    margin-right: 45px;
+}

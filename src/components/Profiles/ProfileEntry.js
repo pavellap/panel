@@ -1,0 +1,39 @@
+import React, {Component} from 'react'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEye, faTrashAlt, faEdit, faChevronUp, faChevronDown} from "@fortawesome/free-solid-svg-icons";
+import './ProfileEntry.css'
+
+export default class ProfileEntry extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            profileID: this.props.id
+        }
+    }
+    render() {
+        console.log("Поле получило айди:", this.props.id);
+        return (
+            <div className='profile-entry'>
+                <div className='profile-content-wrapper'>
+                    <span style={{fontSize: '20px', marginRight: '10px'}}>{this.state.profileID}</span>
+                    <FontAwesomeIcon icon={faEye} style={{cursor: "pointer"}} onClick={() =>
+                        this.props.handleShowClick(this.state.profileID)}/>
+                    <div>
+                        <div>{this.props.title}</div>
+                        <div>{this.props.description}</div>
+                    </div>
+                </div>
+                <div>
+                    <FontAwesomeIcon icon={faChevronUp} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='#fff' onClick={() => this.props.handleMove(this.state.profileID, 'up')}/>
+                    <FontAwesomeIcon icon={faChevronDown} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='#fff' onClick={() => this.props.handleMove(this.state.profileID, 'down')}/>
+                    <FontAwesomeIcon icon={faEdit} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='#0408e2' onClick={() => this.props.handleEditClick(this.state.profileID)}/>
+                    <FontAwesomeIcon icon={faTrashAlt} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='rgb(226, 4, 5)' onClick={() => this.props.handleDeleteClick(this.state.profileID)}/>
+                </div>
+            </div>
+        )
+    }
+}

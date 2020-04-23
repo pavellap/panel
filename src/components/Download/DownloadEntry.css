@@ -1,0 +1,28 @@
+.download-entry {
+    background-color: #f1f3f4;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 9px;
+    margin-top: 50px;
+    height: 50px;
+    border: 1px solid #dadce0;
+    margin-left: 50px;
+    align-items: center;
+}
+
+.download-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.download-content-wrapper div div {
+    padding-left: 20px;
+    font-size: 14px;
+}
+
+.download-content-wrapper div div:nth-child(2) {
+    color: #adadad;
+}

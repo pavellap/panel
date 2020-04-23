@@ -1,0 +1,77 @@
+.edit-entry {
+    width: 99%;
+    padding: 20px 0;
+}
+
+.edit-entry label {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.edit-entry label svg {
+    color: rgb(206, 206, 206);
+    margin-left: 20px;
+}
+
+
+
+.edit-entry label svg:hover {
+    color: #222;
+}
+
+.info-block-visible {
+    position: absolute;
+    z-index: 1000;
+    display: flex;
+    width: 200px;
+    height: 40px;
+    bottom: 80px;
+    border: 2px solid crimson;
+}
+
+.info-block-invisible {
+    display: none;
+}
+
+.input-wrapper {
+    margin-left: 10px;
+    padding-left: 20px;
+    border: 1px solid rgb(227, 228, 228);
+    border-radius: 8px;
+    height: 35px;
+    display: flex;
+    align-content: center;
+}
+
+.input-wrapper:hover {
+    background-color: #fafbfc;
+}
+
+.input-wrapper:hover input {
+    background-color: #fafbfc;
+}
+
+.input-wrapper input {
+    outline: none;
+    border: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.info-icon {
+    position: relative;
+}
+.info-icon:hover:before {
+    display: flex;
+    content: attr(help-info);
+    border: 1px solid #adadad;
+    position: absolute;
+    top: -25px;
+    right: -235px;
+    font-size: 14px;
+    padding: 3px;
+    height: 27px;
+    width: 220px;
+    align-items: center;
+    justify-content: center;
+}

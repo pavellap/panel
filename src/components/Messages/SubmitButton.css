@@ -1,0 +1,16 @@
+.submit-button {
+    width: 190px;
+    background-color: #28cc30;
+    padding: 20px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px;
+}
+
+button:active, button:focus {
+    outline: none;
+    border: none;
+}

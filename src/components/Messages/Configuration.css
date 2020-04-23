@@ -1,0 +1,73 @@
+.configuration-container {
+    display: flex;
+    border-bottom: 1px solid #e7e8ec;
+    background-color: #fafbfc;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.configuration-container-wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    border: 2px solid red;
+    padding: 20px 5px;
+}
+
+.configuration-item-container-open {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    z-index: 100;
+    top: 45px;
+    height: 45px;
+    transition: height 0.5s ease-in;
+}
+
+.configuration-item-container-close {
+    height: 0;
+    top: 45px;
+    position: absolute;
+    z-index: 100;
+    transition: height 0.5s ease-in;
+}
+
+.configuration-container span {
+    font-size: 16px;
+}
+
+.configuration-container svg:hover {
+    color: #adadad;
+}
+
+.icon-menu-close {
+    transform: rotate(0deg);
+    transition: transform 0.5s ease-in;
+}
+
+.icon-menu-open {
+    transform: rotate(180deg);
+    transition: transform 0.5s ease-in;
+}
+
+.add-configuration-button {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bolder;
+    background-color: #002147;
+    margin-right: 40px;
+}
+
+.add-configuration-button span {
+    margin-right: 30px;
+}
+
+

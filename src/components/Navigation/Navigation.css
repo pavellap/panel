@@ -1,0 +1,15 @@
+.Menu-container {
+    background-color: #26262b;
+    min-height: 100vh;
+    height: 100%;
+    color: #fff;
+}
+.Menu-description {
+    width: 100%;
+    padding: 15px 15px;
+    background-color: #1e1f23;
+    box-sizing: border-box;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #fff;
+}

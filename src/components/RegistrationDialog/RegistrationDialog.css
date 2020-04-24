@@ -1,0 +1,47 @@
+.registration-dialog-container form{
+    padding-left: 20px;
+}
+
+.registration-dialog-messages-entry {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.registration-dialog-messages-button {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    width: 240px;
+    margin: 0 auto;
+    background-color: rgb(75, 200, 0);
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bolder;
+}
+
+.registration-dialog-save {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    width: 240px;
+    margin: 50px auto;
+    background-color: #002147;
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bolder;
+}
+
+.registration-dialog-messages h4 {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    border-bottom: 1px solid #adadad;
+}
+
+.buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+}

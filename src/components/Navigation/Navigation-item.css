@@ -1,0 +1,19 @@
+.Navigation-item {
+    width: 100%;
+    background-color: inherit;
+    color: #fff;
+    padding: 12px 15px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.Navigation-item a {
+    margin-left: 18px;
+    color: #fff;
+    text-decoration: none;
+}
+.Navigation-item:hover {
+    background-color: #656568;
+}

@@ -69,23 +69,26 @@ export default class Profiles extends React.Component {
     handleMove = (id, action) => {
         const newArray = this.state.profilesList;
         let ourProfile = this.findProfile(id);
-        let profileToSwap;
+        console.log("Наш профиль:", ourProfile);
         if (action === "up") {
-            for (let i = 0; i < newArray; i++) {
+            for (let i = 0; i < newArray.length; i++) {
+                console.log("Профиль в цикле:", newArray[i]);
                 if (newArray[i] === ourProfile) {
-                    const temp = profileToSwap;
-                    profileToSwap = newArray[i - 1];
-                    newArray[i] = temp;
+                    const temp = newArray[i];
+                    newArray[i] = newArray[i - 1];
+                    newArray[i - 1] = temp;
                     break;
                 }
             }
         }
         else {
-            for (let i = 0; i < newArray; i++) {
+            console.log("Перемещаем профили вниз");
+            for (let i = 0; i < newArray.length; i++) {
+                console.log("Профиль в цикле:", newArray[i]);
                 if (newArray[i] === ourProfile) {
-                    const temp = profileToSwap;
-                    profileToSwap = newArray[i + 1];
-                    newArray[i] = temp;
+                    const temp = newArray[i];
+                    newArray[i] = newArray[i + 1];
+                    newArray[i + 1] = temp;
                     break;
                 }
             }

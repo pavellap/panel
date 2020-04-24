@@ -13,8 +13,6 @@ export default class Configuration extends React.Component {
 
             ]
         };
-        this.configName = React.createRef();
-        this.configDescription = React.createRef();
     }
 
     handleAddConfig = () => {
@@ -22,18 +20,15 @@ export default class Configuration extends React.Component {
         const newId = Math.round(Math.random() * 1000); // заменить на фетч
         newArray.push({
             id: newId,
-            name: this.configName.current.value,
-            description: this.configDescription.current.value,
-            render: <ConfigurationItem name={this.configName.current.value} handleClick={(id) => this.props.handleClick(id)}
-            id={newId}/>
+            render: <ConfigurationItem handleClick={(id) => this.props.handleClick(id)}
+            id={newId} name={newId}/>
         });
-        this.configDescription.current.value = "";
-        this.configName.current.value = "";
         this.setState({configurations: newArray})
     };
 
     toggleMenu = () => {
-        this.setState({menuOpen: !this.state.menuOpen})
+        if (this.state.configurations.length > 0)
+            this.setState({menuOpen: !this.state.menuOpen})
     };
 
     render() {
@@ -47,6 +42,7 @@ export default class Configuration extends React.Component {
             iconClass = 'icon-menu-close';
             containerClass = 'configuration-item-container-close'
         }
+        console.log("Current class: ", containerClass);
         return (
             <section className='configuration-container'>
                 <div className='configuration-container-wrapper'>
@@ -54,16 +50,10 @@ export default class Configuration extends React.Component {
                     <FontAwesomeIcon icon={faChevronDown} color='rgb(123, 123, 123)' cursor='pointer'
                     className={iconClass} onClick={this.toggleMenu}/>
                     <div className={containerClass}>
-                        {this.state.configurations.map(item => item.render)}
+                        {this.state.menuOpen && this.state.configurations.map(item => item.render)}
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: "space-between"}}>
-                    <div style={{display: 'flex', flexDirection: "column"}}>
-                        <label>Название конфигурации</label>
-                        <input type="text" ref={this.configName}/>
-                        <label>Описание конфигурации</label>
-                        <input type="text" ref={this.configDescription}/>
-                    </div>
                     <div className='add-configuration-button' onClick={this.handleAddConfig}>
                         <span>Добавить конфигурацию</span>
                         <FontAwesomeIcon icon={faPlus} size={'2x'}/>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Switch, Route} from "react-router-dom";
 import './App.css';
+import './normalize.css'
 import Layout from "./components/hoc/Layout";
 import Authorization from "./components/Authorization/Authorization";
 import Wrapper from "./components/hoc/Wrapper";
@@ -10,6 +11,10 @@ import Download from "./components/Download/Download";
 import Profiles from "./components/Profiles/Profiles";
 import Mailing from "./components/Mailing/Mailing";
 import Subscription from "./components/Subscription/Subscription";
+import RegistrationDialog from "./components/RegistrationDialog/RegistrationDialog";
+import Payment from "./components/Payment/Payment";
+import Expiring from "./components/Expiring/Expiring";
+import Other from "./components/Other/Other";
 
 export default class extends React.Component {
     constructor(props) {
@@ -39,7 +44,10 @@ export default class extends React.Component {
                         configId={this.state.currentConfig}/>}/>}/>
                     <Route path='/download' render={(props) => <Wrapper id={this.state.currentConfig}  children={<Download/>}/>}/>
                     <Route path='/mailing' render={(props) => <Wrapper id={this.state.currentConfig}  children={<Mailing/>}/>}/>
-                    <Route path='/subscription' render={(props) => <Wrapper id={this.state.currentConfig}  children={<Subscription/>}/>}/>
+                    <Route path='/other' render={(props) => <Wrapper id={this.state.currentConfig}  children={<Other/>}/>}/>
+                    <Route path='/expiring' render={(props) => <Wrapper id={this.state.currentConfig}  children={<Expiring />}/>}/>
+                    <Route path='/payment' render={(props) => <Wrapper id={this.state.currentConfig}  children={<Payment/>}/>}/>
+                    <Route path='/registration' render={(props) => <Wrapper id={this.state.currentConfig}  children={<RegistrationDialog/>}/>}/>
                 </Switch>
             </Layout>
         )

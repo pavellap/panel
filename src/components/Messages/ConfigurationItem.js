@@ -10,7 +10,8 @@ export default class extends React.Component {
     }
     render() {
         return (
-            <div className='configuration-item' onClick={() => this.props.handleClick(this.state.id)}>{this.props.name}</div>
+            <div className='configuration-item' onClick={() => this.props.handleClick(this.state.id)}>
+                Конфигурация:  {this.props.name}</div>
         )
     }
 }

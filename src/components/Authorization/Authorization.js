@@ -7,7 +7,7 @@ export default class Authorization extends React.Component {
     handleButtonClick(event) {
         event.preventDefault();
         console.log(window.location.href);
-        window.location.href += 'messages';
+        window.location.href += 'registration';
     }
 
     render() {

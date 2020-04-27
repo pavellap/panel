@@ -9,20 +9,15 @@ export default class Configuration extends React.Component {
         super(props);
         this.state = {
             menuOpen: false,
-            configurations: [
-
-            ]
+            configurations: this.props.configs
         };
     }
 
     handleAddConfig = () => {
         const newArray = this.state.configurations;
-        const newId = Math.round(Math.random() * 1000); // заменить на фетч
-        newArray.push({
-            id: newId,
-            render: <ConfigurationItem handleClick={(id) => this.props.handleClick(id)}
-            id={newId} name={newId}/>
-        });
+        newArray.push(
+            Math.round(Math.random() * 100)
+        );
         this.setState({configurations: newArray})
     };
 
@@ -32,6 +27,7 @@ export default class Configuration extends React.Component {
     };
 
     render() {
+        console.log("Конфигурации в своём компоненте:", this.state.configurations);
         let iconClass;
         let containerClass;
         if (this.state.menuOpen) {
@@ -42,7 +38,6 @@ export default class Configuration extends React.Component {
             iconClass = 'icon-menu-close';
             containerClass = 'configuration-item-container-close'
         }
-        console.log("Current class: ", containerClass);
         return (
             <section className='configuration-container'>
                 <div className='configuration-container-wrapper'>
@@ -50,7 +45,8 @@ export default class Configuration extends React.Component {
                     <FontAwesomeIcon icon={faChevronDown} color='rgb(123, 123, 123)' cursor='pointer'
                     className={iconClass} onClick={this.toggleMenu}/>
                     <div className={containerClass}>
-                        {this.state.menuOpen && this.state.configurations.map(item => item.render)}
+                        {this.state.menuOpen && this.state.configurations.map(item => <ConfigurationItem
+                            handleClick={(id) => this.props.handleClick(id)}  id={item} name={item}/>)}
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: "space-between"}}>

@@ -12,7 +12,8 @@ export default class extends React.Component {
             nameMessage: "",
             successMessage: "",
             helloMessages: [],
-            currentMessageText: ""
+            currentMessageText: "",
+            sectionId: 1
         }
     }
 
@@ -65,7 +66,6 @@ export default class extends React.Component {
                         <div className='registration-dialog-messages-entry'>
                             <EditEntry text='Текст нового приветственного сообщения'
                             inputValue='Текст сообщения' getCurrentData={(content) => this.handleChange(content, "current")} />
-
                         </div>
                         {renderContent}
                     </div>

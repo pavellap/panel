@@ -67,3 +67,15 @@
     justify-content: center;
     font-size: 18px;
 }
+
+.mailing-checkbox-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+.mailing-checkbox-wrapper input:after {
+    display: inline-block;
+    content: "Отправить всем";
+    font-size: 20px;
+    transform: translateY(10px);
+}

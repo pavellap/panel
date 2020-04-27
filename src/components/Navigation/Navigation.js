@@ -25,15 +25,16 @@ export default class Navigation extends React.Component {
         this.state = {
             titles: [ // наименования вкладок
                 'Диалог Регистрации', 'Главное меню и оплата', 'Анкета',  'Сообщение перед концом подписки',
-                'Отправка подарочных сертификатов ', 'Остальное', "Анкеты", "Рассылки", "Подписки", "Серия Реанимации"
+                'Отправка подарочных сертификатов ', 'Остальное', "Анкеты", "Рассылки", "Подписки", "Серия Реанимации",
+                "Загрузка отчётов"
             ],
             links: [ // ссылки на вкладки
                 'registration', 'payment', 'profile', 'expiring', 'present', 'other', 'profiles',
-                'mailing', 'subscription', 'reanimation'
+                'mailing', 'subscription', 'reanimation', 'download'
             ],
             icons: [ // соответствующие компоненты иконок
                 faUserClock, faUsers, faCapsules, faDownload, faEnvelope, faUserCog, faMailBulk, faUsers, faCapsules,
-                faCapsules
+                faCapsules, faDownload
             ],
             user: 'admin',
             status: "online"

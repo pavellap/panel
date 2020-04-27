@@ -10,24 +10,14 @@ export default class Mailing extends React.Component {
             emails: []
         };
         this.textForm = React.createRef();
+        this.emailsForm = React.createRef();
     }
 
     handleChange = (newValue) => {
         this.setState({
-            currentText: newValue
+            currentText: newValue,
+            emails: this.emailsForm.current.value.split("\n")
         });
-    };
-
-    handlePressKey = (event) => {
-        if (event.key === 'Enter') {
-            this.textForm.current.value = "";
-            this.setState(prevState => {
-                const newList = this.state.emails;
-                newList.push(this.state.currentText);
-                return {emails: newList}
-            });
-            event.preventDefault();
-        }
     };
 
     render() {
@@ -43,21 +33,15 @@ export default class Mailing extends React.Component {
                             </div>
                             <div className='mailing-emails-wrapper'>
                                 <h4>Список E-mail</h4>
-                                <div className='mailing-emails-list'>
-                                    {this.state.emails.map(item => {
-                                        return (
-                                            <div>{item}</div>
-                                        )
-                                    })}
-                                    <input type="text" onChange={(e) =>
-                                    {this.handleChange(e.currentTarget.value)}} onKeyPress={this.handlePressKey}
-                                    ref={this.textForm}/>
+                                <textarea className='mailing-emails-list' ref={this.emailsForm}>
+
+                                </textarea>
+                                <div className='mailing-checkbox-wrapper'>
+                                    <input type='checkbox'/>
                                 </div>
-                                <input type='checkbox'/>
-                                <span>Отправить всем</span>
                             </div>
                         </div>
-                        <div className='mailing-submit-button'>
+                        <div className='mailing-submit-button' onClick={this.handleChange}>
                             Отправить
                         </div>
                     </form>

@@ -2,7 +2,6 @@ import React from 'react'
 import './Reanimation.css'
 import PageHeader from "../UI/PageHeader";
 import EditEntry from "../Messages/EditEntry";
-import SubmitButton from "../Messages/SubmitButton";
 
 export default class Reanimation extends React.Component {
     constructor(props) {

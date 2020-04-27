@@ -1,17 +1,18 @@
-import React from 'react'
+import React from "react";
 import PageHeader from "../UI/PageHeader";
 import Configuration from "../Messages/Configuration";
 import Axios from "axios";
 import EditEntry from "../Messages/EditEntry";
 
-export default class Present extends React.Component {
+export default class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             messages: [],
-            sectionId: 5
-        };
+            sectionId: 3
+        }
     }
+
     componentDidMount() {
         const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
         let userData;
@@ -33,9 +34,10 @@ export default class Present extends React.Component {
     render() {
         return (
             <section>
-                <PageHeader title='Отправка подарочных сертификатов'/>
+                <PageHeader title='Анкета'/>
                 <Configuration handleClick={(id) => this.props.handleClick(id)}/>
-                {this.messages.map(item => item)}
+                {this.state.messages.map((item) => item)}
+                <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
             </section>
         )
     }

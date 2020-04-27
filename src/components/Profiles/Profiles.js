@@ -7,6 +7,8 @@ import ProfileEntry from "./ProfileEntry";
 import Modal from "../Modal/Modal";
 import ReactDOM from 'react-dom'
 import Configuration from "../Messages/Configuration";
+import Axios from "axios";
+import EditEntry from "../Messages/EditEntry";
 
 export default class Profiles extends React.Component {
     constructor(props) {
@@ -15,9 +17,31 @@ export default class Profiles extends React.Component {
             modalOpen: false,
             typeOfModal: null,
             profilesList: [],
-            currentId: 444
+            currentId: 444,
+            messages: [],
+            sectionId: 7,
         }
     }
+
+    componentDidMount() {
+        const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
+        let userData;
+        Axios.get(url).then(response => {
+            userData = response.data.list;
+            console.log("Анкеты получили такие данные:", userData);
+        }).then(() => {
+            userData.forEach(item => {
+                this.setState(prevState => {
+                    const newArray = this.state.messages;
+                    newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description}/>);
+                    return {
+                        messages: newArray
+                    }
+                })
+            })
+        });
+    }
+
     // Добавление нового профиля с модального окна
     handleAdd = (newProfile) => {
         // тут айди будет запрашиваться с бека
@@ -101,6 +125,7 @@ export default class Profiles extends React.Component {
     };
 
     render() {
+        console.log("Профили получили такие данные:", )
         return (
             <section>
                 <PageHeader title='Окно редактирования анкет'/>

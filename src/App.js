@@ -23,51 +23,49 @@ export default class extends React.Component {
         super(props);
         this.state = {
             currentConfig: null,
-            configurationList: []
+            configurationsList: []
         }
     }
 
     changeConfiguration = (newId) => {
         this.setState({currentConfig: newId});
-        console.log("Айди нового конфига:", newId);
     };
 
     componentDidMount() {
-        const url = "http://188.32.187.157:5000/";
-        Axios.get(url + "configs").then((response) => {
+        const configsUrl = "http://188.32.187.157:5000/";
+        Axios.get(configsUrl + "configs").then((response) => {
                 this.setState({configurationsList: response.data.configurations,
                     currentConfig: response.data.configurations[0]});
             }
-        )
+        );
     }
 
     render() {
-        console.log("Номера конфигов в главном компоненте:", this.state.configurationsList);
         return (
             <Layout>
                 <Switch>
                     <Route exact path='/' component={Authorization}/>
 
                     <Route path='/registration' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<RegistrationDialog id={this.state.currentConfig}/>}/>}/>
+                    children={<RegistrationDialog id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/payment' render={(props) => <Wrapper id={this.state.currentConfig}
                     children={<Payment id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/profile' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Profile handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig}/>}/>}/>
+                    children={<Profile handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/expiring' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Expiring id={this.state.currentConfig}/>}/>}/>
+                    children={<Expiring id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/present' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Present id={this.state.currentConfig}/>}/>}/>
+                    children={<Present id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/other' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Other id={this.state.currentConfig}/>}/>}/>
+                    children={<Other id={this.state.currentConfig}/>} configs={this.state.configurationsList}/>}/>
 
                     <Route path='/profiles' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Profiles handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig}/>}/>}/>
+                    children={<Profiles handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/mailing' render={(props) => <Wrapper id={this.state.currentConfig}
                      children={<Mailing/>}/>}/>

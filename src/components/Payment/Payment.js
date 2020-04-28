@@ -1,5 +1,4 @@
 import React from "react";
-import './Payment.css'
 import PageHeader from "../UI/PageHeader";
 import Configuration from "../Messages/Configuration";
 import Axios from "axios";
@@ -10,25 +9,30 @@ export default class Payment extends React.Component {
         super(props);
         this.state = {
             messages: [],
-            sectionId: 2
+            sectionId: 2,
+            configId: this.props.id,
         }
     }
+
     componentDidMount() {
-        const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
+        console.log("Конфиги в компоненте оплаты:", this.state.configurationsList);
+        const url = "http://188.32.187.157:5000/getpage/config_id=" + this.state.configId + '&page_id=' + this.state.sectionId;
         let userData;
         Axios.get(url).then(response => {
             userData = response.data.list;
+            console.log("Данные в запросе:", userData);
         }).then(() => {
             userData.forEach(item => {
                 this.setState(prevState => {
                     const newArray = this.state.messages;
-                    newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description}/>);
+                    newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description} type={item.ans_type}/>);
                     return {
                         messages: newArray
                     }
                 })
             })
         });
+        console.log("Получены данные в компоненте оплата:", this.state.messages)
     }
 
     handleSave = () => {
@@ -36,8 +40,8 @@ export default class Payment extends React.Component {
     };
 
     render() {
-        console.log("Рендерим Оплату с конфигами:", this.props.configs);
-        const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '/' + this.state.sectionId;
+        console.log("Рендерим Компонент с конфигами:", this.props.configs);
+        const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
         console.log(url);
         return (
             <section>

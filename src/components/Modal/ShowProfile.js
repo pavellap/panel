@@ -3,6 +3,7 @@ import './ShowProfile.css'
 
 export default class ShowProfile extends React.Component {
     render() {
+
         return (
             <React.Fragment>
                 <h4>Текущая анкета: {this.props.profile.id}</h4>
@@ -16,9 +17,18 @@ export default class ShowProfile extends React.Component {
                 <div className='show-profile-questions'>
                     <h4>Список вопросов</h4>
                     <section>
-                        {this.props.profile.questionList.map(item => (<div className='show-profile-question'>
-                                {item.question}
-                            </div>)
+                        {this.props.profile.questionsList.map(item => {
+                            let type;
+                            if (item.type === 'int')
+                                type = 'Число';
+                            else
+                                type = 'Строка';
+                            return (
+                            <div className='show-profile-question'>
+                                <span>{item.text}</span>
+                                <span>Тип ответа: {type}</span>
+                            </div>
+                            )}
                         )}
                     </section>
                 </div>

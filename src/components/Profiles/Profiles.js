@@ -17,9 +17,8 @@ export default class Profiles extends React.Component {
             modalOpen: false,
             typeOfModal: null,
             profilesList: [],
-            currentId: 444,
-            messages: [],
-            sectionId: 7,
+            currentId: null,
+            sectionId: 8
         }
     }
 
@@ -28,14 +27,20 @@ export default class Profiles extends React.Component {
         let userData;
         Axios.get(url).then(response => {
             userData = response.data.list;
-            console.log("Анкеты получили такие данные:", userData);
         }).then(() => {
             userData.forEach(item => {
                 this.setState(prevState => {
-                    const newArray = this.state.messages;
-                    newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description}/>);
+                    const newArray = this.state.profilesList;
+                    newArray.push({
+                        name: item.name,
+                        helloMessage: item.hello,
+                        currentQuestionId: 0,
+                        questionsList: item.questions,
+                        id: item.id
+                    });
                     return {
-                        messages: newArray
+                        profilesList: newArray,
+                        currentId: item.id
                     }
                 })
             })
@@ -44,6 +49,7 @@ export default class Profiles extends React.Component {
 
     // Добавление нового профиля с модального окна
     handleAdd = (newProfile) => {
+        console.log("В таком формате получаем новый профиль:", newProfile);
         // тут айди будет запрашиваться с бека
         newProfile.id = Math.round(Math.random() * 1000);
         this.setState(prevState => {
@@ -72,6 +78,7 @@ export default class Profiles extends React.Component {
     };
 
     findProfile = (id) => {
+        console.log("Ищем профиль с id:", id);
         let currentProfile;
         this.state.profilesList.forEach(item => {
             if (item.id === id)
@@ -81,8 +88,8 @@ export default class Profiles extends React.Component {
     };
 
     // показ/скрытие модального окна
-    toggleModal = (content) => {
-        this.setState({modalOpen: !this.state.modalOpen, typeOfModal: content});
+    toggleModal = (content, id) => {
+        this.setState({modalOpen: !this.state.modalOpen, typeOfModal: content, currentId: id});
     };
 
     // переписать этот метод
@@ -90,42 +97,9 @@ export default class Profiles extends React.Component {
         console.log('Parent has got id:', id);
     };
 
-    handleMove = (id, action) => {
-        const newArray = this.state.profilesList;
-        let ourProfile = this.findProfile(id);
-        console.log("Наш профиль:", ourProfile);
-        if (action === "up") {
-            for (let i = 0; i < newArray.length; i++) {
-                console.log("Профиль в цикле:", newArray[i]);
-                if (newArray[i] === ourProfile) {
-                    const temp = newArray[i];
-                    newArray[i] = newArray[i - 1];
-                    newArray[i - 1] = temp;
-                    break;
-                }
-            }
-        }
-        else {
-            console.log("Перемещаем профили вниз");
-            for (let i = 0; i < newArray.length; i++) {
-                console.log("Профиль в цикле:", newArray[i]);
-                if (newArray[i] === ourProfile) {
-                    const temp = newArray[i];
-                    newArray[i] = newArray[i + 1];
-                    newArray[i + 1] = temp;
-                    break;
-                }
-            }
-        }
-        this.setState(prevState => {
-            return {
-                profilesList: newArray
-            }
-        });
-    };
-
     render() {
-        console.log("Профили получили такие данные:", )
+        console.log("Текущие профили:", this.state.profilesList);
+        console.log("Текущее айди:", this.state.currentId);
         return (
             <section>
                 <PageHeader title='Окно редактирования анкет'/>

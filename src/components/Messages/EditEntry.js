@@ -8,7 +8,7 @@ export default class EditEntry extends React.Component {
         super(props);
         this.state = {
             inputValue: this.props.value,
-            status: "info-block-invisible"
+            status: "info-block-invisible",
         }
     }
 
@@ -20,6 +20,15 @@ export default class EditEntry extends React.Component {
     };
 
     render() {
+        let text = null;
+        if (this.props.type === 1)
+            text = "Нет обратной связи";
+        else if (this.props.type === 2)
+            text = "Пользователь нажимает кнопку";
+        else if (this.props.type === 3)
+            text = "Пользователь пишет сообщение";
+        else
+            text = "Пользователь вводит данные";
 
         return (
             <div className='edit-entry'>
@@ -31,10 +40,11 @@ export default class EditEntry extends React.Component {
                         </span>
                 </label>
                 <div className='input-wrapper'>
-                    <input type="text" placeholder={this.state.inputValue} onChange={(e) =>
+                    <input type="text" value={this.state.inputValue} onChange={(e) =>
                     {this.handleChange(e.currentTarget.value);
                     this.props.getCurrentData(this.state.inputValue)}}/>
                 </div>
+                {text}
             </div>
         )
     }

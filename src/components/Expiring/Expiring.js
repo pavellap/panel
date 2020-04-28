@@ -44,18 +44,13 @@ export default class extends React.Component {
     };*/
 
     render() {
+        console.log("Рендерим Компонент с конфигами:", this.props.configs);
         return (
             <section>
                 <PageHeader title='Сообщения перед концом подписки'/>
                 <Configuration name='Для постоянных' handleClick={(id) => this.props.handleClick(id)}/>
                 <form>
                     {this.state.messages.map(item => item)}
-                    {/*<EditEntry text='Сообщение, отправляемое за 10 дней до окончания подписки' inputValue='Текст сообщения'
-                               getCurrentData={(content) => this.handleChange(content, "10days")}/>
-                    <EditEntry text='Сообщение, отправляемое за 3 дня до окончания подписки' inputValue='Текст сообщения'
-                               getCurrentData={(content) => this.handleChange(content, "3days")}/>
-                    <EditEntry text='Сообщение, отправляемое за день до окончания подписки' inputValue='Текст сообщения'
-                               getCurrentData={(content) => this.handleChange(content, "1day")}/>*/}
                     <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
                 </form>
             </section>

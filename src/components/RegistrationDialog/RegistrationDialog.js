@@ -3,18 +3,39 @@ import './RegistrationDialog.css'
 import PageHeader from "../UI/PageHeader";
 import Configuration from "../Messages/Configuration";
 import EditEntry from "../Messages/EditEntry";
+import Axios from "axios";
 
 export default class extends React.Component {
     constructor(props) {
+        console.log("Получаем пропсы");
         super(props);
         this.state = {
-            firstMessage: "",
-            nameMessage: "",
-            successMessage: "",
             helloMessages: [],
-            currentMessageText: "",
-            sectionId: 1
+            sectionId: 1,
+            messages: [],
+            questions: []
         }
+    }
+
+    componentDidMount() {
+        let configId = this.props.id;
+        const url = "http://188.32.187.157:5000/getpage/config_id=" + configId + '&page_id=' + this.state.sectionId;
+        let userData;
+        Axios.get(url).then(response => {
+            console.log("Данные:");
+            console.log(response);
+            userData = response.data.list;
+        }).then(() => {
+            userData.forEach(item => {
+                this.setState(prevState => {
+                    const newArray = this.state.messages;
+                    newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description}/>);
+                    return {
+                        messages: newArray
+                    }
+                })
+            })
+        });
     }
 
     handleChange = (content, type) => {
@@ -23,7 +44,6 @@ export default class extends React.Component {
                 return {currentMessageText: content}
             })
         }
-        console.log(content);
     };
 
     handleAdd = () => {
@@ -42,6 +62,7 @@ export default class extends React.Component {
     };
 
     render() {
+        console.log("Рендерим Регистрацию с конфигами:", this.props.configs);
         let renderContent = null;
         if (this.state.helloMessages.length > 0) {
             renderContent = (
@@ -56,12 +77,7 @@ export default class extends React.Component {
                 <PageHeader title='Диалог Регистрации'/>
                 <Configuration/>
                 <form>
-                    <EditEntry text='Первое сообщение, которое видит пользователь, начав знакомство с ботом'
-                    inputValue='Текст сообщения'/>
-                    <EditEntry text='Текст запроса на ввод имени'
-                               inputValue='Текст сообщения'/>
-                    <EditEntry text='Текст сообщения при успешной регистрации'
-                               inputValue='Текст сообщения'/>
+                    {this.state.messages.map((item) => item)}
                     <div className='registration-dialog-messages'>
                         <div className='registration-dialog-messages-entry'>
                             <EditEntry text='Текст нового приветственного сообщения'

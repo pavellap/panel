@@ -35,7 +35,7 @@ export default class Present extends React.Component {
             <section>
                 <PageHeader title='Отправка подарочных сертификатов'/>
                 <Configuration handleClick={(id) => this.props.handleClick(id)}/>
-                {this.messages.map(item => item)}
+                {this.state.messages.map(item => item)}
             </section>
         )
     }

@@ -7,9 +7,7 @@ export default class Reanimation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            oneWeek: "",
-            oneMonth: "",
-            threeMonths: ""
+
         }
     }
     handleChange = (content, type) => {

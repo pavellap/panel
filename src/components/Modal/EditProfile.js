@@ -9,16 +9,17 @@ export default class extends React.Component {
         this.state = {
             helloMessage: this.props.profile.helloMessage,
             questionsList: this.props.profile.questionsList,
-            currentQuestionId: this.props.profile.currentQuestionId
         };
         this.questionEntry = React.createRef();
         this.dataTypeEntry = React.createRef();
     }
-    // получает анкету, меняет её
-    getEntryData = (content) => {
 
+
+    getEntryData = (content) => {
+        this.setState({helloMessage: content})
     };
 
+    // пока нет айди, поправить позже
     handleDelete = (id) => {
         this.setState(prevState => {
             const newArray = this.state.questionsList.filter(item => item.id.toString() !== id);
@@ -29,22 +30,13 @@ export default class extends React.Component {
     handleAdd = () => {
         if (!(this.questionEntry.current.value === '')) {
             const newItem = {
-                render: (<div className='question'>
-                    <span>{this.state.currentQuestionId + 1}</span>
-                    <span>{this.questionEntry.current.value}</span>
-                    <span>{this.dataTypeEntry.current.value}</span>
-                    <FontAwesomeIcon icon={faTimes} id={this.state.currentQuestionId + 1}/>
-                </div>),
-                id: this.state.currentQuestionId + 1,
-                question: this.questionEntry.current.value,
-                dataType: this.dataTypeEntry.current.value
+                text: this.questionEntry.current.value,
+                type: this.dataTypeEntry.current.value
             };
             const newArray = this.state.questionsList;
             newArray.push(newItem);
             this.questionEntry.current.value = "";
-            this.setState({questionList: newArray});
-            // eslint-disable-next-line react/no-direct-mutation-state
-            this.state.currentQuestionId += 1;
+            this.setState({questionsList: newArray});
         }
     };
 
@@ -68,9 +60,16 @@ export default class extends React.Component {
                             </select>
                         </label>
                     </div>
-                    {<h4>Список вопросов</h4>}
-                    {this.state.questionsList.map(item => item.render
-                    )}
+                    <h4>Список вопросов</h4>
+                    {this.state.questionsList.map(item => (
+                        <div className='question'>
+                            <span>{item.text}</span>
+                            <span>{item.type}</span>
+                            <FontAwesomeIcon icon={faTimes} onClick={(e) =>
+                                this.handleDelete(e.currentTarget.id)} id={this.state.currentQuestionId + 1}/>
+                        </div>)
+                    )
+                    }
                     <div className='add-ques-button' onClick={this.handleAdd}>
                         <span style={{marginRight: 20}}>Добавить вопрос</span>
                         <FontAwesomeIcon icon={faPlus} size='2x'/>

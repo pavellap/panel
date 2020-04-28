@@ -4,47 +4,37 @@ import EditEntry from "../Messages/EditEntry";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTimes} from "@fortawesome/free-solid-svg-icons";
 
+
+// отправляет свой стейт
+// добавить чекбокс - это мейн
 export default class AddProfile extends React.Component {
     constructor(props) {
         super(props);
         // объект в стейте - параметры новой анкеты
         this.state = {
             questionsList: [],
-            currentQuestionId: 0,
-            name: "Анкета по Умолчанию",
-            helloMessage: "Привественное сообщение по умолчанию",
+            name: "Шаблон",
+            helloMessage: "Шаблон",
         };
         this.questionEntry = React.createRef();
         this.dataTypeEntry = React.createRef();
     }
 
-    handleAdd = () => {
+    handleAdd = () => { // добавление нового вопроса
         // проверка на пустое поле
         if (!(this.questionEntry.current.value === '')) {
             const newItem = {
-                // поле, отвечающее за рендер
-                render: (<div className='question'>
-                    <span>{this.state.currentQuestionId + 1}</span>
-                    <span>{this.questionEntry.current.value}</span>
-                    <span>{this.dataTypeEntry.current.value}</span>
-                    <FontAwesomeIcon icon={faTimes} onClick={(e) => this.handleDelete(e.currentTarget.id)}
-                                     id={this.state.currentQuestionId + 1}/>
-                </div>),
-                id: this.state.currentQuestionId + 1,
-                question: this.questionEntry.current.value,
-                dataType: this.dataTypeEntry.current.value
+                text: this.questionEntry.current.value,
+                type: this.dataTypeEntry.current.value
             };
             const newArray = this.state.questionsList;
             newArray.push(newItem);
             this.questionEntry.current.value = "";
-            this.setState({questionList: newArray});
-            // поменять потом
-            // eslint-disable-next-line react/no-direct-mutation-state
-            this.state.currentQuestionId += 1;
+            this.setState({questionsList: newArray});
         }
     };
 
-
+    // пока нет id, проблема с back
     handleDelete = (id) => {
         this.setState(prevState => {
             const newArray = this.state.questionsList.filter(item => item.id.toString() !== id);
@@ -76,14 +66,21 @@ export default class AddProfile extends React.Component {
                         <label>
                             Тип ответа
                             <select ref={this.dataTypeEntry}>
-                                <option value="string">Строковые данные</option>
-                                <option value="number">Числовые данные</option>
+                                <option value="str">Строковые данные</option>
+                                <option value="int">Числовые данные</option>
                             </select>
                         </label>
                     </div>
-                    {<h4>Список вопросов</h4>}
-                    {this.state.questionsList.map(item => item.render
-                    )}
+                    <h4>Список вопросов</h4>
+                    {this.state.questionsList.map(item => (
+                            <div className='question'>
+                                <span>{item.text}</span>
+                                <span>{item.type}</span>
+                                <FontAwesomeIcon icon={faTimes} onClick={(e) =>
+                                    this.handleDelete(e.currentTarget.id)} id={this.state.currentQuestionId + 1}/>
+                            </div>)
+                        )
+                    }
                     <div className='add-ques-button' onClick={this.handleAdd}>
                         <span style={{marginRight: 20}}>Добавить вопрос</span>
                         <FontAwesomeIcon icon={faPlus} size='2x'/>

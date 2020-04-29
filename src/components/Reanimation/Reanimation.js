@@ -1,5 +1,4 @@
 import React from 'react'
-import './Reanimation.css'
 import PageHeader from "../UI/PageHeader";
 import EditEntry from "../Messages/EditEntry";
 
@@ -28,9 +27,9 @@ export default class Reanimation extends React.Component {
 
     render() {
         return (
-            <section className='reanimation-container'>
+            <section>
                 <PageHeader title='Сообщения для пользователей, у которых закончилась подписка'/>
-                <form>
+                <form style={{paddingLeft: 20}}>
                     <EditEntry text='Сообщение, которое отправляется пользователю через 1
                        неделю после отключения подписки.' value='Текст сообщения'
                        getCurrentData={(content) => this.handleChange(content, "1week")}/>

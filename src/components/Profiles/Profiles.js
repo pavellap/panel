@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom'
 import Configuration from "../Messages/Configuration";
 import Axios from "axios";
 import EditEntry from "../Messages/EditEntry";
+import Loader from "../UI/Loader";
 
 export default class Profiles extends React.Component {
     constructor(props) {
@@ -18,7 +19,9 @@ export default class Profiles extends React.Component {
             typeOfModal: null,
             profilesList: [],
             currentId: null,
-            sectionId: 8
+            sectionId: 8,
+            fetchingError: false,
+            componentIsLoading: true
         }
     }
 
@@ -40,11 +43,12 @@ export default class Profiles extends React.Component {
                     });
                     return {
                         profilesList: newArray,
-                        currentId: item.id
+                        currentId: item.id,
+                        componentIsLoading: false
                     }
                 })
             })
-        });
+        })
     }
 
     // Добавление нового профиля с модального окна
@@ -98,30 +102,34 @@ export default class Profiles extends React.Component {
     };
 
     render() {
-        console.log("Текущие профили:", this.state.profilesList);
-        console.log("Текущее айди:", this.state.currentId);
+        let content;
+        if (this.state.componentIsLoading)
+            content = <Loader/>;
+        else content = (
+            <div className='profiles-wrapper'>
+                <div className='profiles-header'>
+                    <h4>Доступные анкеты</h4>
+                    <div onClick={() => this.toggleModal('add',
+                        Math.round(Math.random() * 1000))}>
+                        <span>Новая анкета</span>
+                        <FontAwesomeIcon icon={faPlus} color='#fff'/>
+                    </div>
+                </div>
+                <section className='profiles-content-wrapper'>
+                    {this.state.profilesList.map(item =>
+                        <ProfileEntry title={item.name} description={item.description}
+                                      handleDeleteClick={(id) => this.toggleModal('delete', id)
+                                      } id={item.id} handleEditClick={(id) => this.toggleModal('edit', id)}
+                                      handleShowClick={(id) => this.toggleModal('show', id)}
+                                      handleMove={(id, action) => this.handleMove(id, action)}/>)}
+                </section>
+            </div>
+        );
         return (
-            <section>
+            <section style={{position: "relative"}}>
                 <PageHeader title='Окно редактирования анкет'/>
                 <Configuration  handleClick={(id) => this.props.handleClick(id)}/>
-                <div className='profiles-wrapper'>
-                    <div className='profiles-header'>
-                        <h4>Доступные анкеты</h4>
-                        <div onClick={() => this.toggleModal('add',
-                            Math.round(Math.random() * 1000))}>
-                            <span>Новая анкета</span>
-                            <FontAwesomeIcon icon={faPlus} color='#fff'/>
-                        </div>
-                    </div>
-                    <section className='profiles-content-wrapper'>
-                        {this.state.profilesList.map(item =>
-                            <ProfileEntry title={item.name} description={item.description}
-                             handleDeleteClick={(id) => this.toggleModal('delete', id)
-                             } id={item.id} handleEditClick={(id) => this.toggleModal('edit', id)}
-                             handleShowClick={(id) => this.toggleModal('show', id)}
-                            handleMove={(id, action) => this.handleMove(id, action)}/>)}
-                    </section>
-                </div>
+                {content}
                 {ReactDOM.createPortal(this.state.modalOpen && <Modal handleClick={this.toggleModal}
                                    handleDelete={(id) => this.deleteEntry(id)}  type={this.state.typeOfModal}
                                    profile={this.findProfile(this.state.currentId)}

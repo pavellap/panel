@@ -1,10 +1,13 @@
 .Page-header {
     background-color: #fafbfc;
-    padding: 15px 15px 0 25px;
+    padding: 5px 15px 0 25px;
     margin: 0;
     height: 50px;
     border-bottom: 1px solid #e7e8ec;
     border-radius: 4px;
     font-weight: normal;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

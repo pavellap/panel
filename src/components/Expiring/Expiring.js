@@ -3,6 +3,7 @@ import PageHeader from "../UI/PageHeader";
 import Configuration from "../Messages/Configuration";
 import EditEntry from "../Messages/EditEntry";
 import Axios from "axios";
+import Loader from "../UI/Loader";
 
 export default class extends React.Component {
     constructor(props) {
@@ -10,9 +11,7 @@ export default class extends React.Component {
         this.state = {
             messages: [],
             sectionId: 4,
-            /*tenDays: "",
-            threeDays: "",
-            oneDay: ""*/
+            componentIsLoading: true
         }
     }
 
@@ -27,32 +26,31 @@ export default class extends React.Component {
                     const newArray = this.state.messages;
                     newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description}/>);
                     return {
-                        messages: newArray
+                        messages: newArray,
+                        componentIsLoading: false
                     }
                 })
             })
         });
     }
 
-    /*handleChange = (content, type) => {
-        if (type === "10days")
-            this.setState({tenDays: content});
-        else if (type === "3days")
-            this.setState({threeDays: content});
-        else
-            this.setState({oneDay: content})
-    };*/
+
 
     render() {
-        console.log("Рендерим Компонент с конфигами:", this.props.configs);
+        let content;
+        if (this.state.componentIsLoading)
+            content = <Loader/>;
+        else content = (
+            <form>
+                {this.state.messages.map((item) => item)}
+                <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
+            </form>
+        );
         return (
-            <section>
+            <section style={{position: "relative"}}>
                 <PageHeader title='Сообщения перед концом подписки'/>
                 <Configuration name='Для постоянных' handleClick={(id) => this.props.handleClick(id)}/>
-                <form>
-                    {this.state.messages.map(item => item)}
-                    <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
-                </form>
+                {content}
             </section>
         )
     }

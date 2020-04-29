@@ -3,13 +3,15 @@ import PageHeader from "../UI/PageHeader";
 import Configuration from "../Messages/Configuration";
 import Axios from "axios";
 import EditEntry from "../Messages/EditEntry";
+import Loader from "../UI/Loader";
 
 export default class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             messages: [],
-            sectionId: 3
+            sectionId: 3,
+            componentIsLoading: true
         }
     }
 
@@ -24,7 +26,8 @@ export default class Profile extends React.Component {
                     const newArray = this.state.messages;
                     newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description}/>);
                     return {
-                        messages: newArray
+                        messages: newArray,
+                        componentIsLoading: false
                     }
                 })
             })
@@ -32,12 +35,20 @@ export default class Profile extends React.Component {
     }
 
     render() {
-        return (
-            <section>
-                <PageHeader title='Анкета'/>
-                <Configuration handleClick={(id) => this.props.handleClick(id)}/>
+        let content;
+        if (this.state.componentIsLoading)
+            content = <Loader/>;
+        else content = (
+            <React.Fragment>
                 {this.state.messages.map((item) => item)}
                 <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
+            </React.Fragment>
+        );
+        return (
+            <section style={{position: "relative"}}>
+                <PageHeader title='Анкета'/>
+                <Configuration handleClick={(id) => this.props.handleClick(id)}/>
+                {content}
             </section>
         )
     }

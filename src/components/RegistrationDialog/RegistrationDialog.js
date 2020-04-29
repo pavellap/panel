@@ -4,6 +4,7 @@ import PageHeader from "../UI/PageHeader";
 import Configuration from "../Messages/Configuration";
 import EditEntry from "../Messages/EditEntry";
 import Axios from "axios";
+import Loader from "../UI/Loader";
 
 export default class extends React.Component {
     constructor(props) {
@@ -13,7 +14,8 @@ export default class extends React.Component {
             helloMessages: [],
             sectionId: 1,
             messages: [],
-            questions: []
+            questions: [],
+            componentIsLoading: true
         }
     }
 
@@ -31,7 +33,8 @@ export default class extends React.Component {
                     const newArray = this.state.messages;
                     newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description}/>);
                     return {
-                        messages: newArray
+                        messages: newArray,
+                        componentIsLoading: false
                     }
                 })
             })
@@ -62,7 +65,6 @@ export default class extends React.Component {
     };
 
     render() {
-        console.log("Рендерим Регистрацию с конфигами:", this.props.configs);
         let renderContent = null;
         if (this.state.helloMessages.length > 0) {
             renderContent = (
@@ -72,16 +74,17 @@ export default class extends React.Component {
                 </React.Fragment>
             )
         }
-        return (
-            <section className='registration-dialog-container'>
-                <PageHeader title='Диалог Регистрации'/>
-                <Configuration/>
+        let content;
+        if (this.state.componentIsLoading)
+            content = <Loader/>;
+        else content = (
+            <React.Fragment>
                 <form>
                     {this.state.messages.map((item) => item)}
                     <div className='registration-dialog-messages'>
                         <div className='registration-dialog-messages-entry'>
                             <EditEntry text='Текст нового приветственного сообщения'
-                            inputValue='Текст сообщения' getCurrentData={(content) => this.handleChange(content, "current")} />
+                                       inputValue='Текст сообщения' getCurrentData={(content) => this.handleChange(content, "current")} />
                         </div>
                         {renderContent}
                     </div>
@@ -90,6 +93,13 @@ export default class extends React.Component {
                     <div className='registration-dialog-messages-button' onClick={this.handleAdd}>Добавить сообщения</div>
                     <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
                 </div>
+            </React.Fragment>
+        );
+        return (
+            <section className='registration-dialog-container'>
+                <PageHeader title='Диалог Регистрации'/>
+                <Configuration/>
+                {content}
             </section>
         )
     }

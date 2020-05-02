@@ -28,8 +28,10 @@ export default class Profiles extends React.Component {
     componentDidMount() {
         const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
         let userData;
+        console.log(url);
         Axios.get(url).then(response => {
             userData = response.data.list;
+            console.log("Данные в профилях:", userData)
         }).then(() => {
             userData.forEach(item => {
                 this.setState(prevState => {

@@ -2,4 +2,3 @@
     display: grid;
     grid-template-columns: minmax(275px, 4fr) 20fr;
 }
-

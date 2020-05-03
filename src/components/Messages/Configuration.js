@@ -3,6 +3,7 @@ import './Configuration.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faChevronDown, faPlus} from '@fortawesome/free-solid-svg-icons'
 import ConfigurationItem from "./ConfigurationItem";
+import Axios from "axios";
 
 export default class Configuration extends React.Component {
     constructor(props) {
@@ -14,11 +15,13 @@ export default class Configuration extends React.Component {
     }
 
     handleAddConfig = () => {
-        const newArray = this.state.configurations;
-        newArray.push(
-            Math.round(Math.random() * 100)
-        );
-        this.setState({configurations: newArray})
+        let url = "http://188.32.187.157:5000";
+        url += '/config/get';
+        Axios.get(url).then(response => {
+            console.log("Новые конфигурации:", response.data);
+            this.setState({configurations: response.data.configurations})
+        });
+        //this.setState({configurations: newArray})
     };
 
     toggleMenu = () => {

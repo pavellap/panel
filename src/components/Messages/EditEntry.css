@@ -13,25 +13,11 @@
     margin-left: 20px;
 }
 
-
-
 .edit-entry label svg:hover {
     color: #222;
 }
 
-.info-block-visible {
-    position: absolute;
-    z-index: 1000;
-    display: flex;
-    width: 200px;
-    height: 40px;
-    bottom: 80px;
-    border: 2px solid crimson;
-}
 
-.info-block-invisible {
-    display: none;
-}
 
 .input-wrapper {
     margin-left: 10px;
@@ -61,17 +47,17 @@
 .info-icon {
     position: relative;
 }
+
 .info-icon:hover:before {
-    display: flex;
+    display: inline-block;
     content: attr(help-info);
     border: 1px solid #adadad;
     position: absolute;
-    top: -25px;
-    right: -235px;
     font-size: 14px;
+    bottom: 20px;
     padding: 3px;
-    height: 27px;
-    width: 220px;
+    height: 30px;
+    width: 550px;
     align-items: center;
     justify-content: center;
     color: #1e1f23;

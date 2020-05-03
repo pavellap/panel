@@ -1,13 +1,36 @@
 import React from 'react'
 import './Authorization.css'
-import AuthorizationForm from "./Authorization-form";
+import Axios from "axios";
 
 export default class Authorization extends React.Component {
+    constructor(props) {
+        super(props);
+        this.password = React.createRef();
+        this.login = React.createRef();
+        this.state = {
+            success: null
+        }
+    }
+
 
     handleButtonClick(event) {
+        let url = "http://188.32.187.157:5000";
+        url += '/auth';
         event.preventDefault();
-        console.log(window.location.href);
-        window.location.href += 'registration';
+        Axios.post(url, {
+            "login": this.login,
+            "password": this.password
+        }).then(response => {
+            if (response.data.success) {
+                console.log(window.location.href);
+                window.location.href += 'registration';
+            }
+            else {
+                // вставить модальное здесь
+            }
+            console.log("Ответ на авторизацию:", response)
+        });
+
     }
 
     render() {
@@ -17,8 +40,12 @@ export default class Authorization extends React.Component {
                     <form>
                         <h2>Добро пожаловать</h2>
                         <div className='Form-wrapper'>
-                            <AuthorizationForm name='Email'/>
-                            <AuthorizationForm name='Password'/>
+                            <div className='Input-wrapper'>
+                                <input type="text" placeholder='E-mail' ref={this.login}/>
+                            </div>
+                            <div className='Input-wrapper'>
+                                <input type="text" placeholder='Password' ref={this.password}/>
+                            </div>
                         </div>
                         <div className='Form-wrapper'>
                             <button className='Authorization-button' onClick={(e) =>

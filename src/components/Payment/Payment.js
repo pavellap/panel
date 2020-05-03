@@ -25,7 +25,7 @@ export default class Payment extends React.Component {
             userData.forEach(item => {
                 this.setState(prevState => {
                     const newArray = this.state.messages;
-                    newArray.push(<EditEntry text={item.name} value={item.text} helpInfo={item.description} type={item.ans_type}/>);
+                    newArray.push(item);
                     return {
                         messages: newArray,
                         componentIsLoading: false
@@ -45,7 +45,9 @@ export default class Payment extends React.Component {
             content = <Loader/>;
         else content = (
             <React.Fragment>
-                {this.state.messages.map((item) => item)}
+                {this.state.messages.map((item) => (
+                    <EditEntry type={item.type} name={item.name} description={item.description} text={item.text}/>
+                ))}
                 <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
             </React.Fragment>
         );

@@ -18,9 +18,12 @@ import Other from "./components/Other/Other";
 import Profile from "./components/Profile/Profile";
 import Present from "./components/Present/Present";
 
+import Parser from "./Parser";
+
 export default class extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             currentConfig: null,
             configurationsList: []
@@ -34,6 +37,7 @@ export default class extends React.Component {
     componentDidMount() {
         const configsUrl = "http://188.32.187.157:5000/";
         Axios.get(configsUrl + "configs").then((response) => {
+                console.log("Приложение получило конфигурации:", response.data.configurations);
                 this.setState({configurationsList: response.data.configurations,
                     currentConfig: response.data.configurations[0]});
             }
@@ -74,7 +78,7 @@ export default class extends React.Component {
                     children={<Download/>}/>}/>
 
                     <Route path='/subscription' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Subscription/>}/>}/>
+                    children={<Subscription id={this.state.currentConfig}/>}/>}/>
 
                     <Route path='/reanimation' render={(props) => <Wrapper id={this.state.currentConfig}
                     children={<Reanimation handleClick={(id) => this.changeConfiguration(id)}
@@ -84,5 +88,3 @@ export default class extends React.Component {
         )
     }
 }
-
-

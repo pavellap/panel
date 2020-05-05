@@ -45,6 +45,15 @@ export default class extends React.Component {
                 <ShowProfile profile={this.props.profile}/>
             );
         }
+        else if (this.props.type === 'error') {
+            contentToRender = (
+                <React.Fragment>
+                    <h4>{this.props.text}</h4>
+                    <div onClick={this.props.handleClick}>ОК</div>
+                </React.Fragment>
+            );
+            modalContentClass = 'modal-content-delete';
+        }
         return (
             <div className="modal">
                 <div className={modalContentClass}>

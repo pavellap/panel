@@ -18,33 +18,29 @@ import Other from "./components/Other/Other";
 import Profile from "./components/Profile/Profile";
 import Present from "./components/Present/Present";
 
+
+
+
 import Parser from "./Parser";
 
 export default class extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            currentConfig: null,
-            configurationsList: []
+            currentConfig: 1,
+            configurationsList: [1, 4, 6]
         }
     }
 
     changeConfiguration = (newId) => {
+        console.log("Меняем конфигурацию в главном компоненте на: ", newId);
         this.setState({currentConfig: newId});
     };
 
-    componentDidMount() {
-        const configsUrl = "http://188.32.187.157:5000/";
-        Axios.get(configsUrl + "configs").then((response) => {
-                console.log("Приложение получило конфигурации:", response.data.configurations);
-                this.setState({configurationsList: response.data.configurations,
-                    currentConfig: response.data.configurations[0]});
-            }
-        );
-    }
+
 
     render() {
+        console.log("Рендерим приложение с конфигами: ", this.state.configurationsList);
         return (
             <Layout>
                 <Switch>
@@ -54,22 +50,22 @@ export default class extends React.Component {
                     children={<RegistrationDialog id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/payment' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Payment id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
+                    children={<Payment handleConfig={val => this.changeConfiguration(val)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/profile' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Profile handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
+                    children={<Profile handleConfig={val => this.changeConfiguration(val)} handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/expiring' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Expiring id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
+                    children={<Expiring handleConfig={val => this.changeConfiguration(val)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/present' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Present id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
+                    children={<Present handleConfig={val => this.changeConfiguration(val)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/other' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Other id={this.state.currentConfig}/>} configs={this.state.configurationsList}/>}/>
+                    children={<Other  handleConfig={val => this.changeConfiguration(val)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/profiles' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Profiles handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
+                    children={<Profiles  handleClick={(id) => this.changeConfiguration(id)} id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
 
                     <Route path='/mailing' render={(props) => <Wrapper id={this.state.currentConfig}
                      children={<Mailing/>}/>}/>
@@ -88,3 +84,15 @@ export default class extends React.Component {
         )
     }
 }
+
+/*
+componentDidMount() {
+    const configsUrl = "http://188.32.187.157:5000/";
+    Axios.get(configsUrl + "configs").then((response) => {
+            console.log("Приложение получило конфигурации:", response.data.configurations);
+            this.setState({configurationsList: response.data.configurations,
+                currentConfig: response.data.configurations[0]});
+        }
+    );
+}
+ */

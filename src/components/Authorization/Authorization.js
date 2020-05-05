@@ -1,6 +1,8 @@
 import React from 'react'
 import './Authorization.css'
 import Axios from "axios";
+import Modal from "../Modal/Modal";
+import ReactDOM from 'react-dom'
 
 export default class Authorization extends React.Component {
     constructor(props) {
@@ -8,7 +10,8 @@ export default class Authorization extends React.Component {
         this.password = React.createRef();
         this.login = React.createRef();
         this.state = {
-            success: null
+            success: null,
+            modalIsOpen: false
         }
     }
 
@@ -18,8 +21,8 @@ export default class Authorization extends React.Component {
         url += '/auth';
         event.preventDefault();
         Axios.post(url, {
-            "login": this.login,
-            "password": this.password
+            "login": this.login.current.value,
+            "password": this.password.current.value
         }).then(response => {
             if (response.data.success) {
                 console.log(window.location.href);
@@ -29,9 +32,16 @@ export default class Authorization extends React.Component {
                 // вставить модальное здесь
             }
             console.log("Ответ на авторизацию:", response)
+        }).catch(err => {
+            if (err)
+                this.setState({modalIsOpen: true})
         });
 
     }
+
+    handleClick = () => {
+        this.setState({modalIsOpen: !this.state.modalIsOpen})
+    };
 
     render() {
         return (
@@ -53,6 +63,8 @@ export default class Authorization extends React.Component {
                         </div>
                     </form>
                 </div>
+                {ReactDOM.createPortal( this.state.modalIsOpen && <Modal type='error' text='На сервере произошла ошибка. Попробуйте позже или перезагрузите страницу'
+                handleClick={this.handleClick}/>, document.getElementById('portal'))}
             </div>
         )
     }

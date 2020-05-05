@@ -110,10 +110,31 @@ export default class extends React.Component {
         return (
             <section className='registration-dialog-container'>
                 <PageHeader title='Диалог Регистрации'/>
-                <EditEntry ans_type={3} description='Это тестовое описание назначения сообщения' text='Текст обычного сообщения'
-                name='Название сообщения'/>
                 <Configuration/>
                 {content}
+                <EditEntry ans_type={2} description='Это тестовое описание назначения сообщения' text='Текст обычного сообщения'
+                           name='Название сообщения' response={[
+                    {
+                        id: 30,
+                        text: "Первое поле",
+                        description: "Описание"
+                    },
+                    {
+                        id: 31,
+                        text: "Второе поле",
+                        description: "Описание"
+                    },
+                    {
+                        id: 32,
+                        text: "Третье поле",
+                        description: "Описание"
+                    },
+                    {
+                        id: 33,
+                        text: "Четвёртое поле",
+                        description: "Описание"
+                    }
+                ]}/>
             </section>
         )
     }

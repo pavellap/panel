@@ -29,6 +29,10 @@ export default class Configuration extends React.Component {
             this.setState({menuOpen: !this.state.menuOpen})
     };
 
+    handleClick = (id) => {
+        console.log("Вы нажали на конфиг с id:", id)
+    };
+
     render() {
         console.log("Конфигурации в своём компоненте:", this.state.configurations);
         let iconClass;
@@ -44,12 +48,12 @@ export default class Configuration extends React.Component {
         return (
             <section className='configuration-container'>
                 <div className='configuration-container-wrapper'>
-                    <span style={{marginRight: 20, marginLeft: 20}}>Текущая конфигурация:&nbsp;&nbsp;1</span>
+                    <span style={{marginRight: 20, marginLeft: 20}}>Текущая конфигурация:&nbsp;&nbsp;{this.props.currentConfig}</span>
                     <FontAwesomeIcon icon={faChevronDown} color='rgb(123, 123, 123)' cursor='pointer'
                     className={iconClass} onClick={this.toggleMenu}/>
                     <div className={containerClass}>
                         {this.state.menuOpen && this.state.configurations.map(item => <ConfigurationItem
-                            handleClick={(id) => this.props.handleClick(id)}  id={item} name={item}/>)}
+                            handleClick={(id) => this.props.handleConfig(id)}  id={item} name={item} active={this.props.active}/>)}
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: "space-between"}}>

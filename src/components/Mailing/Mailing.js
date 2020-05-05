@@ -26,11 +26,17 @@ export default class Mailing extends React.Component {
 
     sendData = () => {
         const url = "http://188.32.187.157:5000/mail";
+        console.log("Данные для отправки рассылки:", {
+            text: this.textForm.current.value,
+            emails: this.emailsForm.current.value.split("\n"),
+            all: this.checkbox.current.checked
+        });
         Axios.post(url, {
             text: this.textForm.current.value,
             emails: this.emailsForm.current.value.split("\n"),
             all: this.checkbox.current.checked
         });
+        // добавить тело респонса
     };
 
     render() {

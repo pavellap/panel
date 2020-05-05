@@ -9,9 +9,10 @@ export default class extends React.Component {
         }
     }
     render() {
+        console.log("Рендерим айтем с айди:", this.props.id);
         return (
             <div className='configuration-item' onClick={() => this.props.handleClick(this.state.id)}>
-                Конфигурация:  {this.props.name}</div>
+                Конфигурация:  {this.props.name}  {this.props.active ? "active" : "disabled"}</div>
         )
     }
 }

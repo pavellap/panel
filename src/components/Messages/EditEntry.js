@@ -22,15 +22,61 @@ export default class EditEntry extends React.Component {
         this.setState({text: this.form.current.value});
     };
 
+    handleResponse = (val, id) => {
+        console.log("Меняем респонс с id:", id);
+        console.log("Контент:", val);
+        let pos;
+        this.state.response.forEach((item, index) => {
+            if (item.id === id)
+                pos = index;
+        });
+        this.setState(prevState => {
+            const newArray = this.state.response;
+            newArray[pos].text = val;
+            return {
+                response: newArray
+            }
+        });
+};
+
     render() {
-        let text = null;
-        if (this.props.ans_type === 1)
+        let text;
+        let render;
+        if (this.props.ans_type === 0) //  не отрисовывем поля для ввода
             text = "Нет обратной связи";
-        else if (this.props.ans_type === 2)
+        else if (this.props.ans_type === 1) {
             text = "Пользователь нажимает кнопку";
-        else if (this.props.ans_type === 3)
+            render = (
+                <div className='response-entry'>
+                    <h4>Обратная связь</h4>
+                    <div>
+                        {this.state.response.map(item =>
+                            <div>
+                                <label>{item.description}</label>
+                                <input type="text" value={item.text} onChange={e => this.handleResponse(e.currentTarget.value, item.id)}/>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )
+        }
+        else if (this.props.ans_type === 2) {
             text = "Пользователь пишет сообщение";
-        else
+            render = (
+                <div className='response-entry'>
+                    <h4>Обратная связь</h4>
+                    <div>
+                        {this.state.response.map(item =>
+                            <div>
+                                <label>{item.description}</label>
+                                <input type="text" value={item.text} onChange={e => this.handleResponse(e.currentTarget.value, item.id)}/>
+                            </div>
+                            )}
+                    </div>
+                </div>
+            )
+        }
+        else //  не отрисовывем поля для ввода
             text = "Пользователь вводит данные";
 
         return (
@@ -45,6 +91,7 @@ export default class EditEntry extends React.Component {
                     <input type="text" ref={this.form} value={this.state.text} onChange={(e) =>
                     {this.handleChange(e.currentTarget.value); this.props.getCurrentData(this.form.current.value)}}/>
                 </div>
+                {render}
                 <div>
 
                 </div>

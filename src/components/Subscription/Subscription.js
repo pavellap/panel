@@ -11,15 +11,13 @@ export default class Subscription extends React.Component {
         this.state = {
             sectionId: 10,
             subscriptions: [],
-            componentIsLoading: true
+            componentIsLoading: false
         }
     }
 
     componentDidMount() {
         const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
-        console.log(url, " в подписках");
         Axios.get(url).then(response => {
-            console.log(response);
             const newArray = this.state.subscriptions;
             response.data.list.forEach(item => {
                 newArray.push(item);

@@ -2,7 +2,6 @@ import React from 'react'
 import './Navigation-header.css'
 
 export default function NavigationHeader(props) {
-    console.log(props.status);
     let color;
     if (props.status === 'offline')
         color = {backgroundColor: "red"};

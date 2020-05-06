@@ -17,19 +17,24 @@ import Expiring from "./components/Expiring/Expiring";
 import Other from "./components/Other/Other";
 import Profile from "./components/Profile/Profile";
 import Present from "./components/Present/Present";
-
-
-
-
-import Parser from "./Parser";
+import url from './components/config'
 
 export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentConfig: 1,
-            configurationsList: [1, 4, 6]
+            currentConfig: null,
+            configurationsList: []
         }
+    }
+
+    componentDidMount() {
+        const localURL = url + "/config/get";
+        Axios.get(localURL).then((response) => {
+                this.setState({configurationsList: response.data,
+                    currentConfig: response.data[0].id});
+            }
+        );
     }
 
     changeConfiguration = (newId) => {
@@ -40,7 +45,6 @@ export default class extends React.Component {
 
 
     render() {
-        console.log("Рендерим приложение с конфигами: ", this.state.configurationsList);
         return (
             <Layout>
                 <Switch>
@@ -85,14 +89,3 @@ export default class extends React.Component {
     }
 }
 
-/*
-componentDidMount() {
-    const configsUrl = "http://188.32.187.157:5000/";
-    Axios.get(configsUrl + "configs").then((response) => {
-            console.log("Приложение получило конфигурации:", response.data.configurations);
-            this.setState({configurationsList: response.data.configurations,
-                currentConfig: response.data.configurations[0]});
-        }
-    );
-}
- */

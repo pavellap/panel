@@ -18,7 +18,6 @@ export default class Configuration extends React.Component {
         let url = "http://188.32.187.157:5000";
         url += '/config/get';
         Axios.get(url).then(response => {
-            console.log("Новые конфигурации:", response.data);
             this.setState({configurations: response.data.configurations})
         });
         //this.setState({configurations: newArray})
@@ -34,7 +33,7 @@ export default class Configuration extends React.Component {
     };
 
     render() {
-        console.log("Конфигурации в своём компоненте:", this.state.configurations);
+        console.log("Получили сообщение с именем:")
         let iconClass;
         let containerClass;
         if (this.state.menuOpen) {
@@ -53,7 +52,7 @@ export default class Configuration extends React.Component {
                     className={iconClass} onClick={this.toggleMenu}/>
                     <div className={containerClass}>
                         {this.state.menuOpen && this.state.configurations.map(item => <ConfigurationItem
-                            handleClick={(id) => this.props.handleConfig(id)}  id={item} name={item} active={this.props.active}/>)}
+                            handleClick={(id) => this.props.handleConfig(id)}  id={item.id} name={item.id} active={item.active}/>)}
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: "space-between"}}>

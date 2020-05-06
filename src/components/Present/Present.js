@@ -4,6 +4,7 @@ import Configuration from "../Messages/Configuration";
 import Axios from "axios";
 import EditEntry from "../Messages/EditEntry";
 import Loader from "../UI/Loader";
+import url from '../config'
 
 export default class Present extends React.Component {
     constructor(props) {
@@ -15,9 +16,9 @@ export default class Present extends React.Component {
         };
     }
     componentDidMount() {
-        const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
+        const localURL = url + "/page/get/config_id=" + this.props.id + "&page_id=" + this.state.sectionId;
         let userData;
-        Axios.get(url).then(response => {
+        Axios.get(localURL).then(response => {
             userData = response.data.list;
         }).then(() => {
             userData.forEach(item => {
@@ -67,8 +68,8 @@ export default class Present extends React.Component {
         else content = (
             <form>
                 {this.state.messages.map((item) => (
-                    <EditEntry type={item.type} name={item.name} description={item.description} text={item.text}
-                               getCurrentData={(val) => this.handleChange(val, item.id)}/>
+                    <EditEntry ans_type={item.type} name={item.name} description={item.description} text={item.text}
+                               getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
                 ))}
                 <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>
             </form>

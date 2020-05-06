@@ -6,6 +6,7 @@ import EditEntry from "../Messages/EditEntry";
 import Axios from "axios";
 import Loader from "../UI/Loader";
 import EditProfile from "../Modal/EditProfile";
+import url from '../config'
 
 export default class extends React.Component {
     constructor(props) {
@@ -15,22 +16,20 @@ export default class extends React.Component {
             sectionId: 1,
             messages: [],
             questions: [],
-            componentIsLoading: false,
+            componentIsLoading: true,
             currentMessageText: ""
         }
     }
 
     componentDidMount() {
-        let configId = this.props.id;
-        const url = "http://188.32.187.157:5000/getpage/config_id=" + configId + '&page_id=' + this.state.sectionId;
+        const localURL = url + "/page/get/config_id=" + this.props.id + "&page_id=" + this.state.sectionId;
         let messages;
         let greetings;
-        Axios.get(url).then(response => {
-            console.log("Данные:");
-            console.log(response);
+        Axios.get(localURL).then(response => {
+            console.log("Структура полученного запроса:", response.data);
             messages = response.data.list;
-            greetings = response.data.hello_msgs;
-            console.log("Greetings:", greetings)
+            greetings = response.data.greetings;
+            console.log("Структура приветственного сообщения:", greetings[0])
         }).then(() => {
             messages.forEach(item => {
                 this.setState(prevState => {
@@ -43,7 +42,7 @@ export default class extends React.Component {
                 })
             });
             greetings.forEach(item => {
-                // понять, в каком поле тела лежит текста
+                // понять, в каком поле тела лежит текст
                 this.setState(prevState => {
                     const newArray = this.state.greetings;
                     newArray.push(item);
@@ -55,18 +54,52 @@ export default class extends React.Component {
         });
     }
 
-    handleChange = (content) => {
-        console.log(content);
-        this.setState(prevState => {
-            return {currentMessageText: content}
+    sendData = () => {
+        const localURL = url + "/page/set/config_id=" + this.props.id + "&page_id=" + this.state.sectionId;
+        Axios.post(localURL, {
+            config_id: this.props.id,
+            greetings: this.state.greetings,
+            list: this.state.messages,
+            page: this.state.sectionId
+        });
+        console.log("Данные, отправленные на сервер:", {
+            config_id: this.props.id,
+            greetings: this.state.greetings,
+            list: this.state.messages,
+            page: this.state.sectionId
         })
     };
 
+
+    handleChange = (val, id) => {
+        let pos;
+        // находим позицию нашего элемента в исходном массиве
+        this.state.messages.forEach((item, index) => {
+            if (item.id === id)
+                pos = index;
+        });
+        this.setState(prevState => {
+            const newArray = this.state.messages;
+            newArray[pos].text = val;
+            return {
+                messages: newArray
+            }
+        });
+    };
+
+    // Добавление нового приветственного сообщения
     handleAdd = () => {
         const newArray = this.state.greetings;
         newArray.push(this.state.currentMessageText);
         this.setState(prevState => {
             return {greetings: newArray}
+        })
+    };
+
+    // Изменение текущего содержимого поля для ввода текста приветственного сообщения
+    handleAddMessage = (val) => {
+        this.setState({
+            currentMessageText: val
         })
     };
 
@@ -76,8 +109,9 @@ export default class extends React.Component {
             renderContent = (
                 <React.Fragment>
                     <h4>Приветственные сообщения</h4>
-                    {this.state.greetings.map(item => (
-                        <EditEntry type={item.type} name={item.name} description={item.description} text={item.text}/>
+                    {this.state.greetings.map((item) => (
+                        <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}
+                                   getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
                     ))}
                 </React.Fragment>
             )
@@ -90,51 +124,30 @@ export default class extends React.Component {
                 <form>
 
                     {this.state.messages.map((item) => (
-                        <EditEntry type={item.type} name={item.name} description={item.description} text={item.text}/>
+                        <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}
+                                   getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
                     ))}
 
                     <div className='registration-dialog-messages'>
                         <div className='registration-dialog-messages-entry'>
                             <EditEntry name='Новое сообщение' description='Поле для ввода нового приветственного сообщения'
-                            text="" getCurrentData={val => this.handleChange(val)}/>
+                            text="" getCurrentData={val => this.handleAddMessage(val)}/>
                         </div>
                         {renderContent}
                     </div>
                 </form>
                 <div className='buttons-wrapper'>
                     <div className='registration-dialog-messages-button' onClick={this.handleAdd}>Добавить сообщения</div>
-                    <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
+                    <div className='registration-dialog-save' onClick={this.sendData}>Сохранить данные</div>
                 </div>
             </React.Fragment>
         );
         return (
             <section className='registration-dialog-container'>
                 <PageHeader title='Диалог Регистрации'/>
-                <Configuration/>
+                <Configuration configs={this.props.configs} handleConfig={val => this.props.handleConfig(val)}
+                               currentConfig={this.props.id}/>
                 {content}
-                <EditEntry ans_type={2} description='Это тестовое описание назначения сообщения' text='Текст обычного сообщения'
-                           name='Название сообщения' response={[
-                    {
-                        id: 30,
-                        text: "Первое поле",
-                        description: "Описание"
-                    },
-                    {
-                        id: 31,
-                        text: "Второе поле",
-                        description: "Описание"
-                    },
-                    {
-                        id: 32,
-                        text: "Третье поле",
-                        description: "Описание"
-                    },
-                    {
-                        id: 33,
-                        text: "Четвёртое поле",
-                        description: "Описание"
-                    }
-                ]}/>
             </section>
         )
     }

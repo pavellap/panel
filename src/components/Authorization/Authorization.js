@@ -28,9 +28,6 @@ export default class Authorization extends React.Component {
                 console.log(window.location.href);
                 window.location.href += 'registration';
             }
-            else {
-                // вставить модальное здесь
-            }
             console.log("Ответ на авторизацию:", response)
         }).catch(err => {
             if (err)

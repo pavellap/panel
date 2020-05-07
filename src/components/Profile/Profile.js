@@ -79,7 +79,7 @@ export default class Profile extends React.Component {
                                currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (
-                        <EditEntry ans_type={item.type} name={item.name} description={item.description} text={item.text}
+                        <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}
                                    getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
                     ))}
                     <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>

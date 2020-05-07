@@ -28,6 +28,7 @@ export default class Payment extends React.Component {
                 Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
                 (response => {
                     userData = response.data.list;
+                    console.log("Данные в оплате:", response.data)
                 }).then(() => {
                     userData.forEach(item => {
                         this.setState(prevState => {
@@ -81,7 +82,7 @@ export default class Payment extends React.Component {
                                currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (
-                        <EditEntry ans_type={item.type} name={item.name} description={item.description} text={item.text}
+                        <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}
                                    getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
                     ))}
                     <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>

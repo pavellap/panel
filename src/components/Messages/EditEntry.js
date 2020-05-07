@@ -52,7 +52,7 @@ export default class EditEntry extends React.Component {
                     <div>
                         {this.state.response.map(item =>
                             <div>
-                                <label>{item.description}</label>
+                                <label style={{marginLeft: 20}}>{item.description}</label>
                                 <input type="text" value={item.text} onChange={e => this.handleResponse(e.currentTarget.value, item.id)}/>
                             </div>
                         )}

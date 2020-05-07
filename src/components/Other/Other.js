@@ -27,6 +27,7 @@ export default class Other extends React.Component {
                  this.setState({currentConfig: res.data.id});
                 Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
                     (response => {
+                        console.log("Данные в разделе остальное:", response.data);
                         userData = response.data.list;
                     }).then(() => {
                     userData.forEach(item => {
@@ -83,7 +84,7 @@ export default class Other extends React.Component {
                                currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (
-                        <EditEntry ans_type={item.type} name={item.name} description={item.description} text={item.text}
+                        <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}
                                    getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
                     ))}
                     <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>

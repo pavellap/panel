@@ -48,7 +48,6 @@ export default class Navigation extends React.Component {
         return(
             <aside className='Menu-container'>
                 <NavigationHeader userName={this.state.user} status={this.state.status}/>
-                <div className='Menu-description'>Текущая конфигурация: {this.props.configId}</div>
                     <nav>
                         {this.state.titles.map((item, index) => {
                             return (
@@ -61,4 +60,4 @@ export default class Navigation extends React.Component {
         )
     }
 }
-
+//<div className='Menu-description'>Текущая конфигурация: {this.props.configId}</div>

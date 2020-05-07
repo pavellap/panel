@@ -12,25 +12,34 @@ export default class Present extends React.Component {
         this.state = {
             messages: [],
             sectionId: 5,
-            componentIsLoading: true
+            componentIsLoading: true,
+            configs: [],
+            currentConfig: null
         };
     }
     componentDidMount() {
-        const localURL = url + "/page/get/config_id=" + this.props.id + "&page_id=" + this.state.sectionId;
         let userData;
-        Axios.get(localURL).then(response => {
-            userData = response.data.list;
-        }).then(() => {
-            userData.forEach(item => {
-                this.setState(prevState => {
-                    const newArray = this.state.messages;
-                    newArray.push(item);
-                    return {
-                        messages: newArray,
-                        componentIsLoading: false
-                    }
-                })
-            })
+        Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+            this.setState({configs: configsData.data});
+            Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
+                // получаем саму страницу
+                this.setState({currentConfig: res.data.id});
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
+                (response => {
+                    userData = response.data.list;
+                }).then(() => {
+                    userData.forEach(item => {
+                        this.setState(prevState => {
+                            const newArray = this.state.messages;
+                            newArray.push(item);
+                            return {
+                                messages: newArray,
+                                componentIsLoading: false
+                            }
+                        })
+                    })
+                });
+            });
         });
     }
 
@@ -66,19 +75,22 @@ export default class Present extends React.Component {
         if (this.state.componentIsLoading)
             content = <Loader/>;
         else content = (
-            <form>
-                {this.state.messages.map((item) => (
-                    <EditEntry ans_type={item.type} name={item.name} description={item.description} text={item.text}
-                               getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
-                ))}
-                <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>
-            </form>
+            <React.Fragment>
+                <Configuration configs={this.state.configs} handleConfig={val => this.props.handleConfig(val)}
+                               currentConfig={this.state.currentConfig}/>
+                <form>
+                    {this.state.messages.map((item) => (
+                        <EditEntry ans_type={item.type} name={item.name} description={item.description} text={item.text}
+                                   getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
+                    ))}
+                    <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>
+                </form>
+            </React.Fragment>
+
         );
         return (
             <section style={{position: "relative"}}>
                 <PageHeader title='Отправка подарочный сертификатов'/>
-                <Configuration configs={this.props.configs} handleConfig={val => this.props.handleConfig(val)}
-                               currentConfig={this.props.id}/>
                 {content}
             </section>
         )

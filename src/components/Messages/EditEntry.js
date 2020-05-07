@@ -40,8 +40,6 @@ export default class EditEntry extends React.Component {
 };
 
     render() {
-        console.log("Получили форму обратной связи с id:", this.props.id);
-        console.log("Тип сообщения:", this.props.ans_type);
         let text;
         let render;
         if (this.props.ans_type === 0) //  не отрисовывем поля для ввода

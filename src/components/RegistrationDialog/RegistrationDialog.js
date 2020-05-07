@@ -5,7 +5,6 @@ import Configuration from "../Messages/Configuration";
 import EditEntry from "../Messages/EditEntry";
 import Axios from "axios";
 import Loader from "../UI/Loader";
-import EditProfile from "../Modal/EditProfile";
 import url from '../config'
 
 export default class extends React.Component {
@@ -22,35 +21,42 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        const localURL = url + "/page/get/config_id=" + this.props.id + "&page_id=" + this.state.sectionId;
-        let messages;
-        let greetings;
-        Axios.get(localURL).then(response => {
-            console.log("Структура полученного запроса:", response.data);
-            messages = response.data.list;
-            greetings = response.data.greetings;
-            console.log("Структура приветственного сообщения:", greetings[0])
-        }).then(() => {
-            messages.forEach(item => {
-                this.setState(prevState => {
-                    const newArray = this.state.messages;
-                    newArray.push(item);
-                    return {
-                        messages: newArray,
-                        componentIsLoading: false
-                    }
-                })
+        let userData;
+        Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+            this.setState({configs: configsData.data});
+            Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
+                // получаем саму страницу
+                this.setState({currentConfig: res.data.id});
+                let messages;
+                let greetings;
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then(response => {
+                    console.log("Структура полученного запроса:", response.data);
+                    messages = response.data.list;
+                    greetings = response.data.greetings;
+                    console.log("Структура приветственного сообщения:", greetings[0])
+                }).then(() => {
+                    messages.forEach(item => {
+                        this.setState(prevState => {
+                            const newArray = this.state.messages;
+                            newArray.push(item);
+                            return {
+                                messages: newArray,
+                                componentIsLoading: false
+                            }
+                        })
+                    });
+                    greetings.forEach(item => {
+                        // понять, в каком поле тела лежит текст
+                        this.setState(prevState => {
+                            const newArray = this.state.greetings;
+                            newArray.push(item);
+                            return {
+                                greetings: newArray
+                            }
+                        })
+                    })
+                });
             });
-            greetings.forEach(item => {
-                // понять, в каком поле тела лежит текст
-                this.setState(prevState => {
-                    const newArray = this.state.greetings;
-                    newArray.push(item);
-                    return {
-                        greetings: newArray
-                    }
-                })
-            })
         });
     }
 
@@ -121,8 +127,9 @@ export default class extends React.Component {
             content = <Loader/>;
         else content = (
             <React.Fragment>
+                <Configuration configs={this.state.configs} handleConfig={val => this.props.handleConfig(val)}
+                               currentConfig={this.state.currentConfig}/>
                 <form>
-
                     {this.state.messages.map((item) => (
                         <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}
                                    getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
@@ -145,8 +152,6 @@ export default class extends React.Component {
         return (
             <section className='registration-dialog-container'>
                 <PageHeader title='Диалог Регистрации'/>
-                <Configuration configs={this.props.configs} handleConfig={val => this.props.handleConfig(val)}
-                               currentConfig={this.props.id}/>
                 {content}
             </section>
         )

@@ -3,7 +3,7 @@ import SubscriptionEntry from "./SubscriptionEntry";
 import PageHeader from "../UI/PageHeader";
 import Axios from "axios";
 import Loader from "../UI/Loader";
-import EditEntry from "../Messages/EditEntry";
+import url from "../config";
 
 export default class Subscription extends React.Component {
     constructor(props) {
@@ -11,17 +11,18 @@ export default class Subscription extends React.Component {
         this.state = {
             sectionId: 10,
             subscriptions: [],
-            componentIsLoading: false
+            componentIsLoading: true
         }
     }
 
     componentDidMount() {
-        const url = "http://188.32.187.157:5000/getpage/config_id=" + this.props.id + '&page_id=' + this.state.sectionId;
-        Axios.get(url).then(response => {
+        const localURL = url + "/page/get/config_id=" + this.props.id + "&page_id=" + this.state.sectionId;
+        Axios.get(localURL).then(response => {
+            console.log("Данные в подписках:", response.data);
             const newArray = this.state.subscriptions;
             response.data.list.forEach(item => {
                 newArray.push(item);
-            });
+            }).catch(e => console.log("Ошибочка, сука"));
             this.setState({
                 subscriptions: newArray,
                 componentIsLoading: false
@@ -35,12 +36,10 @@ export default class Subscription extends React.Component {
             content = <Loader/>;
         else content = (
             <React.Fragment>
-            <SubscriptionEntry name={'Тест'} chat_id={55} id={3} can_write={true} cost={[2, 5, 1, 55]} links={[2, 4, 1, 4]}
-                               time={[2, 3, 4]}/>
-            <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
+                <div className='registration-dialog-save' onClick={() => this.props.sendData(this.state)}>Сохранить данные</div>
+                {this.state.subscriptions.map(item => <SubscriptionEntry name={item.name} id={item.id} can_write={item.can_write}
+                cost={item.cost} links={item.links} time={item.time}/>)}
             </React.Fragment>
-            /*{this.state.subscriptions.map(item => <SubscriptionEntry name={item.name} id={item.id} can_write={item.can_write}
-                cost={item.cost} links={item.links} time={item.time}/>)}*/
         );
         return (
             <section style={{position: "relative"}}>
@@ -50,3 +49,8 @@ export default class Subscription extends React.Component {
         )
     }
 }
+
+/*
+<SubscriptionEntry name={'Тест'} chat_id={55} id={3} can_write={true} cost={[2, 5, 1, 55]} links={[2, 4, 1, 4]}
+                               time={[2, 3, 4]}/>
+*/

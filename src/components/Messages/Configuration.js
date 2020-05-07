@@ -7,10 +7,12 @@ import Axios from "axios";
 
 export default class Configuration extends React.Component {
     constructor(props) {
+        console.log("КОНСТРУКТОР СУКА");
         super(props);
         this.state = {
             menuOpen: false,
-            configurations: this.props.configs
+            configurations: this.props.configs,
+            currentConfig: this.props.currentConfig
         };
     }
 
@@ -24,16 +26,16 @@ export default class Configuration extends React.Component {
     };
 
     toggleMenu = () => {
-        if (this.state.configurations.length > 0)
+        if (this.state.configurations.length >= 0)
             this.setState({menuOpen: !this.state.menuOpen})
     };
 
-    handleClick = (id) => {
-        console.log("Вы нажали на конфиг с id:", id)
+    localChange = val => {
+        this.setState({currentConfig: val})
     };
 
     render() {
-        console.log("Получили сообщение с именем:")
+        console.log("Конфигурации в самом компоненте:", this.props.configs);
         let iconClass;
         let containerClass;
         if (this.state.menuOpen) {
@@ -47,12 +49,12 @@ export default class Configuration extends React.Component {
         return (
             <section className='configuration-container'>
                 <div className='configuration-container-wrapper'>
-                    <span style={{marginRight: 20, marginLeft: 20}}>Текущая конфигурация:&nbsp;&nbsp;{this.props.currentConfig}</span>
+                    <span style={{marginRight: 20, marginLeft: 20}}>Текущая конфигурация:&nbsp;&nbsp;{this.state.currentConfig}</span>
                     <FontAwesomeIcon icon={faChevronDown} color='rgb(123, 123, 123)' cursor='pointer'
                     className={iconClass} onClick={this.toggleMenu}/>
                     <div className={containerClass}>
                         {this.state.menuOpen && this.state.configurations.map(item => <ConfigurationItem
-                            handleClick={(id) => this.props.handleConfig(id)}  id={item.id} name={item.id} active={item.active}/>)}
+                            handleClick={(id) => {this.props.handleConfig(id); this.localChange(id)}}  id={item.id} name={item.id} active={item.active}/>)}
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: "space-between"}}>

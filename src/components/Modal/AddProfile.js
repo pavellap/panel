@@ -5,16 +5,17 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 
-// отправляет свой стейт
+
 // добавить чекбокс - это мейн
 export default class AddProfile extends React.Component {
     constructor(props) {
         super(props);
         // объект в стейте - параметры новой анкеты
         this.state = {
-            questionsList: [],
-            name: "Шаблон",
-            helloMessage: "Шаблон",
+            questions: [],
+            name: "Название анкеты",
+            hello: "Приветственное сообщение",
+            type: "form",
         };
         this.questionEntry = React.createRef();
         this.dataTypeEntry = React.createRef();
@@ -25,28 +26,40 @@ export default class AddProfile extends React.Component {
         if (!(this.questionEntry.current.value === '')) {
             const newItem = {
                 text: this.questionEntry.current.value,
-                type: this.dataTypeEntry.current.value
+                type: this.dataTypeEntry.current.value,
+                id: Math.round(Math.random() * 100)
             };
-            const newArray = this.state.questionsList;
+            const newArray = this.state.questions;
             newArray.push(newItem);
             this.questionEntry.current.value = "";
-            this.setState({questionsList: newArray});
+            this.setState({questions: newArray});
         }
     };
 
-    // пока нет id, проблема с back
     handleDelete = (id) => {
         this.setState(prevState => {
-            const newArray = this.state.questionsList.filter(item => item.id.toString() !== id);
-            return {questionsList: newArray}
+            const newArray = this.state.questions.filter(item => item.id !== id);
+            return {questions: newArray}
         })
+    };
+
+    formData = () => {
+        const question = this.state.questions;
+        // хз, почему не удаляет
+        delete question.id;
+        return {
+            questions: question,
+            name: this.state.name,
+            hello: this.state.hello,
+            type: "form"
+        }
     };
 
     getEntryData(content, type) {
         if (type === 'name')
             this.setState({name: content});
         else if (type === 'helloMessage')
-            this.setState({helloMessage: content});
+            this.setState({hello: content});
     }
 
     render() {
@@ -72,20 +85,19 @@ export default class AddProfile extends React.Component {
                         </label>
                     </div>
                     <h4>Список вопросов</h4>
-                    {this.state.questionsList.map(item => (
+                    {this.state.questions.map(item => (
                             <div className='question'>
                                 <span>{item.text}</span>
                                 <span>{item.type}</span>
-                                <FontAwesomeIcon icon={faTimes} onClick={(e) =>
-                                    this.handleDelete(e.currentTarget.id)} id={this.state.currentQuestionId + 1}/>
+                                <FontAwesomeIcon icon={faTimes} onClick={() => this.handleDelete(item.id)}/>
                             </div>)
                         )
                     }
-                    <div className='add-ques-button' onClick={this.handleAdd}>
+                    <div className='add-ques-button' onClick={() => this.handleAdd()}>
                         <span style={{marginRight: 20}}>Добавить вопрос</span>
                         <FontAwesomeIcon icon={faPlus} size='2x'/>
                     </div>
-                    <div className='save-button' onClick={() => this.props.handleAddClick(this.state)}>Сохранить</div>
+                    <div className='save-button' onClick={() => this.props.handleAddClick(this.formData())}>Сохранить</div>
                 </form>
             </React.Fragment>
         )

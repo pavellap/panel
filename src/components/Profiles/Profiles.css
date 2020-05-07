@@ -20,7 +20,7 @@
     margin: 0;
 }
 
-.profiles-header div {
+.profiles-header > div {
     background-color: rgb(75, 200, 0);
     cursor: pointer;
     padding: 5px 15px;
@@ -31,5 +31,29 @@
     color: #fff;
     font-weight: bolder;
     margin-right: 10px;
+}
+
+.time-wrapper {
+    background-color: #fff !important;
+    cursor: default !important;
+    display: flex;
+    height: 65px;
+}
+
+.time-wrapper div {
+    padding: 10px 15px;
+    margin: 0;
+    font-weight: normal;
+    width: auto;
+    align-items: center;
+}
+
+.time-wrapper input {
+    background-color: #f1f3f4;
+    border-radius: 9px;
+    border: 1px solid #dadce0;
+    outline: none;
+    padding: 8px;
+    margin-right: 30px;
 }
 

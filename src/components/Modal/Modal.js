@@ -11,18 +11,21 @@ import EditProfile from "./EditProfile";
 // передаём айди профиля, над которым работаем
 export default class extends React.Component {
     constructor(props) {
+        console.log("Рисуем модальное");
         super(props);
         this.state = {
             profileID: this.props.currentId,
         };
     }
+
     render() {
+        console.log("Модальное окно получило профиль:", this.props.profile);
         let contentToRender;
         let modalContentClass;
         if (this.props.type === 'delete') {
             modalContentClass = 'modal-content-delete';
             contentToRender = (
-                <DeleteProfile handleDelete={() => this.props.handleDelete(this.state.profileID)}/>
+                <DeleteProfile handleDelete={() => this.props.handleDelete(this.props.profile.id)}/>
             )
         }
         else if (this.props.type === 'edit') {

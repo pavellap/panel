@@ -7,8 +7,7 @@ export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            helloMessage: this.props.profile.helloMessage,
-            questionsList: this.props.profile.questionsList,
+            profile: this.props.profile
         };
         this.questionEntry = React.createRef();
         this.dataTypeEntry = React.createRef();

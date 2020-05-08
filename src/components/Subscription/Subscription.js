@@ -4,6 +4,8 @@ import PageHeader from "../UI/PageHeader";
 import Axios from "axios";
 import Loader from "../UI/Loader";
 import url from "../config";
+import ReactDOM from "react-dom";
+import Modal from "../Modal/Modal";
 
 export default class Subscription extends React.Component {
     constructor(props) {
@@ -12,23 +14,33 @@ export default class Subscription extends React.Component {
             sectionId: 10,
             subscriptions: [],
             componentIsLoading: true,
-            currentConfig: null
+            currentConfig: null,
+            modalIsOpen: false,
+            typeOfModal: null,
+            contentModal: null
         }
     }
 
+    handleClick = () => {
+        this.setState({modalIsOpen: !this.state.modalIsOpen})
+    };
+
     sendData = () => {
-        console.log("Данные на отправку:", {
-                page: 10,
-                config_id: 1, // по дефу пусть стоит 1
-                list: this.state.subscriptions
-            }
-        );
+        this.setState({componentIsLoading: true});
         Axios.post(url + "/page/set",
             {
                 page: 10,
                 config_id: 1, // по дефу пусть стоит 1
-                list: this.state.subscriptions
-            });
+                list: this.state.subscriptions,
+            }).then(res => {
+                if (res.status === 200)
+                    this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                    "Данные успешно сохранены"});
+                else
+                    this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                    "Произошла ошибка на сервере. Попробуйте сохранить данные позже"})
+
+        });
     };
 
     saveChange = (item, index) => {
@@ -79,6 +91,8 @@ export default class Subscription extends React.Component {
             <section style={{position: "relative"}}>
                 <PageHeader title='Подписки'/>
                 {content}
+                {ReactDOM.createPortal( this.state.modalIsOpen && <Modal type={this.state.typeOfModal} text={this.state.contentModal}
+                 handleClick={this.handleClick}/>, document.getElementById('portal'))}
             </section>
         )
     }

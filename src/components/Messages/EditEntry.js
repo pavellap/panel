@@ -23,8 +23,6 @@ export default class EditEntry extends React.Component {
     };
 
     handleResponse = (val, id) => {
-        console.log("Меняем респонс с id:", id);
-        console.log("Контент:", val);
         let pos;
         this.state.response.forEach((item, index) => {
             if (item.id === id)

@@ -5,6 +5,8 @@ import EditEntry from "../Messages/EditEntry";
 import Axios from "axios";
 import Loader from "../UI/Loader";
 import url from '../config'
+import ReactDOM from "react-dom";
+import Modal from "../Modal/Modal";
 
 export default class Other extends React.Component {
     constructor(props) {
@@ -14,7 +16,10 @@ export default class Other extends React.Component {
             sectionId: 6,
             componentIsLoading: true,
             configs: [],
-            currentConfig: null
+            currentConfig: null,
+            modalIsOpen: false,
+            typeOfModal: null,
+            contentModal: null
         }
     }
 
@@ -47,12 +52,26 @@ export default class Other extends React.Component {
 
     postData = () => {
         const url = "http://188.32.187.157:5000/page/set";
-        console.log("Данные на отправку в другом:", this.state.messages);
+        console.log("Данные на отправку в оплате:", this.state.messages);
+        console.log("Текущий конфиг:", this.state.currentConfig);
+        this.setState({componentIsLoading: true});
         Axios.post(url, {
             "page": this.state.sectionId,
-            "configId": this.props.id,
+            "config_id": this.state.currentConfig,
             "list": this.state.messages
+        }).then(res => {
+            if (res.status === 200) {
+                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                        "Данные успешно сохранены"});
+            }
+            else
+                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                        "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
         })
+    };
+
+    handleClick = () => {
+        this.setState({modalIsOpen: !this.state.modalIsOpen})
     };
 
     // сохраняем данные в нужном формате при изменении содержимого форм
@@ -95,8 +114,9 @@ export default class Other extends React.Component {
         return(
             <section style={{position: "relative"}}>
                 <PageHeader title='Другое'/>
-
                 {content}
+                {ReactDOM.createPortal( this.state.modalIsOpen && <Modal type={this.state.typeOfModal} text={this.state.contentModal}
+                handleClick={this.handleClick}/>, document.getElementById('portal'))}
             </section>
         )
     }

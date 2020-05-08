@@ -36,9 +36,9 @@ export default class Profiles extends React.Component {
         Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
             Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
-                this.setState({config_id: res.data.id});
+                this.setState({currentConfig: res.data.id});
                 // получаем саму страницу
-                Axios.get(url + "/page/get/config_id=" + 7 + "&page_id=" + this.state.sectionId).then // заменить 6 на res.data.id
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
                 (response => {
                     Axios.get(url + "/form/time/get/config_id=" + res.data.id).then(data => this.setState( // загружаем время
                         {time: data.data.time}));
@@ -138,7 +138,7 @@ export default class Profiles extends React.Component {
         else content = (
             <React.Fragment>
                 <Configuration configs={this.state.configs} handleConfig={val => this.props.handleConfig(val)}
-                               currentConfig={6}/>
+                               currentConfig={this.state.currentConfig}/>
                 <div className='profiles-wrapper'>
                     <div className='profiles-header'>
                         <h4>Доступные анкеты</h4>
@@ -170,7 +170,7 @@ export default class Profiles extends React.Component {
                 {ReactDOM.createPortal(this.state.modalOpen && <Modal handleClick={this.toggleModal}
                                    handleDelete={(id) => this.deleteEntry(id)}  type={this.state.typeOfModal}
                                    profile={this.state.currentProfile}
-                                   currentId={this.state.currentId} addNewProfile={(newProfile)=>this.handleAdd(newProfile)}
+                                   currentId={this.state.config_id} addNewProfile={(newProfile)=>this.handleAdd(newProfile)}
                 editProfile={(newArray) => this.handleEdit(newArray)}/>,
                     document.getElementById('portal'))}
             </section>

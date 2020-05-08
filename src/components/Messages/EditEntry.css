@@ -33,15 +33,17 @@
     background-color: #fafbfc;
 }
 
-.input-wrapper:hover input {
+.input-wrapper:hover textarea {
     background-color: #fafbfc;
 }
 
-.input-wrapper input {
+.edit-entry textarea {
     outline: none;
     border: none;
-    width: 100%;
+    width: 100% !important;
+    max-width: 100%;
     font-size: 14px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .info-icon {

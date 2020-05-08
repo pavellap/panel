@@ -85,10 +85,8 @@ export default class EditEntry extends React.Component {
                             <FontAwesomeIcon icon={faInfoCircle}/>
                         </span>
                 </label>
-                <div className='input-wrapper' >
-                    <input type="text" ref={this.form} value={this.state.text} onChange={(e) =>
+                    <textarea  ref={this.form} value={this.state.text} onChange={(e) =>
                     {this.handleChange(e.currentTarget.value); this.props.getCurrentData(this.form.current.value)}}/>
-                </div>
                 {render}
                 <div>
 

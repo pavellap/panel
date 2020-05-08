@@ -7,9 +7,15 @@ export default class ProfileEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            profileID: this.props.id
+            profileID: this.props.id,
+            disabled: this.props.disabled
         }
     }
+
+    handleChange = () => {
+        this.setState({disabled: !this.state.disabled})
+    };
+
     render() {
         console.log("Рендерим профиль с id:", this.props.id);
         return (
@@ -23,7 +29,17 @@ export default class ProfileEntry extends Component {
                         <div>{this.props.description}</div>
                     </div>
                 </div>
-                <div>
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <div className="pretty p-switch p-fill" style={{marginRight: 25}}>
+                        <input type="checkbox" checked={!this.state.disabled} ref={this.checkbox}
+                               onChange={() => {
+                                   this.props.handleSwitch(this.props.id);
+                                   this.handleChange()
+                               }}/>
+                        <div className="state">
+                            <label/>
+                        </div>
+                    </div>
                     <FontAwesomeIcon icon={faEdit} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
                                      color='#0408e2' onClick={() => this.props.handleEditClick(this.props.id)}/>
                     <FontAwesomeIcon icon={faTrashAlt} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}

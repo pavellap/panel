@@ -72,11 +72,11 @@ export default class Mailing extends React.Component {
                                 </textarea>
                                 <div className='mailing-checkbox-wrapper'>
                                     <div className="pretty p-switch p-fill">
-                                        <input type="checkbox" ref={this.checkbox}/>
-                                        <div className="state">
-                                            <label>Отправить всем</label>
-                                        </div>
+                                    <input type="checkbox" ref={this.checkbox}/>
+                                    <div className="state">
+                                        <label>Отправить всем</label>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

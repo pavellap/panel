@@ -7,7 +7,6 @@ import Axios from "axios";
 
 export default class Configuration extends React.Component {
     constructor(props) {
-        console.log("КОНСТРУКТОР СУКА");
         super(props);
         this.state = {
             menuOpen: false,
@@ -35,7 +34,6 @@ export default class Configuration extends React.Component {
     };
 
     render() {
-        console.log("Конфигурации в самом компоненте:", this.props.configs);
         let iconClass;
         let containerClass;
         if (this.state.menuOpen) {

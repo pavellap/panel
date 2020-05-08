@@ -19,7 +19,7 @@ export default class Payment extends React.Component {
             currentConfig: null,
             modalIsOpen: false,
             typeOfModal: null,
-            contentModal: null
+            contentModal: null,
         }
     }
 
@@ -97,7 +97,12 @@ export default class Payment extends React.Component {
             content = <Loader/>;
         else content = (
             <React.Fragment>
-                <Configuration configs={this.state.configs} handleConfig={val => this.props.handleConfig(val)}
+                <Configuration configs={this.state.configs} handleConfig={val => {
+                    this.props.handleConfig(val);
+                    console.log("Меняем на конфиг:", val);
+                    Axios.get(url + "/config/choose/id=" + val).then(() =>
+                        window.location.reload(false));
+                }}
                                currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (

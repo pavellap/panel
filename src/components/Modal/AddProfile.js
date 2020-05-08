@@ -16,6 +16,7 @@ export default class AddProfile extends React.Component {
             name: "Название анкеты",
             hello: "Приветственное сообщение",
             type: "form",
+            idCounter: 1000
         };
         this.questionEntry = React.createRef();
         this.dataTypeEntry = React.createRef();
@@ -27,12 +28,12 @@ export default class AddProfile extends React.Component {
             const newItem = {
                 text: this.questionEntry.current.value,
                 type: this.dataTypeEntry.current.value,
-                id: Math.round(Math.random() * 100)
+                id: this.state.idCounter
             };
             const newArray = this.state.questions;
             newArray.push(newItem);
             this.questionEntry.current.value = "";
-            this.setState({questions: newArray});
+            this.setState({questions: newArray, idCounter: this.state.idCounter + 1});
         }
     };
 
@@ -51,7 +52,8 @@ export default class AddProfile extends React.Component {
             questions: question,
             name: this.state.name,
             hello: this.state.hello,
-            type: "form"
+            type: "form",
+            disabled: false
         }
     };
 

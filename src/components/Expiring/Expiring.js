@@ -32,7 +32,6 @@ export default class extends React.Component {
                 this.setState({currentConfig: res.data.id});
                 Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
                 (response => {
-                    console.log("Данные в разделе сроков:", response.data);
                     userData = response.data.list;
                 }).then(() => {
                     userData.forEach(item => {
@@ -69,7 +68,6 @@ export default class extends React.Component {
     postData = () => {
         const url = "http://188.32.187.157:5000/page/set";
         console.log("Данные на отправку в истечении сроков:", this.state.messages);
-        console.log("Текущий конфиг:", this.state.currentConfig);
         this.setState({componentIsLoading: true});
         Axios.post(url, {
             "page": this.state.sectionId,

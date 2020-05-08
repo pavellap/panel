@@ -25,10 +25,8 @@ export default class Authorization extends React.Component {
             "password": this.password.current.value
         }).then(response => {
             if (response.data.success) {
-                console.log(window.location.href);
                 window.location.href += 'registration';
             }
-            console.log("Ответ на авторизацию:", response)
         }).catch(err => {
             if (err)
                 this.setState({modalIsOpen: true})

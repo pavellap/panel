@@ -40,6 +40,7 @@ export default class Profiles extends React.Component {
                 // получаем саму страницу
                 Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
                 (response => {
+                    console.log("Формат данных:", response.data);
                     Axios.get(url + "/form/time/get/config_id=" + res.data.id).then(data => this.setState( // загружаем время
                         {time: data.data.time}));
                     userData = response.data.list;
@@ -76,11 +77,15 @@ export default class Profiles extends React.Component {
     };
 
     handleEdit = (profile) => {
+        console.log("Получили в главном компоненте:", profile);
         const newArray = this.state.profilesList;
-        newArray.forEach(item => {
-            if (item.id === this.state.currentId)
-                item = profile;
+        let pos;
+        newArray.forEach((item, index) => {
+            if (item.id === profile.id)
+                pos = index;
         });
+        newArray[pos] = profile;
+        console.log("Получили профили:", newArray);
         this.setState(prevState => {
             return {
                 modalOpen: false,
@@ -122,9 +127,16 @@ export default class Profiles extends React.Component {
       })
     };
 
-    // дописать этот метод
     postData = () => {
-
+        this.setState({componentIsLoading: true});
+        Axios.post(url + "/page/set", {
+            page: this.state.sectionId,
+            config_id: this.state.currentConfig,
+            list: this.state.profilesList
+        }).then(res => {
+            if (res.status === 200)
+                this.setState({componentIsLoading: false})
+        });
     };
 
     handleTime = val => {
@@ -132,6 +144,7 @@ export default class Profiles extends React.Component {
     };
 
     render() {
+        console.log("Рендерим профили:", this.state.profilesList);
         let content;
         if (this.state.componentIsLoading)
             content = <Loader/>;
@@ -153,11 +166,11 @@ export default class Profiles extends React.Component {
                         </div>
                     </div>
                     <section className='profiles-content-wrapper'>
-                        {this.state.profilesList.map(item =>
+                        {this.state.profilesList.map((item, index) =>
                             <ProfileEntry title={item.name} description={item.description}
-                                          handleDeleteClick={(id) => this.toggleModal('delete', id)
-                                          } id={item.id} handleEditClick={(id) => this.toggleModal('edit', id)}
-                                          handleShowClick={(id) => this.toggleModal('show', id)}/>)}
+                            handleDeleteClick={(id) => this.toggleModal('delete', id)}
+                            id={item.id} handleEditClick={(id) => this.toggleModal('edit', id)}
+                            key={index} handleShowClick={(id) => this.toggleModal('show', id)}/>)}
                         <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>
                     </section>
                 </div>

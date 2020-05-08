@@ -2,6 +2,8 @@ import React from 'react'
 import './ConfigurationItem.css'
 import Axios from "axios";
 import url from '../config'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 export default class extends React.Component {
     constructor(props) {
@@ -36,6 +38,8 @@ export default class extends React.Component {
                         <label/>
                     </div>
                 </div>
+                <FontAwesomeIcon icon={faTimes} onClick={() => this.props.handleDelete(this.props.id)}
+                                 style={{marginLeft: 8}}/>
             </div>
         )
     }

@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faChevronDown, faPlus} from '@fortawesome/free-solid-svg-icons'
 import ConfigurationItem from "./ConfigurationItem";
 import Axios from "axios";
+import url from "../config";
 
 export default class Configuration extends React.Component {
     constructor(props) {
@@ -17,9 +18,10 @@ export default class Configuration extends React.Component {
 
     handleAddConfig = () => {
         let url = "http://188.32.187.157:5000";
-        url += '/config/get';
+        url += '/config/add';
         Axios.get(url).then(response => {
-            this.setState({configurations: response.data.configurations})
+            this.setState({configurations: response.data});
+            window.location.reload(false);
         });
         this.setState({menuOpen: false})
     };
@@ -31,6 +33,15 @@ export default class Configuration extends React.Component {
 
     localChange = val => {
         this.setState({currentConfig: val})
+    };
+
+    handleDelete = (id) => {
+        Axios.get(url + "/config/delete/" + id).then(res => {
+            const array = this.state.configurations;
+            array.filter(item => item.id !== id);
+            this.setState({configurations: array});
+            window.location.reload(false);
+        })
     };
 
     render() {
@@ -52,7 +63,8 @@ export default class Configuration extends React.Component {
                     className={iconClass} onClick={this.toggleMenu}/>
                     <div className={containerClass}>
                         {this.state.menuOpen && this.state.configurations.map(item => <ConfigurationItem
-                            handleClick={(id) => {this.props.handleConfig(id); this.localChange(id)}}  id={item.id} name={item.id} active={item.active}/>)}
+                            handleClick={(id) => {this.props.handleConfig(id); this.localChange(id)}}
+                            id={item.id} name={item.id} active={item.active} handleDelete={(id) => this.handleDelete(id)}/>)}
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: "space-between"}}>

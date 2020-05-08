@@ -1,5 +1,6 @@
 .configuration-item {
     display: inline-flex;
+    flex-wrap: nowrap;
     justify-content: center;
     width: 100%;
     border-bottom: 1px solid #fff;

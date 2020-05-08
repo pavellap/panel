@@ -21,7 +21,7 @@ export default class Configuration extends React.Component {
         Axios.get(url).then(response => {
             this.setState({configurations: response.data.configurations})
         });
-        //this.setState({configurations: newArray})
+        this.setState({menuOpen: false})
     };
 
     toggleMenu = () => {

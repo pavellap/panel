@@ -102,8 +102,7 @@ export default class Payment extends React.Component {
                     console.log("Меняем на конфиг:", val);
                     Axios.get(url + "/config/choose/id=" + val).then(() =>
                         window.location.reload(false));
-                }}
-                               currentConfig={this.state.currentConfig}/>
+                }} currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (
                         <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}

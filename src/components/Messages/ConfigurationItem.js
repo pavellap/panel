@@ -1,5 +1,7 @@
 import React from 'react'
 import './ConfigurationItem.css'
+import Axios from "axios";
+import url from '../config'
 
 export default class extends React.Component {
     constructor(props) {
@@ -11,14 +13,23 @@ export default class extends React.Component {
     }
 
     handleChange = () => {
-        {this.setState({active: !this.state.active})}
+        Axios.post(url + "/config/change", {
+            id: this.state.id,
+            active: !this.state.active
+        }).then(res => {
+            if (res.status === 200)
+                console.log("Успешно сохранил!");
+        });
+        this.setState({active: !this.state.active});
     };
+
+
 
     render() {
         return (
             <div className='configuration-item'>
                 <span onClick={() => this.props.handleClick(this.state.id)}>Конфигурация:&nbsp;&nbsp;
-                    {this.props.name}  {/*{this.props.active ? "active" : "disabled"}*/}</span>
+                    {this.props.name}</span>
                 <div className="pretty p-switch p-fill" style={{marginLeft: 17}}>
                     <input type="checkbox" checked={this.state.active} ref={this.checkbox} onChange={this.handleChange}/>
                     <div className="state">

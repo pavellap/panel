@@ -28,7 +28,8 @@ export default function DownloadEntry(props) {
                     <div>{props.description}</div>
                 </div>
             </div>
-            <FontAwesomeIcon icon={faDownload} size={'2x'} color='#2a5885' style={{marginRight: "50px", cursor: "pointer"}}/>
+            <FontAwesomeIcon icon={faDownload} size={'2x'} color='#2a5885' style={{marginRight: "50px", cursor: "pointer"}}
+            onClick={props.handleClick}/>
         </div>
     )
 }

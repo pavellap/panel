@@ -26,6 +26,7 @@ export default class Other extends React.Component {
     componentDidMount() {
         let userData;
         Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+            console.log("В таком виде получили конфиги:", configsData.data);
             this.setState({configs: configsData.data});
             Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
                 // получаем саму страницу
@@ -99,8 +100,12 @@ export default class Other extends React.Component {
             content = <Loader/>;
         else content = (
             <React.Fragment>
-                <Configuration configs={this.state.configs} handleConfig={val => this.props.handleConfig(val)}
-                               currentConfig={this.state.currentConfig}/>
+                <Configuration configs={this.state.configs} handleConfig={val => {
+                    this.props.handleConfig(val);
+                    console.log("Меняем на конфиг:", val);
+                    Axios.get(url + "/config/choose/id=" + val).then(() =>
+                        window.location.reload(false));
+                }} currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (
                         <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}

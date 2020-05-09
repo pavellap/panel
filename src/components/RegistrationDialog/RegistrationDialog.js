@@ -91,6 +91,8 @@ export default class extends React.Component {
                     }
                 )
             }
+            else
+                greetings.push(item)
         });
         this.setState({componentIsLoading: true});
         Axios.post(localURL, {

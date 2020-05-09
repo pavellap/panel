@@ -71,6 +71,12 @@ export default class AddProfile extends React.Component {
         this.setState({questions: array})
     };
 
+    handleChange = (val, index) => {
+      const array = this.state.questions;
+      array[index].text = val;
+      this.setState({questions: array})
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -96,7 +102,8 @@ export default class AddProfile extends React.Component {
                     <h4>Список вопросов</h4>
                     {this.state.questions.map((item, index) => (
                             <div className='question'>
-                                <span>{item.text}</span>
+                                <input type='text' onChange={(e) =>
+                                    this.handleChange(e.currentTarget.value, index)} value={item.text}/>
                                 <span>{item.type}</span>
                                 <div className="pretty p-switch p-fill">
                                     <input type="checkbox" checked={item.main} onChange={(e) =>

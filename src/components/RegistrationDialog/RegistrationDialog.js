@@ -101,6 +101,7 @@ export default class extends React.Component {
             list: this.state.messages,
             page: this.state.sectionId
         }).then(res => {
+            console.log(res);
             if (res.status === 200) {
                 this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
                         "Данные успешно сохранены"});

@@ -37,7 +37,10 @@
     background-color: #fff !important;
     cursor: default !important;
     display: flex;
-    height: 65px;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e7e8ec;
 }
 
 .time-wrapper div {

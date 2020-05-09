@@ -7,8 +7,7 @@ import url from '../config'
 import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
 
-// раздел полностью готов
-// можно добавить модальное окно об успешной отправке рассылки на сервер
+
 export default class Mailing extends React.Component {
     constructor(props) {
         super(props);

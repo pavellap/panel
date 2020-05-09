@@ -141,12 +141,27 @@ export default class Profiles extends React.Component {
     };
 
     postData = () => {
+        console.log("Данные на отправку:", this.state.profilesList);
         this.setState({componentIsLoading: true});
+        const array = [];
+        this.state.profilesList.forEach(item => {
+           if (item.id > 999)
+               array.push({
+                   disabled: item.disabled,
+                   hello: item.hello,
+                   questions: item.questions,
+                   type: "form",
+                   name: item.name,
+               });
+           else
+               array.push(item);
+        });
         Axios.post(url + "/page/set", {
             page: this.state.sectionId,
             config_id: this.state.currentConfig,
-            list: this.state.profilesList
+            list: array
         }).then(res => {
+            console.log(res);
             if (res.status === 200)
                 this.setState({componentIsLoading: false})
         });
@@ -181,12 +196,12 @@ export default class Profiles extends React.Component {
                         window.location.reload(false));
                 }} currentConfig={this.state.currentConfig}/>
                 <div className='profiles-wrapper'>
+                    <div className='time-wrapper'>
+                        <input type="text" value={this.state.time} onChange={e => this.handleTime(e.currentTarget.value)}/>
+                        <div className='registration-dialog-save' onClick={this.changeTime}>Промежуток (в днях)</div>
+                    </div>
                     <div className='profiles-header'>
                         <h4>Доступные анкеты</h4>
-                        <div className='time-wrapper'>
-                            <input type="text" value={this.state.time} onChange={e => this.handleTime(e.currentTarget.value)}/>
-                            <div className='registration-dialog-save' onClick={this.changeTime}>Промежуток (в днях)</div>
-                        </div>
                         <div onClick={() => this.toggleModal('add',
                             Math.round(Math.random() * 1000))}>
                             <span>Новая анкета</span>
@@ -211,7 +226,7 @@ export default class Profiles extends React.Component {
                 {content}
                 {ReactDOM.createPortal(this.state.modalOpen && <Modal handleClick={this.toggleModal}
                  text={this.state.contentModal} handleDelete={(id) => this.deleteEntry(id)}  type={this.state.typeOfModal}
-                 profile={this.state.currentProfile}currentId={this.state.config_id}
+                 profile={this.state.currentProfile} currentId={this.state.config_id}
                  addNewProfile={(newProfile)=>this.handleAdd(newProfile)}
                                                                       editProfile={(newArray) => this.handleEdit(newArray)}/>,
                     document.getElementById('portal'))}

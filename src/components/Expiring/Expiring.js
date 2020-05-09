@@ -35,7 +35,7 @@ export default class extends React.Component {
                     userData = response.data.list;
                 }).then(() => {
                     userData.forEach(item => {
-                        this.setState(prevState => {
+                        this.setState(() => {
                             const newArray = this.state.messages;
                             newArray.push(item);
                             return {
@@ -97,14 +97,14 @@ export default class extends React.Component {
             <React.Fragment>
                 <Configuration configs={this.state.configs} handleConfig={val => {
                     this.props.handleConfig(val);
-                    console.log("Меняем на конфиг:", val);
                     Axios.get(url + "/config/choose/id=" + val).then(() =>
-                        window.location.reload(false));
+                    window.location.reload(false));
                 }} currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (
-                        <EditEntry ans_type={item.ans_type} name={item.name} description={item.description} text={item.text}
-                                   getCurrentData={(val) => this.handleChange(val, item.id)} response={item.response}/>
+                        <EditEntry ans_type={item.ans_type} name={item.name} description={item.description}
+                        text={item.text} getCurrentData={(val) => this.handleChange(val, item.id)}
+                        response={item.response}/>
                     ))}
                     <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>
                 </form>

@@ -1,6 +1,7 @@
 import React from "react";
 import Navigation from "../Navigation/Navigation";
 import './Wrapper.css'
+
 export default class Wrapper extends React.Component {
     render() {
         return (

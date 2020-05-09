@@ -100,8 +100,6 @@ export default class Reanimation extends React.Component {
             "config_id": this.state.currentConfig,
             "list": list,
         }).then(res => {
-            if (res.status === 200)
-                alert("Ура ебать")
         })
     };
 
@@ -122,8 +120,11 @@ export default class Reanimation extends React.Component {
                     ))}
                     {this.state.profiles.map((item, index) => (
                         <div className='reanimation-profile'>
-                            <label>ID анкеты:</label>
-                            <input type="text" value={item.value} onChange={e => this.handleChangeProfile(e.currentTarget.value, index)}/>
+                            <h4>{item.name}</h4>
+                            <div>
+                                <label>ID анкеты:</label>
+                                <input type="text" value={item.value} onChange={e => this.handleChangeProfile(e.currentTarget.value, index)}/>
+                            </div>
                         </div>
                     ))}
                     <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>

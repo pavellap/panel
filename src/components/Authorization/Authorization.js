@@ -3,7 +3,10 @@ import './Authorization.css'
 import Axios from "axios";
 import Modal from "../Modal/Modal";
 import ReactDOM from 'react-dom'
+import url from '../config'
 
+// Компонент авторизации
+// P.S соре за говнокод, если вы это исправляете то F вам
 export default class Authorization extends React.Component {
     constructor(props) {
         super(props);
@@ -15,12 +18,10 @@ export default class Authorization extends React.Component {
         }
     }
 
-
+    // получаем данные
     handleButtonClick(event) {
-        let url = "http://188.32.187.157:5000";
-        url += '/auth';
         event.preventDefault();
-        Axios.post(url, {
+        Axios.post(url + '/auth', {
             "login": this.login.current.value,
             "password": this.password.current.value
         }).then(response => {
@@ -58,7 +59,8 @@ export default class Authorization extends React.Component {
                         </div>
                     </form>
                 </div>
-                {ReactDOM.createPortal( this.state.modalIsOpen && <Modal type='error' text='На сервере произошла ошибка. Попробуйте позже или перезагрузите страницу'
+                {ReactDOM.createPortal( this.state.modalIsOpen && <Modal type='error'
+                text='На сервере произошла ошибка. Попробуйте позже или перезагрузите страницу'
                 handleClick={this.handleClick}/>, document.getElementById('portal'))}
             </div>
         )

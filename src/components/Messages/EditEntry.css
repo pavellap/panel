@@ -67,9 +67,6 @@
     border-radius: 5px;
 }
 
-.response-entry  > div{
-
-}
 
 .response-entry h4 {
     text-align: center;
@@ -83,11 +80,21 @@
     margin: 0 15px 0 0;
 }
 
-.response-entry div {
+.response-entry > div {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.response-entry label {
+    white-space: nowrap;
+}
+
+.response-entry div div {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
+    align-items: center;
 }
 
 .response-entry div div {

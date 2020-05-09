@@ -29,7 +29,8 @@ export default class Download extends React.Component {
                         <h4>Доступные файлы</h4>
                         {this.state.configs.map(item => (
                             <DownloadEntry title='Отчёт' description={'Отчёт в конфигурации ' + item.id}
-                             handleClick={() => window.open(url + "/statistics/config_id=" + item.id, "_blank")} file='csv'/>
+                             handleClick={() => window.open
+                             (url + "/statistics/config_id=" + item.id, "_blank")} file='csv'/>
                         ))}
                     </div>
             </section>

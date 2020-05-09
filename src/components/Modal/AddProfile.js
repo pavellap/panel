@@ -16,7 +16,7 @@ export default class AddProfile extends React.Component {
             name: "Название анкеты",
             hello: "Приветственное сообщение",
             type: "form",
-            idCounter: 1000
+            idCounter: 1000,
         };
         this.questionEntry = React.createRef();
         this.dataTypeEntry = React.createRef();
@@ -28,7 +28,8 @@ export default class AddProfile extends React.Component {
             const newItem = {
                 text: this.questionEntry.current.value,
                 type: this.dataTypeEntry.current.value,
-                id: this.state.idCounter
+                id: this.state.idCounter,
+                main: false
             };
             const newArray = this.state.questions;
             newArray.push(newItem);
@@ -64,6 +65,12 @@ export default class AddProfile extends React.Component {
             this.setState({hello: content});
     }
 
+    handleSwitch = (val , index) => {
+        const array = this.state.questions;
+        array[index].main = val;
+        this.setState({questions: array})
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -79,19 +86,26 @@ export default class AddProfile extends React.Component {
                             <input placeholder='Текст вопроса' ref={this.questionEntry}/>
                         </label>
                         <label>
-                            Тип ответа
-                            <select ref={this.dataTypeEntry}>
-                                <option value="str">Строковые данные</option>
-                                <option value="int">Числовые данные</option>
-                            </select>
-                        </label>
+                        Тип ответа
+                        <select ref={this.dataTypeEntry}>
+                            <option value="str">Строковые данные</option>
+                            <option value="int">Числовые данные</option>
+                        </select>
+                    </label>
                     </div>
                     <h4>Список вопросов</h4>
-                    {this.state.questions.map(item => (
+                    {this.state.questions.map((item, index) => (
                             <div className='question'>
                                 <span>{item.text}</span>
                                 <span>{item.type}</span>
-                                <FontAwesomeIcon icon={faTimes} onClick={() => this.handleDelete(item.id)}/>
+                                <div className="pretty p-switch p-fill">
+                                    <input type="checkbox" checked={item.main} onChange={(e) =>
+                                        this.handleSwitch(e.currentTarget.checked, index)}/>
+                                    <div className="state">
+                                        <label>Главный вопрос</label>
+                                    </div>
+                                </div>
+                                {/*<FontAwesomeIcon icon={faTimes} onClick={() => this.handleDelete(item.id)}/>*/}
                             </div>)
                         )
                     }

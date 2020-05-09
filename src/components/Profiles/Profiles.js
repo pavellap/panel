@@ -26,7 +26,8 @@ export default class Profiles extends React.Component {
             currentProfile: null,
             counterID: 999,
             time: null,
-            config_id: null
+            currentConfig: null,
+            contentModal: null
         };
     }
 
@@ -44,6 +45,7 @@ export default class Profiles extends React.Component {
                     Axios.get(url + "/form/time/get/config_id=" + res.data.id).then(data => this.setState( // загружаем время
                         {time: data.data.time}));
                     userData = response.data.list;
+                    this.setState({componentIsLoading: false});
                     userData.forEach(item => {
                         this.setState(prevState => {
                             // записываем профили в стейт
@@ -52,7 +54,6 @@ export default class Profiles extends React.Component {
                             return {
                                 profilesList: newArray,
                                 currentId: item.id,
-                                componentIsLoading: false
                             }
                         })
                     })
@@ -121,9 +122,21 @@ export default class Profiles extends React.Component {
 
 
     changeTime = () => {
+      this.setState({componentIsLoading: true});
+      console.log("Данные на отправку во времени:", {
+          time: this.state.time,
+          config_id: this.currentConfig
+      });
       Axios.post(url + "/form/time/set", {
           time: this.state.time,
-          config_id: this.state.config_id
+          config_id: this.state.currentConfig
+      }).then(res => {
+          if (res.status === 200)
+              this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success", contentModal:
+                      "Данные успешно сохранены"});
+    else
+        this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success", contentModal:
+                "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
       })
     };
 
@@ -161,14 +174,18 @@ export default class Profiles extends React.Component {
             content = <Loader/>;
         else content = (
             <React.Fragment>
-                <Configuration configs={this.state.configs} handleConfig={val => this.props.handleConfig(val)}
-                               currentConfig={this.state.currentConfig}/>
+                <Configuration configs={this.state.configs} handleConfig={val => {
+                    this.props.handleConfig(val);
+                    console.log("Меняем на конфиг:", val);
+                    Axios.get(url + "/config/choose/id=" + val).then(() =>
+                        window.location.reload(false));
+                }} currentConfig={this.state.currentConfig}/>
                 <div className='profiles-wrapper'>
                     <div className='profiles-header'>
                         <h4>Доступные анкеты</h4>
                         <div className='time-wrapper'>
                             <input type="text" value={this.state.time} onChange={e => this.handleTime(e.currentTarget.value)}/>
-                            <div className='registration-dialog-save' onClick={this.changeTime}>Установить временной промежуток</div>
+                            <div className='registration-dialog-save' onClick={this.changeTime}>Промежуток (в днях)</div>
                         </div>
                         <div onClick={() => this.toggleModal('add',
                             Math.round(Math.random() * 1000))}>
@@ -193,10 +210,10 @@ export default class Profiles extends React.Component {
                 <PageHeader title='Окно редактирования анкет'/>
                 {content}
                 {ReactDOM.createPortal(this.state.modalOpen && <Modal handleClick={this.toggleModal}
-                                   handleDelete={(id) => this.deleteEntry(id)}  type={this.state.typeOfModal}
-                                   profile={this.state.currentProfile}
-                                   currentId={this.state.config_id} addNewProfile={(newProfile)=>this.handleAdd(newProfile)}
-                editProfile={(newArray) => this.handleEdit(newArray)}/>,
+                 text={this.state.contentModal} handleDelete={(id) => this.deleteEntry(id)}  type={this.state.typeOfModal}
+                 profile={this.state.currentProfile}currentId={this.state.config_id}
+                 addNewProfile={(newProfile)=>this.handleAdd(newProfile)}
+                                                                      editProfile={(newArray) => this.handleEdit(newArray)}/>,
                     document.getElementById('portal'))}
             </section>
         )

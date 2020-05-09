@@ -39,7 +39,8 @@ export default class extends React.Component {
             const newItem = {
                 text: this.questionEntry.current.value,
                 type: this.dataTypeEntry.current.value,
-                id: this.state.idCounter
+                id: this.state.idCounter,
+                main: false
             };
             const newArray = this.state.questions;
             newArray.push(newItem);
@@ -75,6 +76,12 @@ export default class extends React.Component {
         }
     };
 
+    handleSwitch = (val , index) => {
+        const array = this.state.questions;
+        array[index].main = val;
+        this.setState({questions: array})
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -96,11 +103,18 @@ export default class extends React.Component {
                         </label>
                     </div>
                     <h4>Список вопросов</h4>
-                    {this.state.questions.map(item => (
-                        <div className='question'>
+                    {this.state.questions.map((item, index) => (
+                        <div className='question' key={index}>
                             <span>{item.text}</span>
                             <span>{item.type}</span>
-                            <FontAwesomeIcon icon={faTimes} onClick={() => this.handleDelete(item.id)}/>
+                            <div className="pretty p-switch p-fill">
+                                <input type="checkbox" checked={item.main} onChange={(e) =>
+                                    this.handleSwitch(e.currentTarget.checked, index)}/>
+                                <div className="state">
+                                    <label>Главный вопрос</label>
+                                </div>
+                            </div>
+                            {/*<FontAwesomeIcon icon={faTimes} onClick={() => this.handleDelete(item.id)}/>*/}
                         </div>)
                     )
                     }

@@ -26,6 +26,12 @@ export default class ShowProfile extends React.Component {
                             <div className='show-profile-question'>
                                 <span>{item.text}</span>
                                 <span>Тип ответа: {type}</span>
+                                <div className="pretty p-switch p-fill">
+                                    <input type="checkbox" checked={item.main}/>
+                                    <div className="state">
+                                        <label>Главный вопрос</label>
+                                    </div>
+                                </div>
                             </div>
                             )}
                         )}

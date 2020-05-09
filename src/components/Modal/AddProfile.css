@@ -1,4 +1,4 @@
-.modal-content-add {
+.modal-content-add  {
     background-color: #fff;
     height: 100%;
     width: 45%;
@@ -8,6 +8,10 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 10px;
+}
+
+.modal-content-add textarea {
+    height: 170px;
 }
 
 .modal-content-add h4 {
@@ -47,6 +51,7 @@
 .question {
     display: flex;
     justify-content: space-around;
+    margin-top: 15px;
 }
 .save-button {
     display: flex;

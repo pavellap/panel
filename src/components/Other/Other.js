@@ -31,11 +31,18 @@ export default class Other extends React.Component {
             Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
                 // получаем саму страницу
                  this.setState({currentConfig: res.data.id});
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
-                    (response => {
-                        console.log("Данные в разделе остальное:", response.data);
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then(
+                    response => {
                         userData = response.data.list;
-                    }).then(() => {
+                    }).catch(err => {
+                        if (err.response.data.code === 401)
+                            window.location= "/"
+                        else
+                            this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                            contentModal: err.response.data.error});
+                        console.log("Error in fetch:", err.response)
+                        throw err
+                }).then(() => {
                     userData.forEach(item => {
                         this.setState(prevState => {
                             const newArray = this.state.messages;
@@ -48,7 +55,7 @@ export default class Other extends React.Component {
                     })
                 });
             });
-        });
+        })
     }
 
     postData = () => {
@@ -60,7 +67,8 @@ export default class Other extends React.Component {
             "page": this.state.sectionId,
             "config_id": this.state.currentConfig,
             "list": this.state.messages
-        }).then(res => {
+        }).catch(error => console.log("Текст ошибки:", error.response)).then(res => {
+            console.log("Статус:", res.status);
             if (res.status === 200) {
                 this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
                         "Данные успешно сохранены"});

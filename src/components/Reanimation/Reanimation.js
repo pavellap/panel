@@ -33,6 +33,14 @@ export default class Reanimation extends React.Component {
                 (response => {
                     console.log("Данные в разделе серия реанимация:", response.data);
                     userData = response.data.list;
+                }).catch(err => {
+                    if (err.response.data.code === 401)
+                        window.location= "/"
+                    else
+                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                            contentModal: err.response.data.error});
+                    console.log("Error in fetch:", err.response)
+                    throw err
                 }).then(() => {
                     const messages = [];
                     const profiles = [];

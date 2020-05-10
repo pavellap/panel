@@ -60,6 +60,14 @@ export default class Subscription extends React.Component {
                 (response => {
                     console.log("Данные в разделе подписок:", response.data);
                     userData = response.data.list;
+                }).catch(err => {
+                    if (err.response.data.code === 401)
+                        window.location= "/"
+                    else
+                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                            contentModal: err.response.data.error});
+                    console.log("Error in fetch:", err.response)
+                    throw err
                 }).then(() => {
                     userData.forEach(item => {
                         this.setState(prevState => {

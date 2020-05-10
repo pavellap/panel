@@ -32,6 +32,14 @@ export default class Profile extends React.Component {
                 Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
                 (response => {
                     userData = response.data.list;
+                }).catch(err => {
+                    if (err.response.data.code === 401)
+                        window.location= "/"
+                    else
+                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                            contentModal: err.response.data.error});
+                    console.log("Error in fetch:", err.response)
+                    throw err
                 }).then(() => {
                     userData.forEach(item => {
                         this.setState(prevState => {

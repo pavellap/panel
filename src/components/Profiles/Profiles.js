@@ -39,7 +39,15 @@ export default class Profiles extends React.Component {
             Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
                 this.setState({currentConfig: res.data.id});
                 // получаем саму страницу
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).catch(err => {
+                    if (err.response.data.code === 401)
+                        window.location= "/"
+                    else
+                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                            contentModal: err.response.data.error});
+                    console.log("Error in fetch:", err.response)
+                    throw err
+                }).then
                 (response => {
                     console.log("Формат данных:", response.data);
                     Axios.get(url + "/form/time/get/config_id=" + res.data.id).then(data => this.setState( // загружаем время
@@ -130,6 +138,14 @@ export default class Profiles extends React.Component {
       Axios.post(url + "/form/time/set", {
           time: this.state.time,
           config_id: this.state.currentConfig
+      }).catch(err => {
+          if (err.response.data.code === 401)
+              window.location= "/"
+          else
+              this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                  contentModal: err.response.data.error});
+          console.log("Error in fetch:", err.response)
+          throw err
       }).then(res => {
           if (res.status === 200)
               this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success", contentModal:

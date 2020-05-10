@@ -40,6 +40,14 @@ export default class extends React.Component {
                     console.log("Структура полученного запроса:", response.data);
                     messages = response.data.list;
                     greetings = response.data.greetings;
+                }).catch(err => {
+                    if (err.response.data.code === 401)
+                        window.location= "/"
+                    else
+                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                            contentModal: err.response.data.error});
+                    console.log("Error in fetch:", err.response)
+                    throw err
                 }).then(() => {
                     messages.forEach(item => {
                         this.setState(prevState => {

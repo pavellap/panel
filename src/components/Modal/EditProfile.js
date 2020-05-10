@@ -1,7 +1,6 @@
 import React from 'react'
 import EditEntry from "../Messages/EditEntry";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faTimes} from "@fortawesome/free-solid-svg-icons";
+
 
 export default class extends React.Component {
     constructor(props) {
@@ -133,7 +132,3 @@ export default class extends React.Component {
     }
 }
 
-{/*<div className='add-ques-button' onClick={() => this.handleAdd()}>
-                        <span style={{marginRight: 20}}>Добавить вопрос</span>
-                        <FontAwesomeIcon icon={faPlus} size='2x'/>
-                    </div>*/}

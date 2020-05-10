@@ -28,7 +28,6 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        let userData;
         Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
             Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг

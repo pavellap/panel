@@ -7,7 +7,6 @@ import {
     faUsers,
     faDownload,
     faMailBulk,
-    faEnvelope,
     faUserCog,
     faUserClock, faMoneyCheckAlt, faUser, faGift, faUserPlus
 } from '@fortawesome/free-solid-svg-icons'

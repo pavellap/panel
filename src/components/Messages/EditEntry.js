@@ -38,12 +38,12 @@ export default class EditEntry extends React.Component {
 };
 
     render() {
-        let text;
+        //let text;
         let render;
         if (this.props.ans_type === 0) //  не отрисовывем поля для ввода
-            text = "Нет обратной связи";
+            render = null
         else if (this.props.ans_type === 1) {
-            text = "Пользователь нажимает кнопку";
+            //text = "Пользователь нажимает кнопку";
             render = (
                 <div className='response-entry'>
                     <h4>Обратная связь</h4>
@@ -59,7 +59,7 @@ export default class EditEntry extends React.Component {
             )
         }
         else if (this.props.ans_type === 2) {
-            text = "Пользователь пишет сообщение";
+            //text = "Пользователь пишет сообщение";
             render = (
                 <div className='response-entry'>
                     <h4>Обратная связь</h4>
@@ -75,7 +75,7 @@ export default class EditEntry extends React.Component {
             )
         }
         else //  не отрисовывем поля для ввода
-            text = "Пользователь вводит данные";
+            render = null
 
         return (
             <div className='edit-entry'>

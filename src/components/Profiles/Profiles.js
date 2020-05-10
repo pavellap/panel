@@ -33,7 +33,6 @@ export default class Profiles extends React.Component {
 
     componentDidMount() {
         let userData;
-        let currentConfig;
         Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
             Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг

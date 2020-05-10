@@ -2,7 +2,7 @@ import React from "react";
 import './AddProfile.css'
 import EditEntry from "../Messages/EditEntry";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 
 

@@ -22,30 +22,41 @@ export default class SubscriptionEntry extends React.Component {
 
         console.log("Текущий тип:", type)
         console.log("Val:", val);
-        this.props.saveChange(this.state);
         console.log("Получаем значения:", val);
         if (type === "checkbox")
-            this.setState({can_write: val});
+            this.setState({can_write: val}, () => {
+                this.props.saveChange(this.state);
+            });
         else if (type === "name") {
             console.log("Меняем имя");
-            this.setState({name: val});
+            this.setState({name: val}, () => {
+                this.props.saveChange(this.state);
+            });
         }
         else if (type === "chat_id")
-            this.setState({chat_id: val});
+            this.setState({chat_id: parseInt(val)}, () => {
+                this.props.saveChange(this.state);
+            });
         else if (type === "cost") {
             const costs = this.state.cost;
             costs[position] = val;
-            this.setState({cost: costs})
+            this.setState({cost: costs}, () => {
+                this.props.saveChange(this.state);
+            })
         }
         else if (type === "links") {
             const links = this.state.links;
             links[position] = val;
-            this.setState({links: links})
+            this.setState({links: links}, () => {
+                this.props.saveChange(this.state);
+            })
         }
         else if (type === "time") {
             const times = this.state.time;
             times[position] = val;
-            this.setState({time: times})
+            this.setState({time: times}, () => {
+                this.props.saveChange(this.state);
+            })
         }
     };
 

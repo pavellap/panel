@@ -67,15 +67,13 @@ export default class Other extends React.Component {
             "page": this.state.sectionId,
             "config_id": this.state.currentConfig,
             "list": this.state.messages
-        }).catch(error => console.log("Текст ошибки:", error.response)).then(res => {
-            console.log("Статус:", res.status);
-            if (res.status === 200) {
-                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
-                        "Данные успешно сохранены"});
-            }
+        }).catch(err => {
+            if (err.response.data.code === 401)
+                window.location= "/"
             else
-                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
-                        "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                    contentModal: err.response.data.error});
+            throw err
         })
     };
 

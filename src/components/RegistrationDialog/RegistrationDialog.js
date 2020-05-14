@@ -43,9 +43,8 @@ export default class extends React.Component {
                     if (err.response.data.code === 401)
                         window.location= "/"
                     else
-                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                        this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
                             contentModal: err.response.data.error});
-                    console.log("Error in fetch:", err.response)
                     throw err
                 }).then(() => {
                     messages.forEach(item => {
@@ -107,6 +106,13 @@ export default class extends React.Component {
             greetings: greetings,
             list: this.state.messages,
             page: this.state.sectionId
+        }).catch(err => {
+            if (err.response.data.code === 401)
+                window.location= "/"
+            else
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                    contentModal: err.response.data.error});
+            throw err
         }).then(res => {
             console.log(res);
             if (res.status === 200) {

@@ -44,11 +44,9 @@ export default class Profiles extends React.Component {
                     else
                         this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
                             contentModal: err.response.data.error});
-                    console.log("Error in fetch:", err.response)
                     throw err
                 }).then
                 (response => {
-                    console.log("Формат данных:", response.data);
                     Axios.get(url + "/form/time/get/config_id=" + res.data.id).then(data => this.setState( // загружаем время
                         {time: data.data.time}));
                     userData = response.data.list;
@@ -71,7 +69,6 @@ export default class Profiles extends React.Component {
 
     // Добавление нового профиля с модального окна
     handleAdd = (newProfile) => {
-        console.log("В таком формате получаем новый профиль:", newProfile);
         newProfile.id = this.state.counterID;
         this.setState(prevState => {
             const newArray = this.state.profilesList;
@@ -85,7 +82,6 @@ export default class Profiles extends React.Component {
     };
 
     handleEdit = (profile) => {
-        console.log("Получили в главном компоненте:", profile);
         const newArray = this.state.profilesList;
         let pos;
         newArray.forEach((item, index) => {
@@ -93,7 +89,6 @@ export default class Profiles extends React.Component {
                 pos = index;
         });
         newArray[pos] = profile;
-        console.log("Получили профили:", newArray);
         this.setState(prevState => {
             return {
                 modalOpen: false,
@@ -130,10 +125,6 @@ export default class Profiles extends React.Component {
 
     changeTime = () => {
       this.setState({componentIsLoading: true});
-      console.log("Данные на отправку во времени:", {
-          time: this.state.time,
-          config_id: this.currentConfig
-      });
       Axios.post(url + "/form/time/set", {
           time: this.state.time,
           config_id: this.state.currentConfig
@@ -141,22 +132,20 @@ export default class Profiles extends React.Component {
           if (err.response.data.code === 401)
               window.location= "/"
           else
-              this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+              this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
                   contentModal: err.response.data.error});
-          console.log("Error in fetch:", err.response)
           throw err
       }).then(res => {
-          if (res.status === 200)
+            if (res.status === 200)
               this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success", contentModal:
                       "Данные успешно сохранены"});
-    else
-        this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success", contentModal:
-                "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
+            else
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success", contentModal:
+                        res.data.text});
       })
     };
 
     postData = () => {
-        console.log("Данные на отправку:", this.state.profilesList);
         this.setState({componentIsLoading: true});
         const array = [];
         this.state.profilesList.forEach(item => {
@@ -175,6 +164,13 @@ export default class Profiles extends React.Component {
             page: this.state.sectionId,
             config_id: this.state.currentConfig,
             list: array
+        }).catch(err => {
+            if (err.response.data.code === 401)
+                window.location= "/"
+            else
+                this.setState({componentIsLoading: false, modalOpen: true, typeModal: "success",
+                    contentModal: err.response.data.error});
+            throw err
         }).then(res => {
             console.log(res);
             if (res.status === 200)
@@ -198,7 +194,6 @@ export default class Profiles extends React.Component {
     };
 
     render() {
-        console.log("Рендерим профили:", this.state.profilesList);
         let content;
         if (this.state.componentIsLoading)
             content = <Loader/>;
@@ -206,7 +201,6 @@ export default class Profiles extends React.Component {
             <React.Fragment>
                 <Configuration configs={this.state.configs} handleConfig={val => {
                     this.props.handleConfig(val);
-                    console.log("Меняем на конфиг:", val);
                     Axios.get(url + "/config/choose/id=" + val).then(() =>
                         window.location.reload(false));
                 }} currentConfig={this.state.currentConfig}/>
@@ -242,8 +236,7 @@ export default class Profiles extends React.Component {
                 {ReactDOM.createPortal(this.state.modalOpen && <Modal handleClick={this.toggleModal}
                  text={this.state.contentModal} handleDelete={(id) => this.deleteEntry(id)}  type={this.state.typeOfModal}
                  profile={this.state.currentProfile} currentId={this.state.config_id}
-                 addNewProfile={(newProfile)=>this.handleAdd(newProfile)}
-                                                                      editProfile={(newArray) => this.handleEdit(newArray)}/>,
+                 addNewProfile={(newProfile)=>this.handleAdd(newProfile)} editProfile={(newArray) => this.handleEdit(newArray)}/>,
                     document.getElementById('portal'))}
             </section>
         )

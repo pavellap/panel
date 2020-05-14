@@ -27,25 +27,27 @@ export default class Subscription extends React.Component {
 
     sendData = () => {
         this.setState({componentIsLoading: true});
-        console.log("Data v podpiskakh:", {
-            page: 10,
-            config_id: 1, // по дефу пусть стоит 1
-            list: this.state.subscriptions,
-        })
         Axios.post(url + "/page/set",
             {
                 page: 10,
                 config_id: 1, // по дефу пусть стоит 1
                 list: this.state.subscriptions,
-            }).then(res => {
-                if (res.status === 200)
-                    this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
-                    "Данные успешно сохранены"});
-                else
-                    this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
-                    "Произошла ошибка на сервере. Попробуйте сохранить данные позже"})
-
-        });
+            }).catch(err => {
+            if (err.response.data.code === 401)
+                window.location= "/"
+            else
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                    contentModal: err.response.data.error});
+            throw err
+        }).then(res => {
+            if (res.status === 200) {
+                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                        "Данные успешно сохранены"});
+            }
+            else
+                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                        "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
+        })
     };
 
     saveChange = (item, index) => {

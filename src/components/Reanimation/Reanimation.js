@@ -31,7 +31,6 @@ export default class Reanimation extends React.Component {
                 this.setState({currentConfig: res.data.id});
                 Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
                 (response => {
-                    console.log("Данные в разделе серия реанимация:", response.data);
                     userData = response.data.list;
                 }).catch(err => {
                     if (err.response.data.code === 401)
@@ -107,7 +106,21 @@ export default class Reanimation extends React.Component {
             "page": this.state.sectionId,
             "config_id": this.state.currentConfig,
             "list": list,
+        }).catch(err => {
+            if (err.response.data.code === 401)
+                window.location= "/"
+            else
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                    contentModal: err.response.data.error});
+            throw err
         }).then(res => {
+            if (res.status === 200) {
+                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                        "Данные успешно сохранены"});
+            }
+            else
+                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
+                        "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
         })
     };
 

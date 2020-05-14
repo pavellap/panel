@@ -37,20 +37,22 @@ export default class Mailing extends React.Component {
             text: this.textForm.current.value,
             emails: this.emailsForm.current.value.split("\n"),
             all: this.checkbox.current.checked
+        }).catch(err => {
+            if (err.response.data.code === 401)
+                window.location= "/"
+            else
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                    contentModal: err.response.data.error});
+            throw err
         }).then(res => {
-            console.log("Ответ в рассылках:", res);
             if (res.status === 200) {
-                this.textForm.current.value = "";
-                this.emailsForm.current.value = "";
-                this.checkbox.current.checked = false;
                 this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
-                        "Сервер успешно получил данные!"});
+                        "Данные успешно сохранены"});
             }
-
             else
                 this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
-                        "Произошла ошибка на сервере. Повторите попытку позже!"});
-        });
+                        "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
+        })
     };
 
     render() {

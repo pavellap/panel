@@ -36,9 +36,8 @@ export default class Present extends React.Component {
                     if (err.response.data.code === 401)
                         window.location= "/"
                     else
-                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
+                        this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
                             contentModal: err.response.data.error});
-                    console.log("Error in fetch:", err.response)
                     throw err
                 }).then(() => {
                     userData.forEach(item => {
@@ -81,6 +80,13 @@ export default class Present extends React.Component {
             "page": this.state.sectionId,
             "config_id": this.state.currentConfig,
             "list": this.state.messages
+        }).catch(err => {
+            if (err.response.data.code === 401)
+                window.location= "/"
+            else
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                    contentModal: err.response.data.error});
+            throw err
         }).then(res => {
             if (res.status === 200) {
                 this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:

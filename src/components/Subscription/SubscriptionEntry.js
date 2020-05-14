@@ -18,6 +18,9 @@ export default class SubscriptionEntry extends React.Component {
     }
 
     handleChange = (val = null, type = null, position = null) => {
+        // последнее изменяемое не сохраняется
+
+        console.log("Текущий тип:", type)
         console.log("Val:", val);
         this.props.saveChange(this.state);
         console.log("Получаем значения:", val);

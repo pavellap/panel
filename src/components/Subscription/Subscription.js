@@ -27,6 +27,11 @@ export default class Subscription extends React.Component {
 
     sendData = () => {
         this.setState({componentIsLoading: true});
+        console.log("Data v podpiskakh:", {
+            page: 10,
+            config_id: 1, // по дефу пусть стоит 1
+            list: this.state.subscriptions,
+        })
         Axios.post(url + "/page/set",
             {
                 page: 10,

@@ -19,22 +19,28 @@ export default class EditEntry extends React.Component {
     }
 
     handleChange = (value) => {
-        this.setState({text: this.form.current.value});
+        if (this.props.limit === undefined && value.length < 4001)
+            this.setState({text: this.form.current.value});
+        else if (value.length < this.props.limit + 1)
+            this.setState({text: this.form.current.value});
     };
 
     handleResponse = (val, id) => {
         let pos;
-        this.state.response.forEach((item, index) => {
-            if (item.id === id)
-                pos = index;
-        });
-        this.setState(prevState => {
-            const newArray = this.state.response;
-            newArray[pos].text = val;
-            return {
-                response: newArray
-            }
-        });
+        if (val.length < 21) {
+            this.state.response.forEach((item, index) => {
+                if (item.id === id)
+                    pos = index;
+            });
+            this.setState(prevState => {
+                const newArray = this.state.response;
+                newArray[pos].text = val;
+                return {
+                    response: newArray
+                }
+            });
+        }
+
 };
 
     render() {

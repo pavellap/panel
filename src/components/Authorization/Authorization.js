@@ -32,7 +32,6 @@ export default class Authorization extends React.Component {
             if (err)
                 this.setState({modalIsOpen: true})
         });
-
     }
 
     handleClick = () => {

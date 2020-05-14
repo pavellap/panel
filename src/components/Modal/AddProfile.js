@@ -83,7 +83,7 @@ export default class AddProfile extends React.Component {
                 <h4>Добавление новой анкеты</h4>
                 <form>
                     <EditEntry text='Название анкеты' value='Шаблон' getCurrentData={(content) =>
-                        this.getEntryData(content, 'name')}/>
+                        this.getEntryData(content, 'name')} limit={15}/>
                     <EditEntry text='Приветственное сообщение' value='Шаблон' getCurrentData={(content) =>
                         this.getEntryData(content, 'helloMessage')}/>
                     <div className='question-entry'>

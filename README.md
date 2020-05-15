@@ -1,11 +1,19 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+SPA, созданное с помощью `React`.
+Для рендеринга используется - `React`
+Загрузка данных происходит с помощью библиотеки `Axios`
+Для навигации используется React-Router, в текущей версии используется `Hash Router`
 
-## Available Scripts
+## Доступные скрипты:
 
-In the project directory, you can run:
+`yarn start` - запускает приложение(по умолчанию на localhost:3000)
 
-### `yarn start`
+## Структура приложения:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`src` - все исходные файлы
+`yarn.lock` - файл с зависимостями проекта
+`pachage.json` - файл с зависимостями для режима разработки и общей информацией о проекте
+
+## Исходники
+
+
 

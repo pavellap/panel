@@ -27,6 +27,7 @@ export default class extends React.Component {
         }
     }
 
+    // Загружаем данные раздела
     componentDidMount() {
         Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
@@ -35,16 +36,19 @@ export default class extends React.Component {
                 this.setState({currentConfig: res.data.id});
                 let messages;
                 let greetings;
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then(response => {
-                    console.log("Структура полученного запроса:", response.data);
-                    messages = response.data.list;
-                    greetings = response.data.greetings;
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).
+                then(response => {
+                    messages = response.data.list; // получаем обычные сообщения
+                    greetings = response.data.greetings; // получаем приветственные сообщения
                 }).catch(err => {
+                    // перекидываем на стартовую страницу, если выкидывает 401 ошибку
                     if (err.response.data.code === 401)
                         window.location= "/"
                     else
-                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
-                            contentModal: err.response.data.error});
+                        // пожалуйста, не спрашивайте, почему typeOfModal при ошибке success
+                        // не было времени на фиксы
+                        this.setState({componentIsLoading: false, modalIsOpen: true,
+                            typeOfModal: "success", contentModal: err.response.data.error});
                     throw err
                 }).then(() => {
                     messages.forEach(item => {
@@ -58,7 +62,6 @@ export default class extends React.Component {
                         })
                     });
                     greetings.forEach(item => {
-                        // понять, в каком поле тела лежит текст
                         this.setState(prevState => {
                             const newArray = this.state.greetings;
                             newArray.push(item);
@@ -71,11 +74,16 @@ export default class extends React.Component {
             });
         });
     }
-
+    // метод отправки данных на сервер (сохранения)
     sendData = () => {
         const localURL = url + "/page/set";
         const greetings = [];
         this.state.greetings.forEach((item) => {
+            /*
+            id новым элементам присваивается на сервере
+            поэтому все элементы, созданные на клиенте, идут с id > 1000
+            Элементы отправляем уже без id
+             */
             if (item.id > 1000) {
                 greetings.push(
                     {
@@ -123,12 +131,6 @@ export default class extends React.Component {
                         "Произошла ошибка на сервере. Попробуйте сохранить данные позже"});
 
         });
-        console.log("Данные, отправленные на сервер:", {
-            config_id: this.state.currentConfig,
-            greetings: greetings,
-            list: this.state.messages,
-            page: this.state.sectionId
-        })
     };
 
 
@@ -176,7 +178,6 @@ export default class extends React.Component {
     // Добавление нового приветственного сообщения
     handleAdd = () => {
         const newArray = this.state.greetings;
-        console.log("Структура добавляемого сообщения", newArray[0]);
         newArray.push({
             type: "message",
             id: this.state.idCounter,
@@ -249,7 +250,6 @@ export default class extends React.Component {
             <React.Fragment>
                 <Configuration configs={this.state.configs} handleConfig={val => {
                     this.props.handleConfig(val);
-                    console.log("Меняем на конфиг:", val);
                     Axios.get(url + "/config/choose/id=" + val).then(() =>
                         window.location.reload(false));
                 }} currentConfig={this.state.currentConfig}/>

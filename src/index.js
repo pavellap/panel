@@ -6,9 +6,6 @@ import {HashRouter} from 'react-router-dom'
 
 const app = (<HashRouter><App/></HashRouter>);
 
-ReactDOM.render(
-  app,
-  document.getElementById('root')
-);
+ReactDOM.render(app, document.getElementById('root'));
 
 serviceWorker.unregister();

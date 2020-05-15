@@ -1,7 +1,6 @@
 import React from 'react';
 import {Switch, Route} from "react-router-dom";
 import Axios from "axios";
-import './App.css';
 import './normalize.css'
 import Layout from "./components/hoc/Layout";
 import Authorization from "./components/Authorization/Authorization";
@@ -38,7 +37,6 @@ export default class extends React.Component {
     }
 
     changeConfiguration = (newId) => {
-        console.log("Меняем конфигурацию в главном компоненте на: ", newId);
         Axios.get(url + "/config/choose/id=" + newId);
         this.setState({currentConfig: newId});
     };

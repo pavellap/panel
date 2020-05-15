@@ -14,7 +14,8 @@ export default class Authorization extends React.Component {
         this.login = React.createRef();
         this.state = {
             success: null,
-            modalIsOpen: false
+            modalIsOpen: false,
+            contentModal: null
         }
     }
 
@@ -28,9 +29,13 @@ export default class Authorization extends React.Component {
             if (response.data.success) {
                 window.location.href += 'registration';
             }
+            else {
+                this.setState({modalIsOpen: true, typeOfModal: "success",
+                    contentModal: "Неправильный логин или пароль"});
+            }
         }).catch(err => {
             if (err)
-                this.setState({modalIsOpen: true})
+                this.setState({modalIsOpen: true, contentModal: "Ошибка на сервере, попробуйте позже!"})
         });
     }
 
@@ -59,7 +64,7 @@ export default class Authorization extends React.Component {
                     </form>
                 </div>
                 {ReactDOM.createPortal( this.state.modalIsOpen && <Modal type='error'
-                text='На сервере произошла ошибка. Попробуйте позже или перезагрузите страницу'
+                text={this.state.contentModal}
                 handleClick={this.handleClick}/>, document.getElementById('portal'))}
             </div>
         )

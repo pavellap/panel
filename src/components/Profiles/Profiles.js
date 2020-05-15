@@ -165,10 +165,11 @@ export default class Profiles extends React.Component {
             config_id: this.state.currentConfig,
             list: array
         }).catch(err => {
+            console.log("Ошибка", err.response.data)
             if (err.response.data.code === 401)
                 window.location= "/"
             else
-                this.setState({componentIsLoading: false, modalOpen: true, typeModal: "success",
+                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
                     contentModal: err.response.data.error});
             throw err
         }).then(res => {

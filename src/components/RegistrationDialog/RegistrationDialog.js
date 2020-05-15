@@ -43,7 +43,7 @@ export default class extends React.Component {
                     if (err.response.data.code === 401)
                         window.location= "/"
                     else
-                        this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                        this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
                             contentModal: err.response.data.error});
                     throw err
                 }).then(() => {
@@ -110,11 +110,10 @@ export default class extends React.Component {
             if (err.response.data.code === 401)
                 window.location= "/"
             else
-                this.setState({componentIsLoading: false, modalOpen: true, typeOfModal: "success",
+                this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
                     contentModal: err.response.data.error});
             throw err
         }).then(res => {
-            console.log(res);
             if (res.status === 200) {
                 this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success", contentModal:
                         "Данные успешно сохранены"});

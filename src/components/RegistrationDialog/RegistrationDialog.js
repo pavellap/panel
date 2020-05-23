@@ -36,12 +36,18 @@ export default class extends React.Component {
                 this.setState({currentConfig: res.data.id});
                 let messages;
                 let greetings;
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).
+                console.log("Отправляемые куки:", document.cookie)
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId, { withCredentials: true, headers: {
+                        Authorization: document.cookie
+                    }}).
                 then(response => {
                     messages = response.data.list; // получаем обычные сообщения
                     greetings = response.data.greetings; // получаем приветственные сообщения
+                    console.log(response.data)
                 }).catch(err => {
+                    console.log("Cookie in catch:", document.cookie)
                     // перекидываем на стартовую страницу, если выкидывает 401 ошибку
+                    console.log(err);
                     if (err.response.data.code === 401)
                         window.location= "/"
                     else

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEye, faTrashAlt, faEdit} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faTrashAlt, faEdit, faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
 import './ProfileEntry.css'
 
 export default class ProfileEntry extends Component {
@@ -17,7 +17,6 @@ export default class ProfileEntry extends Component {
     };
 
     render() {
-        console.log("Рендерим профиль с id:", this.props.id);
         return (
             <div className='profile-entry'>
                 <div className='profile-content-wrapper'>
@@ -44,6 +43,10 @@ export default class ProfileEntry extends Component {
                                      color='#0408e2' onClick={() => this.props.handleEditClick(this.props.id)}/>
                     <FontAwesomeIcon icon={faTrashAlt} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
                                      color='rgb(226, 4, 5)' onClick={() => this.props.handleDeleteClick(this.props.id)}/>
+                    <FontAwesomeIcon icon={faChevronDown} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                                      color='rgb(226, 4, 5)'/>
+                    <FontAwesomeIcon icon={faChevronUp} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='rgb(226, 4, 5)'/>
                 </div>
             </div>
         )

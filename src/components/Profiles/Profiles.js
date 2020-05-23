@@ -13,6 +13,7 @@ import url from "../config";
 
 export default class Profiles extends React.Component {
     constructor(props) {
+        console.log("Current cookie:", document.cookie);
         super(props);
         this.state = {
             modalOpen: false,
@@ -33,7 +34,7 @@ export default class Profiles extends React.Component {
 
     componentDidMount() {
         let userData;
-        Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+        Axios.get(url + "/config/get/" + this.props.token).then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
             Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
                 this.setState({currentConfig: res.data.id});
@@ -195,6 +196,7 @@ export default class Profiles extends React.Component {
     };
 
     render() {
+        console.log("Token:", this.props.token)
         let content;
         if (this.state.componentIsLoading)
             content = <Loader/>;

@@ -17,13 +17,15 @@ import Other from "./components/Other/Other";
 import Profile from "./components/Profile/Profile";
 import Present from "./components/Present/Present";
 import url from './components/config'
+import Cookies from "universal-cookie";
 
 export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             currentConfig: null,
-            configurationsList: []
+            configurationsList: [],
+            token: null
         };
     }
 
@@ -41,13 +43,23 @@ export default class extends React.Component {
         this.setState({currentConfig: newId});
     };
 
-
+    handleToken = (val) => {
+        this.setState({token: val}, () => {
+            console.log("Token in app:", val)
+        })
+        document.cookie = 'panel=' + val;
+        console.log(document.cookie)
+        const cookies = new Cookies();
+        cookies.set('panel', val);
+        console.log("Cookie via React:")
+        console.log(cookies.get('panel')); // Pacman
+    }
 
     render() {
         return (
             <Layout>
                 <Switch>
-                    <Route exact path='/' component={Authorization}/>
+                    <Route exact path='/' render={() => <Authorization handleToken={(val) => this.handleToken(val)}/>}/>
 
                     <Route path='/registration' render={(props) => <Wrapper id={this.state.currentConfig}
                     children={<RegistrationDialog handleConfig={val => this.changeConfiguration(val)}
@@ -75,7 +87,7 @@ export default class extends React.Component {
 
                     <Route path='/profiles' render={(props) => <Wrapper id={this.state.currentConfig}
                     children={<Profiles  handleConfig={val => this.changeConfiguration(val)}
-                    id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
+                    id={this.state.currentConfig} configs={this.state.configurationsList} token={this.state.token}/>}/>}/>
 
                     <Route path='/mailing' render={(props) => <Wrapper id={this.state.currentConfig}
                     children={<Mailing/>}/>}/>

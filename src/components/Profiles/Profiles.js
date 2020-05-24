@@ -190,6 +190,23 @@ export default class Profiles extends React.Component {
         this.setState({time: val})
     };
 
+    handleMove = (action, pos) => {
+        const array = this.state.profilesList;
+        console.log(`Performing action ${action} on item with pos: ${pos}`)
+        if (action === "up" && pos !== 0) {
+            const temp = array[pos - 1];
+            array[pos - 1] = array[pos];
+            array[pos] = temp;
+            this.setState({profilesList: array})
+        }
+        else if (action === "down" && pos !== array.length - 1) {
+            const temp = array[pos + 1];
+            array[pos + 1] = array[pos];
+            array[pos] = temp;
+            this.setState({profilesList: array})
+        }
+    }
+
     handleSwitch = id => {
       const array = this.state.profilesList;
       let pos;
@@ -232,7 +249,8 @@ export default class Profiles extends React.Component {
                             handleDeleteClick={(id) => this.toggleModal('delete', id)}
                             id={item.id} handleEditClick={(id) => this.toggleModal('edit', id)}
                             key={index} handleShowClick={(id) => this.toggleModal('show', id)}
-                            disabled={item.disabled} handleSwitch={id => this.handleSwitch(id)}/>)}
+                            disabled={item.disabled} handleSwitch={id => this.handleSwitch(id)} position={index}
+                            handleMove={(action, pos) => this.handleMove(action, pos)}/>)}
                         <div className='registration-dialog-save' onClick={this.postData}>Сохранить данные</div>
                     </section>
                 </div>

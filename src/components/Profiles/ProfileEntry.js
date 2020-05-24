@@ -29,6 +29,15 @@ export default class ProfileEntry extends Component {
                     </div>
                 </div>
                 <div style={{display: "flex", alignItems: "center"}}>
+
+                    <FontAwesomeIcon icon={faChevronUp} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='#bdc3c7' onClick={() => this.props.handleMove('up', this.props.position)}/>
+                    <FontAwesomeIcon icon={faChevronDown} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='#bdc3c7' onClick={() => this.props.handleMove('down', this.props.position)}/>
+                    <FontAwesomeIcon icon={faEdit} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='#0408e2' onClick={() => this.props.handleEditClick(this.props.id)}/>
+                    <FontAwesomeIcon icon={faTrashAlt} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
+                                     color='rgb(226, 4, 5)' onClick={() => this.props.handleDeleteClick(this.props.id)}/>
                     <div className="pretty p-switch p-fill" style={{marginRight: 25}}>
                         <input type="checkbox" checked={!this.state.disabled} ref={this.checkbox}
                                onChange={() => {
@@ -39,14 +48,6 @@ export default class ProfileEntry extends Component {
                             <label/>
                         </div>
                     </div>
-                    <FontAwesomeIcon icon={faEdit} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
-                                     color='#0408e2' onClick={() => this.props.handleEditClick(this.props.id)}/>
-                    <FontAwesomeIcon icon={faTrashAlt} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
-                                     color='rgb(226, 4, 5)' onClick={() => this.props.handleDeleteClick(this.props.id)}/>
-                    <FontAwesomeIcon icon={faChevronDown} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
-                                                      color='rgb(226, 4, 5)'/>
-                    <FontAwesomeIcon icon={faChevronUp} size={'2x'} style={{marginRight: '20px', cursor: "pointer"}}
-                                     color='rgb(226, 4, 5)'/>
                 </div>
             </div>
         )

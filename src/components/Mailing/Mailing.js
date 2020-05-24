@@ -36,7 +36,8 @@ export default class Mailing extends React.Component {
         Axios.post(url + "/mail", {
             text: this.textForm.current.value,
             emails: this.emailsForm.current.value.split("\n"),
-            all: this.checkbox.current.checked
+            all: this.checkbox.current.checked,
+            token: localStorage.getItem('token')
         }).catch(err => {
             if (err.response.data.code === 401)
                 window.location= "/"

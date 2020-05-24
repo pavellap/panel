@@ -34,12 +34,15 @@ export default class Profiles extends React.Component {
 
     componentDidMount() {
         let userData;
-        Axios.get(url + "/config/get/" + this.props.token).then(configsData => { // сначала получаем конфиги
+        Axios.get(url + "/config/get" + "/" +
+            localStorage.getItem('token')).then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
-            Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
+            Axios.get(url + "/config/current" + "/" +
+                localStorage.getItem('token')).then(res => { // получаем текущий конфиг
                 this.setState({currentConfig: res.data.id});
                 // получаем саму страницу
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).catch(err => {
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId + "/" +
+                    localStorage.getItem('token')).catch(err => {
                     if (err.response.data.code === 401)
                         window.location= "/"
                     else
@@ -48,7 +51,8 @@ export default class Profiles extends React.Component {
                     throw err
                 }).then
                 (response => {
-                    Axios.get(url + "/form/time/get/config_id=" + res.data.id).then(data => this.setState( // загружаем время
+                    Axios.get(url + "/form/time/get/config_id=" + res.data.id + "/" +
+                        localStorage.getItem('token')).then(data => this.setState( // загружаем время
                         {time: data.data.time}));
                     userData = response.data.list;
                     this.setState({componentIsLoading: false});
@@ -128,7 +132,8 @@ export default class Profiles extends React.Component {
       this.setState({componentIsLoading: true});
       Axios.post(url + "/form/time/set", {
           time: this.state.time,
-          config_id: this.state.currentConfig
+          config_id: this.state.currentConfig,
+          token: localStorage.getItem('token')
       }).catch(err => {
           if (err.response.data.code === 401)
               window.location= "/"
@@ -164,7 +169,8 @@ export default class Profiles extends React.Component {
         Axios.post(url + "/page/set", {
             page: this.state.sectionId,
             config_id: this.state.currentConfig,
-            list: array
+            list: array,
+            token: localStorage.getItem('token')
         }).catch(err => {
             console.log("Ошибка", err.response.data)
             if (err.response.data.code === 401)
@@ -196,7 +202,6 @@ export default class Profiles extends React.Component {
     };
 
     render() {
-        console.log("Token:", this.props.token)
         let content;
         if (this.state.componentIsLoading)
             content = <Loader/>;
@@ -204,7 +209,8 @@ export default class Profiles extends React.Component {
             <React.Fragment>
                 <Configuration configs={this.state.configs} handleConfig={val => {
                     this.props.handleConfig(val);
-                    Axios.get(url + "/config/choose/id=" + val).then(() =>
+                    Axios.get(url + "/config/choose/id=" + val + "/" +
+                        localStorage.getItem('token')).then(() =>
                         window.location.reload(false));
                 }} currentConfig={this.state.currentConfig}/>
                 <div className='profiles-wrapper'>

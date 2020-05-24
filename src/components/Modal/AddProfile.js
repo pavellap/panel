@@ -47,8 +47,6 @@ export default class AddProfile extends React.Component {
 
     formData = () => {
         const question = this.state.questions;
-        // хз, почему не удаляет
-        delete question.id;
         return {
             questions: question,
             name: this.state.name,

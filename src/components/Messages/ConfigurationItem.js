@@ -17,7 +17,8 @@ export default class extends React.Component {
     handleChange = () => {
         Axios.post(url + "/config/change", {
             id: this.state.id,
-            active: !this.state.active
+            active: !this.state.active,
+            token: localStorage.getItem('token')
         }).then(res => {
             if (res.status === 200)
                 console.log("Успешно сохранил!");

@@ -8,6 +8,7 @@ import url from '../config'
 import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
 
+// Типовой компонент с информацией
 export default class extends React.Component {
     constructor(props) {
         super(props);
@@ -25,12 +26,15 @@ export default class extends React.Component {
 
     componentDidMount() {
         let userData;
-        Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+        Axios.get(url + "/config/get" + "/" +
+            localStorage.getItem('token')).then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
-            Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
+            Axios.get(url + "/config/current" + "/" +
+                localStorage.getItem('token')).then(res => { // получаем текущий конфиг
                 // получаем саму страницу
                 this.setState({currentConfig: res.data.id});
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId + "/" +
+                    localStorage.getItem('token')).then
                 (response => {
                     userData = response.data.list;
                 }).catch(err => {
@@ -79,7 +83,8 @@ export default class extends React.Component {
         Axios.post(url, {
             "page": this.state.sectionId,
             "config_id": this.state.currentConfig,
-            "list": this.state.messages
+            "list": this.state.messages,
+            "token": localStorage.getItem('token')
         }).catch(err => {
             if (err.response.data.code === 401)
                 window.location= "/"
@@ -111,7 +116,8 @@ export default class extends React.Component {
             <React.Fragment>
                 <Configuration configs={this.state.configs} handleConfig={val => {
                     this.props.handleConfig(val);
-                    Axios.get(url + "/config/choose/id=" + val).then(() =>
+                    Axios.get(url + "/config/choose/id=" + val + "/" +
+                        localStorage.getItem('token')).then(() =>
                     window.location.reload(false));
                 }} currentConfig={this.state.currentConfig}/>
                 <form>

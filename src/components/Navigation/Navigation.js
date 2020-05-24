@@ -19,7 +19,8 @@ import url from '../config'
 
 
 let config;
-Axios.get(url + "/config/current").then(res => {
+Axios.get(url + "/config/current" + "/" +
+    localStorage.getItem('token')).then(res => {
     config = res.data.id
 });
 

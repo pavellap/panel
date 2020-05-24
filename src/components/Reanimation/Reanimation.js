@@ -24,12 +24,15 @@ export default class Reanimation extends React.Component {
     }
     componentDidMount() {
         let userData;
-        Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+        Axios.get(url + "/config/get" + "/" +
+            localStorage.getItem('token')).then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
-            Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
+            Axios.get(url + "/config/current" + "/" +
+                localStorage.getItem('token')).then(res => { // получаем текущий конфиг
                 // получаем саму страницу
                 this.setState({currentConfig: res.data.id});
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId + "/" +
+                    localStorage.getItem('token')).then
                 (response => {
                     userData = response.data.list;
                 }).catch(err => {
@@ -106,6 +109,7 @@ export default class Reanimation extends React.Component {
             "page": this.state.sectionId,
             "config_id": this.state.currentConfig,
             "list": list,
+            token: localStorage.getItem('token')
         }).catch(err => {
             if (err.response.data.code === 401)
                 window.location= "/"

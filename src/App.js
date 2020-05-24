@@ -17,7 +17,6 @@ import Other from "./components/Other/Other";
 import Profile from "./components/Profile/Profile";
 import Present from "./components/Present/Present";
 import url from './components/config'
-import Cookies from "universal-cookie";
 
 export default class extends React.Component {
     constructor(props) {
@@ -31,7 +30,8 @@ export default class extends React.Component {
 
     componentDidMount() {
         const localURL = url + "/config/get";
-        Axios.get(localURL).then((response) => {
+        Axios.get(localURL + "/" +
+            localStorage.getItem('token')).then((response) => {
                 this.setState({configurationsList: response.data,
                     currentConfig: response.data[0].id});
             }
@@ -39,20 +39,13 @@ export default class extends React.Component {
     }
 
     changeConfiguration = (newId) => {
-        Axios.get(url + "/config/choose/id=" + newId);
+        Axios.get(url + "/config/choose/id=" + newId + "/" +
+            localStorage.getItem('token'));
         this.setState({currentConfig: newId});
     };
 
     handleToken = (val) => {
-        this.setState({token: val}, () => {
-            console.log("Token in app:", val)
-        })
-        document.cookie = 'panel=' + val;
-        console.log(document.cookie)
-        const cookies = new Cookies();
-        cookies.set('panel', val);
-        console.log("Cookie via React:")
-        console.log(cookies.get('panel')); // Pacman
+
     }
 
     render() {

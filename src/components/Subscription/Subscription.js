@@ -32,6 +32,7 @@ export default class Subscription extends React.Component {
                 page: 10,
                 config_id: 1, // по дефу пусть стоит 1
                 list: this.state.subscriptions,
+                token: localStorage.getItem("token")
             }).catch(err => {
             if (err.response.data.code === 401)
                 window.location= "/"
@@ -58,12 +59,15 @@ export default class Subscription extends React.Component {
 
     componentDidMount() {
         let userData;
-        Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+        Axios.get(url + "/config/get" + "/" +
+            localStorage.getItem('token')).then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
-            Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
+            Axios.get(url + "/config/current" + "/" +
+                localStorage.getItem('token')).then(res => { // получаем текущий конфиг
                 // получаем саму страницу
                 this.setState({currentConfig: res.data.id});
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId).then
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId + "/" +
+                    localStorage.getItem('token')).then
                 (response => {
                     console.log("Данные в разделе подписок:", response.data);
                     userData = response.data.list;

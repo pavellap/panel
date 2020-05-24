@@ -19,7 +19,8 @@ export default class Configuration extends React.Component {
     handleAddConfig = () => {
         let url = "http://188.32.187.157:5000";
         url += '/config/add';
-        Axios.get(url).then(response => {
+        Axios.get(url + "/" +
+            localStorage.getItem('token')).then(response => {
             this.setState({configurations: response.data});
             window.location.reload(false);
         });
@@ -36,7 +37,8 @@ export default class Configuration extends React.Component {
     };
 
     handleDelete = (id) => {
-        Axios.get(url + "/config/delete/" + id).then(res => {
+        Axios.get(url + "/config/delete/" + id + "/" +
+            localStorage.getItem('token')).then(res => {
             const array = this.state.configurations;
             array.filter(item => item.id !== id);
             this.setState({configurations: array});

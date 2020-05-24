@@ -29,23 +29,22 @@ export default class extends React.Component {
 
     // Загружаем данные раздела
     componentDidMount() {
-        Axios.get(url + "/config/get").then(configsData => { // сначала получаем конфиги
+        console.log("Component did mount with token", localStorage.getItem('token'))
+        Axios.get(url + "/config/get" + "/" +
+            localStorage.getItem('token')).then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
-            Axios.get(url + "/config/current").then(res => { // получаем текущий конфиг
+            Axios.get(url + "/config/current" + "/" +
+                localStorage.getItem('token')).then(res => { // получаем текущий конфиг
                 // получаем саму страницу
                 this.setState({currentConfig: res.data.id});
                 let messages;
                 let greetings;
-                console.log("Отправляемые куки:", document.cookie)
-                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId, { withCredentials: true, headers: {
-                        Authorization: document.cookie
-                    }}).
+                Axios.get(url + "/page/get/config_id=" + res.data.id + "&page_id=" + this.state.sectionId + "/" +
+                    localStorage.getItem('token')).
                 then(response => {
                     messages = response.data.list; // получаем обычные сообщения
                     greetings = response.data.greetings; // получаем приветственные сообщения
-                    console.log(response.data)
                 }).catch(err => {
-                    console.log("Cookie in catch:", document.cookie)
                     // перекидываем на стартовую страницу, если выкидывает 401 ошибку
                     console.log(err);
                     if (err.response.data.code === 401)
@@ -119,7 +118,8 @@ export default class extends React.Component {
             config_id: this.state.currentConfig,
             greetings: greetings,
             list: this.state.messages,
-            page: this.state.sectionId
+            page: this.state.sectionId,
+
         }).catch(err => {
             if (err.response.data.code === 401)
                 window.location= "/"

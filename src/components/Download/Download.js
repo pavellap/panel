@@ -13,7 +13,8 @@ export default class Download extends React.Component {
                     <div className='download-wrapper'>
                         <h4>Доступные файлы</h4>
                         <DownloadEntry title='Отчёт' description={'Загрузить отчёты'}
-                        handleClick={() => window.open(url + "/statistics", "_blank")}
+                        handleClick={() => window.open(url + "/statistics" + "/" +
+                            localStorage.getItem('token'), "_blank")}
                                        file='csv'/>
                     </div>
             </section>

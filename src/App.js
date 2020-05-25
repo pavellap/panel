@@ -92,7 +92,7 @@ export default class extends React.Component {
                     children={<Subscription id={this.state.currentConfig}/>}/>}/>
 
                     <Route path='/reanimation' render={(props) => <Wrapper id={this.state.currentConfig}
-                    children={<Reanimation handleClick={(id) => this.changeConfiguration(id)}
+                    children={<Reanimation handleConfig={val => this.changeConfiguration(val)}
                     configId={this.state.currentConfig}/>}/>}/>
 
                 </Switch>

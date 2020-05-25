@@ -204,7 +204,7 @@ export default class extends React.Component {
             ],
             ans_type: 2
         });
-        this.setState(prevState => {
+        this.setState(() => {
             return {greetings: newArray, idCounter: this.state.idCounter + 1}
         })
     };
@@ -256,7 +256,8 @@ export default class extends React.Component {
             <React.Fragment>
                 <Configuration configs={this.state.configs} handleConfig={val => {
                     this.props.handleConfig(val);
-                    Axios.get(url + "/config/choose/id=" + val).then(() =>
+                    Axios.get(url + "/config/choose/id=" + val + "/" +
+                        localStorage.getItem('token')).then(() =>
                         window.location.reload(false));
                 }} currentConfig={this.state.currentConfig}/>
                 <form>

@@ -78,7 +78,7 @@ export default class Other extends React.Component {
                 this.setState({componentIsLoading: false, modalIsOpen: true, typeOfModal: "success",
                     contentModal: err.response.data.error});
             throw err
-        })
+        }).then(() => this.setState({componentIsLoading: false}))
     };
 
     handleClick = () => {
@@ -114,8 +114,9 @@ export default class Other extends React.Component {
                     this.props.handleConfig(val);
                     console.log("Меняем на конфиг:", val);
                     Axios.get(url + "/config/choose/id=" + val + "/" +
-                        localStorage.getItem('token')).then(() =>
-                        window.location.reload(false));
+                        localStorage.getItem('token')).then(() => {
+                        window.location.reload(false)
+                });
                 }} currentConfig={this.state.currentConfig}/>
                 <form>
                     {this.state.messages.map((item) => (

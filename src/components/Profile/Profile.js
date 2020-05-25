@@ -81,7 +81,7 @@ export default class Profile extends React.Component {
             "page": this.state.sectionId,
             "config_id": this.state.currentConfig,
             "list": this.state.messages,
-            token: localStorage.get('token')
+            token: localStorage.getItem('token')
         }).catch(err => {
             if (err.response.data.code === 401)
                 window.location= "/"

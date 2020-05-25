@@ -119,7 +119,7 @@ export default class extends React.Component {
             greetings: greetings,
             list: this.state.messages,
             page: this.state.sectionId,
-
+            token: localStorage.getItem('token')
         }).catch(err => {
             if (err.response.data.code === 401)
                 window.location= "/"

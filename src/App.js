@@ -17,6 +17,8 @@ import Other from "./components/Other/Other";
 import Profile from "./components/Profile/Profile";
 import Present from "./components/Present/Present";
 import url from './components/config'
+import MessagesSection from "./Containers/MessagesSection";
+import Groups from "./components/groups/groups";
 
 export default class extends React.Component {
     constructor(props) {
@@ -24,7 +26,8 @@ export default class extends React.Component {
         this.state = {
             currentConfig: null,
             configurationsList: [],
-            token: null
+            token: null,
+            isAuthorized: false
         };
     }
 
@@ -95,6 +98,12 @@ export default class extends React.Component {
                     children={<Reanimation handleConfig={val => this.changeConfiguration(val)}
                     configId={this.state.currentConfig}/>}/>}/>
 
+                    <Route path='/messages' render={() => <Wrapper Wrapper id={this.state.currentConfig}
+                    children={<MessagesSection/>}/>}/>
+
+                    <Route path='/groups' render={() => <Wrapper id={this.state.currentConfig} children={
+                        <Groups/>
+                    }/>}/>
                 </Switch>
             </Layout>
         )

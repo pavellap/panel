@@ -31,15 +31,15 @@ export default class Navigation extends React.Component {
             titles: [ // наименования вкладок
                 'Диалог Регистрации', 'Главное меню и оплата', 'Анкета',  'Сообщение перед концом подписки',
                 'Отправка подарочных сертификатов ', "Остальное", 'Серия Реанимации', "Анкеты", "Рассылки", "Подписки",
-                "Загрузка отчётов"
+                "Загрузка отчётов", 'Группы'
             ],
             links: [ // ссылки на вкладки
                 'registration', 'payment', 'profile', 'expiring', 'present', 'other', 'reanimation', 'profiles',
-                'mailing', 'subscription', 'download'
+                'mailing', 'subscription', 'download', 'groups'
             ],
             icons: [ // соответствующие компоненты иконок
                 faUserClock, faMoneyCheckAlt, faUser, faUserClock, faGift, faUserCog, faCapsules, faUsers, faMailBulk,
-                faUserPlus, faDownload
+                faUserPlus, faDownload, faUser
             ],
             user: 'admin',
             status: "online",

@@ -5,6 +5,7 @@ import Modal from "../Modal/Modal";
 import ReactDOM from 'react-dom'
 import url from '../config'
 import Cookies from 'universal-cookie'
+import {isDevMode} from "../config";
 
 // Компонент авторизации
 // P.S соре за говнокод, если вы будете это исправлять то F вам
@@ -25,6 +26,12 @@ export default class Authorization extends React.Component {
 
     // получаем данные
     handleButtonClick(event) {
+        if (isDevMode) {
+            event.preventDefault();
+            window.location.href += 'registration';
+            this.props.handleToken(true);
+            return;
+        }
         event.preventDefault();
         // отправляем запрос на успешную авторизацию
         Axios.post(url + '/auth', {

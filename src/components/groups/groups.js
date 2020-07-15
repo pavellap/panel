@@ -33,7 +33,7 @@ export default class Groups extends React.Component {
             modalComponent: null
         }
     }
-
+    // выкидываем модальное
     handleModal = (status, content = null, id = null) => {
         console.log(status, content, id)
         if (content === 'delete')
@@ -49,7 +49,7 @@ export default class Groups extends React.Component {
         }
         this.setState({modalIsOpen: status})
     }
-
+    // удаляем группу
     deleteGroup = (id) => {
         const array = this.state.groups.filter(item => item.id !== id);
         console.log('Группы после изменения:', array)
@@ -57,13 +57,14 @@ export default class Groups extends React.Component {
             console.log("State after change:", this.state)
         });
     }
-
+    // перемещаем профили
     handleMove = (id, action) => {
         const array = this.state.groups;
         let pos;
         array.forEach((item, index) => {
             if (item.id === id) {
                 pos = index;
+
             }
         })
         if (action === "up" && pos !== 0) {
@@ -80,13 +81,24 @@ export default class Groups extends React.Component {
         }
     }
 
+    handleAddNewGroup = () => {
+        this.setState({
+            modalIsOpen: true,
+        })
+    }
+
+    // TODO функциональность добавления пользователей
+    // TODO кнопку для сохранения изменений
     render() {
 
         return (
             <MainWrapper>
                 <PageHeader title='Группы'/>
                 <Header>
-                    <Button color='primary' variant='contained'>Добавить группу</Button>
+                    <Button color='primary' variant='contained'
+                    onClick={this.handleAddNewGroup}>
+                        Добавить группу
+                    </Button>
                 </Header>
                 <Wrapper>
                     {this.state.groups.map((item, index) =>

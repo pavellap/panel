@@ -34,7 +34,7 @@ const groupDetailed = [
     {
         id: 2,
         name: 'second',
-        added_rules: [1, 3],
+        added_rules: [1, 3, 6, 7],
         deleted_rules: [2, 4, 5],
         users: [
             {
@@ -64,4 +64,19 @@ const groupDetailed = [
     },
 ]
 
-export {groups, groupDetailed};
+const entryData = {
+    login: 'admin',
+    password: 'qwerty'
+}
+
+const matches = {
+    1: 'Право на нахождение в беседе',
+    2: 'Право писать в беседе',
+    3: 'Право отправлять ссылки',
+    4: 'Право отправлять картинки',
+    5: 'Право отправлять видео',
+    6: 'Право отправлять аудиосообщения',
+    7: 'Право отправлять документы'
+}
+
+export {groups, groupDetailed, matches};

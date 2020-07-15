@@ -8,6 +8,7 @@ import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
 
 
+
 export default class Mailing extends React.Component {
     constructor(props) {
         super(props);
@@ -57,6 +58,7 @@ export default class Mailing extends React.Component {
     };
 
     render() {
+
         return (
             <section>
                 <PageHeader title='Настройка рассылки'/>

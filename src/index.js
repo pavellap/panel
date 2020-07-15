@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {HashRouter} from 'react-router-dom'
+import {HashRouter, BrowserRouter} from 'react-router-dom'
 
-const app = (<HashRouter><App/></HashRouter>);
+const app = (<BrowserRouter><App/></BrowserRouter>);
 
 ReactDOM.render(app, document.getElementById('root'));
 

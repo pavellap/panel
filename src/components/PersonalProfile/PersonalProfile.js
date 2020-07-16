@@ -11,6 +11,8 @@ import Profile from "../Profile/Profile";
 import Other from "../Other/Other";
 import AddUser from "./AddUser";
 import DeleteUser from "./DeleteUser";
+import PersonalPage from "./PersonalPage";
+import Staff from "./Staff";
 
 const Container = styled.section`
   display: flex;
@@ -19,8 +21,11 @@ const Container = styled.section`
   flex-direction: column;
   background-color: #FAFAFA;
   a {
-      display: block;
+      display: flex;
+      align-items: center;
       width: 100%;
+      height: 100%;
+      
   }
 `
 
@@ -41,10 +46,14 @@ const Menu = styled.nav`
   flex-direction: column;
   border-right: 1px solid rgb(219, 219, 219);
   div {
-      padding: 10px 15px;
+      padding-left: 10px;
       width: 100%;
       font-size: 21px;
+      height: 50px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+     
       :hover {
           background-color: rgb(250, 250, 250);
           border-left: 2px solid rgb(219, 219, 219);;
@@ -109,10 +118,10 @@ export default class extends React.Component {
                 </Grid>
                 <Grid item xs>
                     <Switch>
-                        <Route exact path='/settings'><h1>Главеая</h1></Route>
+                        <Route exact path='/settings' render={() => <PersonalPage name='Admin' date='15.07.20'/>}/>
                         <Route path='/settings/password' component={Password}/>
                         <Route path='/settings/add_user' component={AddUser}/>
-                        <Route path='/settings/stuff' component={Profile}/>
+                        <Route path='/settings/stuff' component={Staff}/>
                         <Route path='/settings/delete_user' render={() => <DeleteUser group={['trigo', 'pavellap', 'ekatze']}/>}/>
                     </Switch>
                 </Grid>

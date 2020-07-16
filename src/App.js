@@ -54,7 +54,11 @@ export default class extends React.Component {
                 console.log("Status", this.state.isAuthorized)
             });
     }
-
+    /*
+    * TODO:
+    *  1. Роли прокидывать в редакс, чтобы не ебаться с кучей пропсов
+    *
+     */
     render() {
         return (
             <Layout>

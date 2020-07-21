@@ -34,7 +34,7 @@ export default function(props) {
                     )}
                 </List>
             }
-            <Button variant='contained'>Сохранить изменения</Button>
+            <Button variant='contained' color='secondary'>Сохранить изменения</Button>
         </Container>
     )
 }

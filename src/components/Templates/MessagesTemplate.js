@@ -8,6 +8,7 @@ import url from '../config'
 import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
 
+
 // в пропсах: название раздела, id раздела
 export default class extends Component {
     constructor(props) {
@@ -133,6 +134,7 @@ export default class extends Component {
         );
         return(
             <section style={{position: "relative"}}>
+                <PageHeader title={title}/>
                 {content}
                 {ReactDOM.createPortal( this.state.modalIsOpen && <Modal type={this.state.typeOfModal}
                 text={this.state.contentModal} handleClick={this.handleClick}/>,

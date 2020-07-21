@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from "styled-components";
-import {TextField, Typography, Button,
+import {TextField, Typography,
         Tooltip, List, ListItem, ListItemIcon,
         ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import TelegramIcon from '@material-ui/icons/Telegram';
@@ -11,7 +11,25 @@ const Container = styled.div`
     flex-direction: column;
 `
 
-
+const Button = styled.div`
+  background-color: #3f51b5;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 12px 22px;
+  font-size: 0.875rem;
+  min-width: 180px;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 
+  0px 2px 2px 0px rgba(0,0,0,0.14), 
+  0px 1px 5px 0px rgba(0,0,0,0.12);
+`
 
 export default function(props) {
     const handleChange = (text) => {
@@ -68,11 +86,11 @@ export default function(props) {
                 )}
             </List>
                 }
-             <Tooltip placement='bottom-start' title='Добавляет нового пользователя к текущему списку приглашенных пользователей'>
+             {/*<Tooltip placement='bottom-start' title='Добавляет нового пользователя к текущему списку приглашенных пользователей'>
                 <Button onClick={() => addNewUser('button')} variant='contained' color='primary'>
                     Добавить пользователя
                 </Button>
-             </Tooltip>
+             </Tooltip>*/}
             <Button variant='contained' color='primary'>Отправить приглашение</Button>
         </Container>
     )

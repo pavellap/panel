@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import {
-    Typography, Button, Tooltip, List,
-    ListItemIcon, ListItemText, ListSubheader, TextField, ListItem, ListItemSecondaryAction
+    Typography, Tooltip, List,
+    ListItemIcon, ListItemText, TextField, ListItem, ListItemSecondaryAction,
+    makeStyles
 } from "@material-ui/core";
 import styled from "styled-components";
 import ReactDOM from "react-dom";
@@ -15,6 +16,25 @@ const Container = styled.div`
     flex-direction: column;
 `
 
+const Button = styled.div`
+  background-color: #3f51b5;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 12px 22px;
+  font-size: 0.875rem;
+  min-width: 180px;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 
+  0px 2px 2px 0px rgba(0,0,0,0.14), 
+  0px 1px 5px 0px rgba(0,0,0,0.12);
+`
 
 export default function (props) {
     // просматривает изменения в форме для нового пользователя
@@ -88,11 +108,11 @@ export default function (props) {
                 <ModalAdvanced width={15} height='150px' toggleModal={() => handleModal(false)}>
                     <Typography>Вы действительно хотите удалить модератора {userToDelete}?</Typography>
                     <div style={{display: 'flex'}}>
-                        <Button color='primary' variant='contained' onClick={() => {
+                        <Button style={{marginTop: '20px'}}  color='primary' variant='contained' onClick={() => {
                             removeUser(userToDelete);
                             handleModal(false);
                         }}>Да</Button>
-                        <Button color='secondary' variant='contained' onClick={() => handleModal(false)}>
+                        <Button style={{marginTop: '20px'}} color='secondary' variant='contained' onClick={() => handleModal(false)}>
                             Нет
                         </Button>
                     </div>

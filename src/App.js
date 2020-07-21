@@ -1,7 +1,6 @@
 import React from 'react';
 import {Switch, Route} from "react-router-dom";
 import Axios from "axios";
-import './normalize.css'
 import Layout from "./components/hoc/Layout";
 import Authorization from "./components/Authorization/Authorization";
 import Wrapper from "./components/hoc/Wrapper";
@@ -10,17 +9,19 @@ import Download from "./components/Download/Download";
 import Profiles from "./components/Profiles/Profiles";
 import Mailing from "./components/Mailing/Mailing";
 import Subscription from "./components/Subscription/Subscription";
+import {Promo} from "./components/Promo/Promo";
+import url from './components/config'
+import MessagesTemplate from "./components/Templates/MessagesTemplate";
+import Groups from "./components/groups/groups";
+import PersonalProfile from "./components/PersonalProfile/PersonalProfile";
+
+import {sections} from "./TextTemplates/AppTemplate";
 import RegistrationDialog from "./components/RegistrationDialog/RegistrationDialog";
 import Payment from "./components/Payment/Payment";
 import Expiring from "./components/Expiring/Expiring";
 import Other from "./components/Other/Other";
 import Profile from "./components/Profile/Profile";
-import {Promo} from "./components/Promo/Promo";
 import Present from "./components/Present/Present";
-import url from './components/config'
-import MessagesSection from "./Containers/MessagesSection";
-import Groups from "./components/groups/groups";
-import PersonalProfile from "./components/PersonalProfile/PersonalProfile";
 
 
 export default class extends React.Component {
@@ -59,6 +60,7 @@ export default class extends React.Component {
     /*
     * TODO:
     *  1. Роли прокидывать в редакс, чтобы не ебаться с кучей пропсов
+    *  2. Нормально доделать структуру App.js
     *
      */
     render() {
@@ -67,38 +69,17 @@ export default class extends React.Component {
                 <Switch>
                     <Route exact path='/' render={() => <Authorization
                     handleToken={(val) => this.handleAuth(val)}/>}/>
-
                     <Route  path='/settings/' render={() => <PersonalProfile/>}/>
 
-                    <Route path='/registration' render={(props) => <Wrapper id={this.state.currentConfig}
-                    isAuthorized={this.state.isAuthorized}
-                    children={<RegistrationDialog handleConfig={val => this.changeConfiguration(val)}
-                    id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
-
-                    <Route path='/payment' render={(props) => <Wrapper id={this.state.currentConfig}
-                    isAuthorized={this.state.isAuthorized}
-                    children={<Payment handleConfig={val => this.changeConfiguration(val)}
-                    id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
-
-                    <Route path='/profile' render={(props) => <Wrapper id={this.state.currentConfig}
-                                                                       isAuthorized={this.state.isAuthorized}
-                    children={<Profile handleConfig={val => this.changeConfiguration(val)}
-                    id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
-
-                    <Route path='/expiring' render={(props) => <Wrapper id={this.state.currentConfig}
-                                                                        isAuthorized={this.state.isAuthorized}
-                    children={<Expiring handleConfig={val => this.changeConfiguration(val)}
-                    id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
-
-                    <Route path='/present' render={(props) => <Wrapper id={this.state.currentConfig}
-                                                                       isAuthorized={this.state.isAuthorized}
-                    children={<Present handleConfig={val => this.changeConfiguration(val)}
-                    id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
-
-                    <Route path='/other' render={(props) => <Wrapper id={this.state.currentConfig}
-                                                                     isAuthorized={this.state.isAuthorized}
-                    children={<Other  handleConfig={val => this.changeConfiguration(val)}
-                    id={this.state.currentConfig} configs={this.state.configurationsList}/>}/>}/>
+                    {sections.map(item =>
+                        <Route path={item.path}>
+                            <Wrapper id={this.state.currentConfig}
+                                     isAuthorized={this.state.isAuthorized}>
+                                <MessagesTemplate title={item.title} handleConfig={val => this.changeConfiguration(val)}
+                                id={item.id} configs={this.state.configurationsList}/>
+                            </Wrapper>
+                        </Route>
+                    )}
 
                     <Route path='/profiles' render={(props) => <Wrapper id={this.state.currentConfig}
                                                                         isAuthorized={this.state.isAuthorized}
@@ -121,10 +102,6 @@ export default class extends React.Component {
                                                                            isAuthorized={this.state.isAuthorized}
                     children={<Reanimation handleConfig={val => this.changeConfiguration(val)}
                     configId={this.state.currentConfig}/>}/>}/>
-
-                    <Route path='/messages' render={() => <Wrapper Wrapper id={this.state.currentConfig}
-                                                                   isAuthorized={this.state.isAuthorized}
-                    children={<MessagesSection/>}/>}/>
 
                     <Route path='/groups' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
                                                                  id={this.state.currentConfig} children={

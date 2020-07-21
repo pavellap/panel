@@ -8,6 +8,7 @@ export default function NavigationHeader(props) {
         color = {backgroundColor: "red"};
     else
         color = {backgroundColor: "green"};
+    // TODO: поменять аватарку
     return (
         <div className='Navigation-header'>
             <div className='Navigation-header-image-wrapper'>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import './PageHeader.css'
 import Axios from "axios";
 import url from '../config'
@@ -14,9 +14,28 @@ const Wrapper = styled.div`
   align-items: center;
   span:first-child {
       margin-right: 15px;
-  }
-  
+  } 
 `
+
+const Header = styled.h3`
+    background-color: #fafbfc;
+    padding: 5px 15px 0 25px;
+    margin: 0;
+    height: 50px;
+    border-bottom: 1px solid #e7e8ec;
+    border-radius: 4px;
+    font-weight: normal;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+`
+
 
 
 const handleClick = () => {
@@ -41,7 +60,7 @@ export default function PageHeader(props) {
     };
 
     return (
-        <h3 className='Page-header'>
+        <Header>
             <Wrapper>
                 <span>{props.children}</span>
                 <span>{props.title}</span>
@@ -57,8 +76,8 @@ export default function PageHeader(props) {
                 <MenuItem onClick={handleClose}><Link to='/settings/'>Мой профиль</Link></MenuItem>
                 <MenuItem onClick={handleClose}><Link to='/registration'>На главную</Link></MenuItem>
                 <MenuItem onClick={handleClose}>Управление персоналом</MenuItem>
-                <MenuItem onClick={handleClose}>Выйти из панели управления</MenuItem>
+                <MenuItem onClick={() => {handleClose(); handleClick()}}>Выйти из панели управления</MenuItem>
             </Menu>
-        </h3>
+        </Header>
     )
 }

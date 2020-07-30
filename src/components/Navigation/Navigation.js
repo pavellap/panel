@@ -1,19 +1,15 @@
 import React from 'react'
-import {titles, links, icons, messagesContent} from "../../TextTemplates/NavigationTemplate";
+import {titles, links, icons, messagesContent} from "../../Constants/NavigationTemplate";
 import NavigationHeader from "./Navigation-header";
 import NavigationItem from "./Navigation-item";
 import {withStyles, Accordion} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import './Navigation.css'
 import Axios from "axios";
 import url from '../config'
-
 import Typography from "@material-ui/core/Typography";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {faMailBulk} from "@fortawesome/free-solid-svg-icons";
+
 
 /*
  * Для иконок в навигации используется готовая React-библиотека от FontAwesome
@@ -43,19 +39,6 @@ export default class Navigation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            /*titles: [ // наименования вкладок
-                'Диалог Регистрации', 'Главное меню и оплата', 'Анкета',  'Сообщение перед концом подписки',
-                'Отправка подарочных сертификатов ', "Остальное", 'Серия Реанимации', "Анкеты", "Рассылки", "Подписки",
-                "Загрузка отчётов", 'Группы', 'Промокоды'
-            ],
-            links: [ // ссылки на вкладки
-                'registration', 'payment', 'profile', 'expiring', 'present', 'other', 'reanimation', 'profiles',
-                'mailing', 'subscription', 'download', 'groups', 'promo'
-            ],
-            icons: [ // соответствующие компоненты иконок
-                faUserClock, faMoneyCheckAlt, faUser, faUserClock, faGift, faUserCog, faCapsules, faUsers, faMailBulk,
-                faUserPlus, faDownload, faUser, faAd
-            ],*/
             user: 'admin', // TODO эта хуйня потом через редакс будет прокидываться
             status: "online",
             active: "Диалог Регистрации",

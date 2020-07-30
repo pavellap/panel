@@ -4,24 +4,16 @@ import Axios from "axios";
 import Layout from "./components/hoc/Layout";
 import Authorization from "./components/Authorization/Authorization";
 import Wrapper from "./components/hoc/Wrapper";
-import Reanimation from "./components/Reanimation/Reanimation";
 import Download from "./components/Download/Download";
 import Profiles from "./components/Profiles/Profiles";
-import Mailing from "./components/Mailing/Mailing";
 import Subscription from "./components/Subscription/Subscription";
 import {Promo} from "./components/Promo/Promo";
 import url from './components/config'
-import MessagesTemplate from "./components/Templates/MessagesTemplate";
-import Groups from "./components/groups/groups";
+import MessagesTemplate from "./Containers/MessagesContainer";
+import Groups from "./components/Groups/Groups";
 import PersonalProfile from "./components/PersonalProfile/PersonalProfile";
-
-import {sections} from "./TextTemplates/AppTemplate";
-import RegistrationDialog from "./components/RegistrationDialog/RegistrationDialog";
-import Payment from "./components/Payment/Payment";
-import Expiring from "./components/Expiring/Expiring";
-import Other from "./components/Other/Other";
-import Profile from "./components/Profile/Profile";
-import Present from "./components/Present/Present";
+import {sections} from "./Constants/AppTemplate";
+import Mail from "./components/Mailing/Mail";
 
 
 export default class extends React.Component {
@@ -81,27 +73,22 @@ export default class extends React.Component {
                         </Route>
                     )}
 
-                    <Route path='/profiles' render={(props) => <Wrapper id={this.state.currentConfig}
+                    <Route path='/profiles' render={() => <Wrapper id={this.state.currentConfig}
                                                                         isAuthorized={this.state.isAuthorized}
                     children={<Profiles  handleConfig={val => this.changeConfiguration(val)}
                     id={this.state.currentConfig} configs={this.state.configurationsList} token={this.state.token}/>}/>}/>
 
-                    <Route path='/mailing' render={(props) => <Wrapper isAuthorized={this.state.isAuthorized}
+                    <Route path='/mailing' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
                                                                        id={this.state.currentConfig}
-                    children={<Mailing/>}/>}/>
+                    children={<Mail/>}/>}/>
 
-                    <Route path='/download' render={(props) => <Wrapper isAuthorized={this.state.isAuthorized}
+                    <Route path='/download' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
                         id={this.state.currentConfig}
                     children={<Download/>}/>}/>
 
-                    <Route path='/subscription' render={(props) => <Wrapper id={this.state.currentConfig}
+                    <Route path='/subscription' render={() => <Wrapper id={this.state.currentConfig}
                                                                             isAuthorized={this.state.isAuthorized}
                     children={<Subscription id={this.state.currentConfig}/>}/>}/>
-
-                    <Route path='/reanimation' render={(props) => <Wrapper id={this.state.currentConfig}
-                                                                           isAuthorized={this.state.isAuthorized}
-                    children={<Reanimation handleConfig={val => this.changeConfiguration(val)}
-                    configId={this.state.currentConfig}/>}/>}/>
 
                     <Route path='/groups' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
                                                                  id={this.state.currentConfig} children={

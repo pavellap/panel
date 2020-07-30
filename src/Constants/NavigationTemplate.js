@@ -9,18 +9,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 // наименования вкладок
 const titles =
-    ['Серия Реанимации', "Анкеты", "Рассылки", "Подписки",
+    ["Анкеты", "Рассылки", "Подписки",
         "Загрузка отчётов", 'Группы', 'Промокоды'
     ]
 
 
 const links = [ // ссылки на вкладки
-    'reanimation', 'profiles',
+    'profiles',
     'mailing', 'subscription', 'download', 'groups', 'promo'
 ]
 
 const icons = [ // соответствующие компоненты иконок
-    faCapsules, faUsers, faMailBulk,
+    faUsers, faMailBulk,
     faUserPlus, faDownload, faUser, faAd
 ]
 
@@ -31,6 +31,7 @@ const messagesContent = [
     ['Сообщение перед концом подписки', 'expiring', faUserClock],
     ['Отправка подарочных сертификатов ','present', faGift],
     ["Остальное",  'other', faUserCog],
+    ["Серия Реанимации", 'reanimation', faCapsules]
 ]
 
 export {titles, links, icons, messagesContent}

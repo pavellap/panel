@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from "styled-components";
 import {TextField, Typography,
-        Tooltip, List, ListItem, ListItemIcon,
+         List, ListItem, ListItemIcon,
         ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import TelegramIcon from '@material-ui/icons/Telegram';
 import ClearIcon from '@material-ui/icons/Clear';

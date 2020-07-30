@@ -16,7 +16,39 @@ const groups = [
         name: 'fourth'
     },
 ]
+const hardCode = [
+    {
+        "phone": 89998916861,
+        "nick": "pavellap", // может быть nil
+        "id": 1
+    },
+    {
+        "phone": 89998916861,
+        "nick": "trigo", // может быть nil
+        "id": 2
+    },
+    {
+        "phone": 89998916861,
+        "nick": "4", // может быть nil
+        "id": 4
+    },
+    {
+        "phone": 89998916861,
+        "nick": "5", // может быть nil
+        "id": 5
+    },
+    {
+        "phone": 89998916861,
+        "nick": "6", // может быть nil
+        "id": 6
+    },
+    {
+        "phone": 89998916861,
+        "nick": "7", // может быть nil
+        "id": 7
+    },
 
+]
 const groupDetailed = [
     {
         id: 1,
@@ -69,14 +101,14 @@ const entryData = {
     password: 'qwerty'
 }
 
-const matches = {
-    1: 'Право на нахождение в беседе',
-    2: 'Право писать в беседе',
-    3: 'Право отправлять ссылки',
-    4: 'Право отправлять картинки',
-    5: 'Право отправлять видео',
-    6: 'Право отправлять аудиосообщения',
-    7: 'Право отправлять документы'
+const groupRules = {
+    1: ['Право на нахождение в беседе', false],
+    2: ['Право писать в беседе', false],
+    3: ['Право отправлять ссылки', false],
+    4: ['Право отправлять картинки', false],
+    5: ['Право отправлять видео', false],
+    6: ['Право отправлять аудиосообщения', false],
+    7: ['Право отправлять документы', false]
 }
 
 const rules = [
@@ -93,5 +125,4 @@ const rules = [
 ]
 
 
-
-export {groups, groupDetailed, matches, rules};
+export {groups, groupDetailed, groupRules, rules, hardCode,};

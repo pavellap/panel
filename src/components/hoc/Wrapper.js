@@ -4,6 +4,7 @@ import './Wrapper.css'
 import {Redirect} from "react-router";
 
 export default class Wrapper extends React.Component {
+    // TODO: remove comment block
     render() {
         return (
             <div className='Wrapper'>

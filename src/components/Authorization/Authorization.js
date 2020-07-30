@@ -4,14 +4,11 @@ import Axios from "axios";
 import Modal from "../Modal/Modal";
 import ReactDOM from 'react-dom'
 import url from '../config'
-import Cookies from 'universal-cookie'
 import {isDevMode} from "../config";
 
-// Компонент авторизации
-// P.S соре за говнокод, если вы будете это исправлять то F вам
+
 export default class Authorization extends React.Component {
     constructor(props) {
-        console.log("Initial cookie:", document.cookie)
         super(props);
         this.password = React.createRef();
         this.login = React.createRef();

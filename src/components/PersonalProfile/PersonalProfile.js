@@ -1,14 +1,11 @@
 import React from 'react'
 import PageHeader from "../UI/PageHeader";
 import AppsIcon from '@material-ui/icons/Apps';
-import {Link, Switch, Route, matchPath} from 'react-router-dom'
+import {Link, Switch, Route} from 'react-router-dom'
 import {Tooltip} from "@material-ui/core";
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
-import {Tab, Tabs, MenuItem} from "@material-ui/core";
 import Password from "./Password";
-import Profile from "../Profile/Profile";
-import Other from "../Other/Other";
 import AddUser from "./AddUser";
 import DeleteUser from "./DeleteUser";
 import PersonalPage from "./PersonalPage";

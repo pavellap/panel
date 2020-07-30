@@ -4,10 +4,12 @@ import styled from "styled-components";
 import Item from './GroupItem'
 import ReactDOM from "react-dom";
 import ModalAdvanced from "../Modal/ModalAdvanced";
-import {groups} from "../../template";
+import {groupDetailed} from "../../template";
 import Button from "@material-ui/core/Button";
 import DeleteWindow from "./DeleteWindow";
 import EditWindow from "./EditWindow";
+import AddWindow from "./AddWindow";
+import './scrollbar.scss'
 
 const MainWrapper = styled.section`
   position: relative;
@@ -29,12 +31,14 @@ export default class Groups extends React.Component {
         super(props);
         this.state = {
             modalIsOpen: false,
-            groups,
-            modalComponent: null
+            groups: groupDetailed,
+            modalComponent: null,
+            widthModal: null,
+            heightModal: null
         }
     }
     // выкидываем модальное
-    handleModal = (status, content = null, id = null) => {
+    handleModal = (status, content, id = null) => {
         console.log(status, content, id)
         if (content === 'delete')
             this.setState({modalComponent: <DeleteWindow id={id}
@@ -43,9 +47,14 @@ export default class Groups extends React.Component {
                                      status && this.deleteGroup(id);
                                      status && console.log("удаляем айдишник:", id)
                                  }
-                }/>})
+                }/>, widthModal: '150px', heightModal: 'auto'})
         else if (content === 'edit') {
             this.setState({modalComponent: <EditWindow id={id}/>})
+        }
+        else if (content === 'add') {
+            this.setState({
+                modalComponent: <AddWindow handleAdd={this.handleAddNewGroup}/>,
+            })
         }
         this.setState({modalIsOpen: status})
     }
@@ -60,11 +69,10 @@ export default class Groups extends React.Component {
     // перемещаем профили
     handleMove = (id, action) => {
         const array = this.state.groups;
-        let pos;
+        let pos = null;
         array.forEach((item, index) => {
             if (item.id === id) {
                 pos = index;
-
             }
         })
         if (action === "up" && pos !== 0) {
@@ -81,12 +89,6 @@ export default class Groups extends React.Component {
         }
     }
 
-    handleAddNewGroup = () => {
-        this.setState({
-            modalIsOpen: true,
-        })
-    }
-
     // TODO функциональность добавления пользователей
     // TODO кнопку для сохранения изменений
     render() {
@@ -96,7 +98,7 @@ export default class Groups extends React.Component {
                 <PageHeader title='Группы'/>
                 <Header>
                     <Button color='primary' variant='contained'
-                    onClick={this.handleAddNewGroup}>
+                    onClick={() => this.handleModal(true, 'add')}>
                         Добавить группу
                     </Button>
                 </Header>
@@ -110,7 +112,7 @@ export default class Groups extends React.Component {
                 </Wrapper>
                 {ReactDOM.createPortal( this.state.modalIsOpen &&
                 <ModalAdvanced
-                width={55} height='760px'
+                width={this.state.widthModal} height={this.state.heightModal}
                 toggleModal={(status, content) => this.handleModal(status, content)}
                 approveAction={(status, id) => status ? this.deleteGroup(id) : this.handleModal(false)}>
                     {this.state.modalComponent}

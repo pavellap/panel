@@ -1,5 +1,3 @@
-import MessagesTemplate from "../components/Templates/MessagesTemplate";
-
 const sections = [
     {
         title: 'Диалог регистрации',
@@ -22,15 +20,20 @@ const sections = [
         id: 4
     },
     {
-        title: 'Подарочных сертификаты',
+        title: 'Отправка Подарочных сертификаты',
         path: '/present',
         id: 5
     },
     {
-        title: 'Другое',
+        title: 'Остальное',
         path: '/other',
         id: 6
     },
+    {
+        title: 'Серия реанимации',
+        path: '/reanimation',
+        id: 7
+    }
 ]
 
 export {sections};

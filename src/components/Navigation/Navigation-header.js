@@ -12,7 +12,7 @@ export default function NavigationHeader(props) {
     return (
         <div className='Navigation-header'>
             <div className='Navigation-header-image-wrapper'>
-                <img src={require("../../user.png")} alt="user"/>
+                <img src={require("../../assets/user.png")} alt="user"/>
             </div>
             <div className={'Navigation-header-content-wrapper'}>
                 <h2>{props.userName}</h2>

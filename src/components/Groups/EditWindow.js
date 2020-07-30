@@ -7,7 +7,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {Tooltip} from "@material-ui/core";
 import HelpModal from "./HelpModal";
 import RulesBlock from "./RulesBlock";
-import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const Container = styled.div`
   display: flex;

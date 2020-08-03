@@ -14,7 +14,7 @@ import Groups from "./components/Groups/Groups";
 import PersonalProfile from "./components/PersonalProfile/PersonalProfile";
 import {sections} from "./Constants/AppTemplate";
 import Mail from "./components/Mailing/Mail";
-
+import Tariff from "./components/Tariff/Tariff";
 
 export default class extends React.Component {
     constructor(props) {
@@ -96,6 +96,8 @@ export default class extends React.Component {
                     }/>}/>
                     <Route path='/promo' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
                      id={this.state.currentConfig} children={<Promo/>}/>}/>
+                     <Route path='/tariff' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
+                       id={this.state.currentConfig} children={<Tariff/>}/>}/>
                 </Switch>
             </Layout>
         )

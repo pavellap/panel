@@ -18,7 +18,7 @@ const Container = styled.div`
       margin-right: 30px;
   }
 `
-
+// todo: ховеры
 // прокидывать ли туда ещё индекс (уровень важности)
 // делается через индекс массива
 export default function(props) {

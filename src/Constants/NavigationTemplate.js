@@ -5,23 +5,23 @@ import {
     faMailBulk,
     faUserCog,
     faAd,
-    faUserClock, faMoneyCheckAlt, faUser, faGift, faUserPlus
+    faUserClock, faMoneyCheckAlt, faUser, faGift, faUserPlus, faMoneyBill
 } from '@fortawesome/free-solid-svg-icons'
 // наименования вкладок
 const titles =
     ["Анкеты", "Рассылки", "Подписки",
-        "Загрузка отчётов", 'Группы', 'Промокоды'
+        "Загрузка отчётов", 'Группы', 'Промокоды', 'Тарифы'
     ]
 
 
 const links = [ // ссылки на вкладки
     'profiles',
-    'mailing', 'subscription', 'download', 'groups', 'promo'
+    'mailing', 'subscription', 'download', 'groups', 'promo', 'tariff'
 ]
 
 const icons = [ // соответствующие компоненты иконок
     faUsers, faMailBulk,
-    faUserPlus, faDownload, faUser, faAd
+    faUserPlus, faDownload, faUser, faAd, faMoneyBill
 ]
 
 const messagesContent = [

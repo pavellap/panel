@@ -27,7 +27,7 @@ const List = styled.div`
 
 // props: rules
 export default function(props) {
-    const {title, rights, handleMove} = props;
+    const {title, rights, handleMove, type} = props;
     return (
         <React.Fragment>
             <Container>
@@ -41,8 +41,10 @@ export default function(props) {
                                 <span>{value[0]}</span>
                                 <span>
                                     <Tooltip title='Добавление/удаление правила у новой группы' placement='top-end'>
-                                        <Checkbox checked={value[1]} onChange={(e) =>
-                                        handleMove(key, e.target.checked)}/>
+                                        <Checkbox checked={value[2] === type ? value[1] : false} onChange={(e) =>
+                                        handleMove(key, e.target.checked, type)} disabled={value[2] !== null &&
+                                        value[2] !== type
+                                        }/>
                                     </Tooltip>
                                 </span>
                             </div>

@@ -53,45 +53,53 @@ const groupDetailed = [
     {
         id: 1,
         name: 'first',
-        added_rules: [1, 2, 3],
-        deleted_rules: [4, 5],
+        added_rights: [1, 2, 3],
+        deleted_rights: [4, 5, 6, 7],
         users: [
             {
                 phone: '79998916861',
                 nick: 'John Deer',
-                only_here: true
+                only_here: true,
+                id: 1
             }
         ]
     },
     {
         id: 2,
         name: 'second',
-        added_rules: [1, 3, 6, 7],
-        deleted_rules: [2, 4, 5],
+        added_rights: [1, 3, 6, 7],
+        deleted_rights: [2, 4, 5],
         users: [
             {
                 phone: '79998916861',
                 nick: 'Pavel Lapshin',
-                only_here: true
+                only_here: true,
+                id: 12
             },
             {
                 phone: '71234444411',
                 nick: 'Andrew Golubenko',
-                only_here: false
+                only_here: false,
+                id: 6
             }
         ]
     },
     {
         id: 3,
         name: 'third',
-        added_rules: [1, 2, 3],
-        deleted_rules: [4, 5],
+        added_rights: [1, 2, 3],
+        deleted_rights: [4, 5, 6, 7],
         users: [
             {
                 phone: '79998916861',
                 nick: 'Andrew Golubenko',
                 only_here: false
-            }
+            },
+            {
+                phone: '79998916861',
+                nick: 'Pavel Lapshin',
+                only_here: true
+            },
         ]
     },
 ]
@@ -101,14 +109,15 @@ const entryData = {
     password: 'qwerty'
 }
 
+
 const groupRules = {
-    1: ['Право на нахождение в беседе', false],
-    2: ['Право писать в беседе', false],
-    3: ['Право отправлять ссылки', false],
-    4: ['Право отправлять картинки', false],
-    5: ['Право отправлять видео', false],
-    6: ['Право отправлять аудиосообщения', false],
-    7: ['Право отправлять документы', false]
+    1: ['Право на нахождение в беседе', false, null],
+    2: ['Право писать в беседе', false, null],
+    3: ['Право отправлять ссылки', false, null],
+    4: ['Право отправлять картинки', false, null],
+    5: ['Право отправлять видео', false, null],
+    6: ['Право отправлять аудиосообщения', false, null],
+    7: ['Право отправлять документы', false, null]
 }
 
 const rules = [

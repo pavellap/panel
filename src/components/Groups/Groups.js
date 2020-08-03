@@ -6,9 +6,9 @@ import ReactDOM from "react-dom";
 import ModalAdvanced from "../Modal/ModalAdvanced";
 import {groupDetailed} from "../../template";
 import Button from "@material-ui/core/Button";
-import DeleteWindow from "./DeleteWindow";
-import EditWindow from "./EditWindow";
-import AddWindow from "./AddWindow";
+import DeleteWindow from "./Modals/DeleteWindow";
+import EditWindow from "./Modals/EditWindow";
+import AddWindow from "./Modals/AddWindow";
 import './scrollbar.scss'
 
 const MainWrapper = styled.section`
@@ -53,7 +53,7 @@ export default class Groups extends React.Component {
         }
         else if (content === 'add') {
             this.setState({
-                modalComponent: <AddWindow handleAdd={this.handleAddNewGroup}/>,
+                modalComponent: <AddWindow/>,
             })
         }
         this.setState({modalIsOpen: status})

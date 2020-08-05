@@ -1,35 +1,20 @@
 import React, {Component} from "react";
 import PageHeader from "../UI/PageHeader";
 import {TextField, Typography, Tooltip, Button,
-        RadioGroup, Radio, FormControlLabel, FormControl, FormLabel} from "@material-ui/core";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-    padding-top: 30px;
-    padding-left: 30px;
-    header {
-        padding-right: 30px;
-        display: flex;
-        justify-content: space-between;
-        div {
-            margin-right: 40px;
-            display: flex;
-        }
-    }
-`
-
-const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    padding-top: 30px;
-`
-
-
+        RadioGroup, Radio, FormControlLabel,
+    FormControl, FormLabel, Select, MenuItem, InputLabel, withStyles} from "@material-ui/core";
+import ProfileContainer from "./ProfileContainer";
+import Switch from "@material-ui/core/Switch";
+import {Container, Wrapper, StyledSelect} from "../Groups/SharedStyledComponents";
+import {createPortal} from 'react-dom'
+import ModalAdvanced from "../Modal/ModalAdvanced";
+import {profilesHardCode} from "../Groups/Templates/Template";
 /*
     * Установка времени отправки анкеты
     * Установка переодичности отправки анкеты: каждый день/неделю/месяц/год
     *
 */
+
 
 export default class extends Component {
     constructor(props) {
@@ -38,7 +23,9 @@ export default class extends Component {
             name: "",
             description: "",
             typeOfMailing: "text",
-            textValue: ""
+            textValue: "",
+            modalComponent: null,
+            modalIsOpen: false
         }
     }
 
@@ -53,56 +40,61 @@ export default class extends Component {
     handleDescriptionChange = val => this.setState({description: val})
 
     render() {
-        const {name, description, typeOfMailing, textValue} = this.state;
+        const {name, description, typeOfMailing,
+            textValue, modalComponent, modalIsOpen} = this.state;
         return (
             <section>
                 <PageHeader title='Рассылка'/>
-                <Wrapper>
+                <Container>
                     <header>
                         <div>
-                            <div>
-                                <TextField onChange={(e) => this.handleNameChange(e.currentTarget.value)}
-                                           variant='outlined' label='Название анкеты' value={name}
-                                           required /*error={error}*/ /*helperText={errorText}*//>
-                            </div>
-                            <div>
-                                <TextField onChange={(e) => this.handleDescriptionChange(e.currentTarget.value)}
-                                           variant='outlined' label='Краткое описание' value={description}
-                                           required /*error={error}*/ /*helperText={errorText}*//>
-                            </div>
-                        </div>
-                        <Button size='medium' variant="contained" color="primary">
-                            Просмотреть текущие рассылки
-                        </Button>
-                    </header>
-                    <section>
-                        <Container>
+                            <TextField variant='outlined' label='Название рассылки'
+                                       style={{marginRight: 30}}/>
                             <FormControl>
-                                <FormLabel component='legend'>Выберите вид рассылки</FormLabel>
-                                <RadioGroup row aria-label="position">
-                                    <FormControlLabel
-                                        onChange={() => this.handleTypeChange('text')}
-                                        control={<Radio color="primary" />}
-                                        label="Текст"
-                                        labelPlacement="top"
-                                        checked={typeOfMailing === 'text'}
-                                    />
-                                    <FormControlLabel
-                                        onChange={() => this.handleTypeChange('profile')}
-                                        control={<Radio color="primary" />}
-                                        label="Анкета"
-                                        labelPlacement="top"
-                                        checked={typeOfMailing === 'profile'}
-                                    />
-                                </RadioGroup>
+                                <InputLabel>Тип рассылки</InputLabel>
+                                <StyledSelect
+                                    onChange={e => this.setState({typeOfMailing: e.target.value})}
+                                    value={typeOfMailing}>
+                                }}
+                                    <MenuItem value='profile'>Анкеты</MenuItem>
+                                    <MenuItem value='text'>Текстовая рассылка</MenuItem>
+                                </StyledSelect>
                             </FormControl>
-                            {typeOfMailing === 'text' ?
-                                    <textarea value={textValue}/> :
-                                null
-                            }
-                        </Container>
-                    </section>
-                </Wrapper>
+                        </div>
+                        <Button variant='contained' color='secondary'>Посмотреть текущие рассылки</Button>
+                    </header>
+                    <div className='textarea'>
+                        <TextField variant='outlined' rows={4} multiline label='Краткое описание'/>
+                    </div>
+                    <Wrapper>
+                        {typeOfMailing === 'text'
+                            ?
+                            <div>
+                                <h3>Текст рассылки</h3>
+                                <textarea placeholder='Текст рассылки'/>
+                                <br/>
+                                <FormControlLabel
+                                    control={<Switch />}
+                                    label="Отправить всем"
+                                />
+                            </div>
+                            :
+                            <ProfileContainer data={profilesHardCode}/>}
+                    </Wrapper>
+                    <footer>
+                        {['Установить время', 'Выбрать периодичность', 'Группы', 'Пользователи', 'Тарифы']
+                            .map((item, index) =>
+                                <Button key={index} variant='contained' color='primary'>{item}</Button>)}
+                    </footer>
+                    <div style={{display: 'flex', justifyContent: 'center', padding: 30}}>
+                        <Button variant='contained' color='primary'>Отравить рассылку</Button>
+                    </div>
+                </Container>
+                {createPortal(modalIsOpen &&
+                    <ModalAdvanced>
+                        {modalComponent}
+                    </ModalAdvanced>,
+                    document.getElementById('portal'))}
             </section>
         )
     }

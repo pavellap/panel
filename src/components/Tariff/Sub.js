@@ -47,6 +47,17 @@ export default class Sub extends React.Component {
         this.setState({subs: array});
     }
 
+    handleAddNewSub = () => {
+        const array = this.state.subs;
+        array.push({
+            id: Math.round(Math.random() * 9000) + 1000,
+            rights: [],
+            name: 'Новый тариф',
+            disabled: false,
+            prices: [0, 0, 0, 0]
+        });
+        this.setState({subs: array})
+    }
 
     // TODO: сделать добавление новой группы
     render() {
@@ -59,7 +70,8 @@ export default class Sub extends React.Component {
                         <TextField title='Название чата' value={'Чат №1'} variant='outlined'/>
                     </div>
                     <div>
-                        <Button style={{marginRight: 40}} color='primary' variant='contained'>Добавить тариф</Button>
+                        <Button style={{marginRight: 40}} color='primary' variant='contained'
+                        onClick={this.handleAddNewSub}>Добавить тариф</Button>
                         <Button  color='secondary' variant='contained'
                                  onClick={this.props.handleSwitchSection}>Назад</Button>
                     </div>
@@ -70,7 +82,6 @@ export default class Sub extends React.Component {
                 <div style={{margin: "20px 0", display: 'flex', justifyContent: 'center'}}>
                     <Button variant='contained' color='primary'>Сохранить изменения</Button>
                 </div>
-
             </Container>
         )
     }

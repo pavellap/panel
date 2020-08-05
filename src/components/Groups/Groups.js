@@ -37,6 +37,7 @@ export default class Groups extends React.Component {
             heightModal: null
         }
     }
+    // TODO: убрать ебучий некрасивый глаз
     // выкидываем модальное
     handleModal = (status, content, id = null) => {
         console.log(status, content, id)

@@ -37,6 +37,7 @@ const Container = styled.div`
 export default class extends React.Component {
     constructor(props) {
         super(props);
+        console.log("Пропсы:", props);
         this.state = {...props.data, modalIsOpen: false, deleteID: null}
     }
 
@@ -78,7 +79,7 @@ export default class extends React.Component {
                     </div>
                     <span>
                         Тариф активен:
-                        <Checkbox checked={disabled}
+                        <Checkbox checked={!disabled}
                                   onChange={(e) => this.setState({disabled: e.target.checked})}/>
                         <Button style={{marginLeft: 30}} variant='contained' color='secondary'
                         onClick={() => this.handleModal(id)}>Удалить тариф</Button>
@@ -88,7 +89,7 @@ export default class extends React.Component {
                     <List subheader={<ListSubheader>Список прав</ListSubheader>}>
                         {Object.entries(groupRules).map(([key, value]) =>
                             <ListItem alignItems='flex-start'>
-                                <ListItemText>{value[0]}</ListItemText>
+                                <ListItemText  style={{marginRight: 20}}>{value[0]}</ListItemText>
                                 <ListItemSecondaryAction>
                                     <Switch checked={rights.includes(Number(key))}
                                             onChange={(e) => this.handleRule(key, e.target.checked)}/>

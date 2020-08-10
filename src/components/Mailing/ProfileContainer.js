@@ -32,7 +32,8 @@ export default function (props) {
             <Container>
                 <List>
                     {props.data.map(item =>
-                        <ListItem key={item.id} button>
+                        <ListItem selected={item.id === props.active} onClick={() => props.handleActive(item.id)}
+                                  key={item.id} button>
                             <ListItemText primary={`ID: ${item.id}`} secondary={`Название: ${item.name}`}/>
                             <ListItemSecondaryAction>
                                 <ListItemIcon>
@@ -45,6 +46,8 @@ export default function (props) {
             <FormControlLabel
                 control={<Switch />}
                 label="Отправить всем"
+                value={props.all}
+                onChange={props.handleSwitch}
             />
         </Wrapper>
     )

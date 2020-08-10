@@ -48,9 +48,23 @@ export const Wrapper = styled.section`
         padding: 15px;
     }
 `
+export const WrapperModal = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px;
+    border-radius: 8px;
+    background-color: #fff;
+    align-items: center;
+    width: 325px;
+    > div {
+        margin-bottom: 20px;
+    }
+`
+
 
 export const StyledSelect = withStyles({
     root: {
-        minWidth: 140
+        minWidth: 140,
     }
 })(Select)

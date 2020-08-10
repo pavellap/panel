@@ -1,7 +1,7 @@
 import React from 'react'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import styled, {css} from "styled-components";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
         background-color: #fff;
@@ -11,10 +11,7 @@ const Wrapper = styled.div`
         display: flex;
         flex-direction: column;
         padding-bottom: 10px;
-        ${props => css`
-        width: ${props.width}%;
-        height: ${props.height}
-        `}`
+`
 
 export default class extends React.Component {
     render() {

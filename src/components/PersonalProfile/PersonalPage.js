@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from "styled-components";
-import {Checkbox, Typography, Button,
-        Avatar, ListItem, List,
+import {Typography, Avatar, ListItem, List,
         ListItemText, ListSubheader, ListItemIcon,
         ListItemSecondaryAction, Switch, TextField} from "@material-ui/core";
 import {rules} from "../../template";

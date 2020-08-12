@@ -2,12 +2,10 @@ import React, {useState} from "react";
 import {
     Typography, Tooltip, List,
     ListItemIcon, ListItemText, TextField, ListItem, ListItemSecondaryAction,
-    makeStyles
 } from "@material-ui/core";
 import styled from "styled-components";
 import ReactDOM from "react-dom";
 import ModalAdvanced from "../Modal/ModalAdvanced";
-import TelegramIcon from "@material-ui/icons/Telegram";
 import ClearIcon from "@material-ui/icons/Clear";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 

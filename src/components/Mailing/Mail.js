@@ -12,6 +12,7 @@ import {profilesHardCode} from "./Templates/Template";
 import Time from "./Modals/Time";
 import Period from "./Modals/Period";
 import ListContainer from './Modals/Container'
+import FileUploader from "../UI/FileUploader";
 /*
     * Установка времени отправки анкеты
     * Установка переодичности отправки анкеты: каждый день/неделю/месяц/год
@@ -79,8 +80,7 @@ export default class extends Component {
 
     render() {
         console.log('State after change:', this.state)
-        const {name, description, type,
-            text, modalComponent, modalIsOpen, all, form} = this.state;
+        const {name, type, modalComponent, modalIsOpen, all, form} = this.state;
         let styles = null;
         if (modalIsOpen)
             styles = 'normalizeHeight'
@@ -146,6 +146,7 @@ export default class extends Component {
                         {modalComponent}
                     </ModalAdvanced>,
                     document.getElementById('portal'))}
+                    <FileUploader/>
             </section>
         )
     }

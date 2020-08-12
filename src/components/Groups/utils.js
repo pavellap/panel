@@ -4,11 +4,11 @@ export const transformDataForSave = data => {
     const added_rights = [];
     const deleted_rights = [];
     const users = [];
-    Object.entries(data.rights).map(([key, value]) => {
+    Object.entries(data.rights).forEach(([key, value]) => {
         if (value[1] && value[2] === 'add')
-            added_rights.push(key);
+            added_rights.push(Number(key));
         else if(value[1] && value[2] === 'remove')
-            deleted_rights.push(key);
+            deleted_rights.push(Number(key));
     })
     data.clients.forEach((item, index) => {
         if (item.selected)

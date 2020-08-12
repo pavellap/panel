@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {List, ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, FormControlLabel} from "@material-ui/core";
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import styled from "styled-components";

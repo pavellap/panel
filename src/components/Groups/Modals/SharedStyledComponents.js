@@ -21,7 +21,7 @@ export const Container = styled.div`
   position: relative;
   height: 670px;
   width: 100%;
-  padding: 30px 65px;
+  padding: 30px 8px;
   margin-right: 30px;
   h2 {
       text-align: center;

@@ -10,6 +10,7 @@ import DeleteWindow from "./Modals/DeleteWindow";
 import EditWindow from "./Modals/EditWindow";
 import AddWindow from "./Modals/AddWindow";
 import './scrollbar.scss'
+import {changePriority, deleteGroup as removeGroup} from "./API/api";
 
 const MainWrapper = styled.section`
   position: relative;
@@ -64,8 +65,10 @@ export default class Groups extends React.Component {
         const array = this.state.groups.filter(item => item.id !== id);
         console.log('Группы после изменения:', array)
         this.setState({groups: array}, () => {
-            console.log("State after change:", this.state)
+            console.log("Состояние после удаления группы:", this.state);
         });
+        // delete-запрос на удаление группы
+        removeGroup(id);
     }
     // перемещаем профили
     handleMove = (id, action) => {
@@ -88,12 +91,12 @@ export default class Groups extends React.Component {
             array[pos] = temp;
             this.setState({groups: array})
         }
+        changePriority(this.state.groups);
     }
 
     // TODO функциональность добавления пользователей
     // TODO кнопку для сохранения изменений
     render() {
-
         return (
             <MainWrapper>
                 <PageHeader title='Группы'/>

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import PageHeader from "../UI/PageHeader";
 import { List, ListSubheader} from "@material-ui/core";
-import url from "../config";
-import Axios from "axios";
+//import url from "../config";
+//import Axios from "axios";
 import Loader from "../UI/Loader";
 
 const Container = styled.section`
@@ -69,7 +69,7 @@ export function Promo() {
             //    handleLoading(false)
         })
     }, [])*/
-
+    console.log(handleLoading());
     const activated = [];
     const active = [];
     codes.forEach(item => {

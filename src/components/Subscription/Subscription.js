@@ -59,9 +59,11 @@ export default class Subscription extends React.Component {
 
     componentDidMount() {
         let userData;
+        //eslint-disable-next-line
         Axios.get(url + "/config/get" + "/" +
             localStorage.getItem('token')).then(configsData => { // сначала получаем конфиги
             this.setState({configs: configsData.data});
+            //eslint-disable-next-line
             Axios.get(url + "/config/current" + "/" +
                 localStorage.getItem('token')).then(res => { // получаем текущий конфиг
                 // получаем саму страницу

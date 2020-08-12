@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {WrapperModal} from "../Styles/SharedStyledComponents";
-import {ListItem, ListItemIcon, ListItemSecondaryAction,
+import {ListItem, ListItemIcon,
     ListItemText, Button, List} from "@material-ui/core";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';

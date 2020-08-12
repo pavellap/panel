@@ -104,10 +104,10 @@ const groupDetailed = [
     },
 ]
 
-const entryData = {
+/*const entryData = {
     login: 'admin',
     password: 'qwerty'
-}
+}*/
 
 
 const groupRules = {

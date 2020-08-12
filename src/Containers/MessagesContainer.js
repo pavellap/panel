@@ -29,9 +29,11 @@ export default class extends Component {
     componentDidMount() {
         const {id} = this.props;
         let userData;
+        //eslint-disable-next-line
         Axios.get(url + "/config/get" + "/" +
             localStorage.getItem('token')).then(configsData => { // сначала получаем конфиги
             console.log("В таком виде получили конфиги:", configsData.data);
+            //eslint-disable-next-line
             this.setState({configs: configsData.data});
             Axios.get(url + "/config/current" + "/" +
                 localStorage.getItem('token')).then(res => { // получаем текущий конфиг

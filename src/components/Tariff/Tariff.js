@@ -84,17 +84,18 @@ export default class Tariff extends React.Component {
         this.setState({modalIsOpen: value, component: render})
     }
 
-    // <ListSubheader style={{fontSize: '1.3rem'}}>Чаты</ListSubheader>
+
     render() {
-        const {chats, modalIsOpen, component, subIsOpen } = this.state;
+        const {chats, modalIsOpen, component, subIsOpen, currChat, currName } = this.state;
         return (
             <React.Fragment>
-                {subIsOpen ? <Sub handleSwitchSection={() => this.setState({subIsOpen: false})}/> :
+                {subIsOpen ? <Sub chat={currChat} name={currName} handleSwitchSection={() => this.setState({subIsOpen: false})}/> :
                     <section>
                         <PageHeader title='Тарифы'/>
                         <ChatList subheader={<ListHeader openAdd={this.handleModal} openSettings={this.handleModal}/>}>
                             {chats.map((item, index) => (
-                                <ListItem button key={index} onClick={() => this.setState({subIsOpen: true})}>
+                                <ListItem button key={index} onClick={() => this.setState({subIsOpen: true,
+                                    currChat: item.chat_id, currName: item.name})}>
                                     <ListItemText primary={`ID: ${item.chat_id}`} secondary={`${item.name}`}/>
                                     <ListItemSecondaryAction>
                                         <ListItemIcon

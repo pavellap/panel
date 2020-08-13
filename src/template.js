@@ -49,6 +49,26 @@ const hardCode = [
     },
 
 ]
+
+const groupBase = [
+    {
+        id: 1,
+        name: 'First group'
+    },
+    {
+        id: 2,
+        name: "Second group"
+    },
+    {
+        id: 3,
+        name: "Third group"
+    },
+    {
+        id: 4,
+        name: 'Fourth group'
+    }
+]
+
 const groupDetailed = [
     {
         id: 1,
@@ -134,4 +154,4 @@ const rules = [
 ]
 
 
-export {groups, groupDetailed, groupRules, rules, hardCode,};
+export {groups, groupDetailed, groupRules, rules, hardCode, groupBase};

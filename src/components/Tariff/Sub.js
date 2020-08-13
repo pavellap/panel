@@ -38,7 +38,8 @@ export default class Sub extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            subs: hardCode
+            subs: hardCode,
+            chatName: props.name
         }
     }
 
@@ -50,7 +51,7 @@ export default class Sub extends React.Component {
     handleAddNewSub = () => {
         const array = this.state.subs;
         array.push({
-            id: Math.round(Math.random() * 9000) + 1000,
+            id: Math.round(Math.random() * 90000) + 10000,
             rights: [],
             name: 'Новый тариф',
             disabled: false,
@@ -59,15 +60,16 @@ export default class Sub extends React.Component {
         this.setState({subs: array})
     }
 
-    // TODO: сделать добавление новой группы
     render() {
+        console.log("Отрисовываем подписки чата с id:", this.props.chat)
+        console.log("Отрисовываем новый список подписок:", this.state)
         const {subs} = this.state;
         return (
             <Container>
                 <header>
                     <div>
                         <span style={{marginRight: 40}}>ID чата: {2}</span>
-                        <TextField title='Название чата' value={'Чат №1'} variant='outlined'/>
+                        <TextField title='Название чата' value={this.props.name} variant='outlined'/>
                     </div>
                     <div>
                         <Button style={{marginRight: 40}} color='primary' variant='contained'

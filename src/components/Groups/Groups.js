@@ -4,13 +4,14 @@ import styled from "styled-components";
 import Item from './GroupItem'
 import ReactDOM from "react-dom";
 import ModalAdvanced from "../Modal/ModalAdvanced";
-import {groupDetailed} from "../../template";
+import {groupBase} from "../../template";
 import Button from "@material-ui/core/Button";
 import DeleteWindow from "./Modals/DeleteWindow";
 import EditWindow from "./Modals/EditWindow";
 import AddWindow from "./Modals/AddWindow";
 import './scrollbar.scss'
-import {changePriority, deleteGroup as removeGroup} from "./API/api";
+import {changePriority, fetchGroups, deleteGroup as removeGroup} from "./API/api";
+
 
 const MainWrapper = styled.section`
   position: relative;
@@ -32,22 +33,23 @@ export default class Groups extends React.Component {
         super(props);
         this.state = {
             modalIsOpen: false,
-            groups: groupDetailed,
+            groups: groupBase,
             modalComponent: null,
             widthModal: null,
             heightModal: null
         }
     }
-    // TODO: убрать ебучий некрасивый глаз
-    // выкидываем модальное
+
+    componentDidMount() {
+        fetchGroups();
+    }
+
     handleModal = (status, content, id = null) => {
-        console.log(status, content, id)
         if (content === 'delete')
             this.setState({modalComponent: <DeleteWindow id={id}
                                  approveAction={(status) => {
                                      this.handleModal(false);
                                      status && this.deleteGroup(id);
-                                     status && console.log("удаляем айдишник:", id)
                                  }
                 }/>, widthModal: '150px', heightModal: 'auto'})
         else if (content === 'edit') {
@@ -63,10 +65,7 @@ export default class Groups extends React.Component {
     // удаляем группу
     deleteGroup = (id) => {
         const array = this.state.groups.filter(item => item.id !== id);
-        console.log('Группы после изменения:', array)
-        this.setState({groups: array}, () => {
-            console.log("Состояние после удаления группы:", this.state);
-        });
+        this.setState({groups: array});
         // delete-запрос на удаление группы
         removeGroup(id);
     }
@@ -94,8 +93,7 @@ export default class Groups extends React.Component {
         changePriority(this.state.groups);
     }
 
-    // TODO функциональность добавления пользователей
-    // TODO кнопку для сохранения изменений
+    // TODO кнопку для сохранения изменений ???
     render() {
         return (
             <MainWrapper>

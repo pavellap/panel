@@ -10,7 +10,7 @@ export const transformDataForSave = data => {
         else if(value[1] && value[2] === 'remove')
             deleted_rights.push(Number(key));
     })
-    data.clients.forEach((item, index) => {
+    data.users.forEach((item, index) => {
         if (item.selected)
             users.push(item.id);
     })

@@ -6,10 +6,17 @@ export const fetchUsers = () => {
     Axios.get(endpoint).then(res => {
         console.log("Получили список пользователей бота:", res.data);
         return res.data;
-    })
+    }).catch(err => console.log("Произошла ошибка при загрузке списка пользователей"))
 }
-
-
+export const fetchGroups = () => {
+    const endpoint = url + '/groups';
+    Axios.get(endpoint).then(res => {
+        console.log("Fetched groups: ", res.data)
+    }).catch(err => console.log("Произошла ошибка при загрузке списка групп"))
+}
+/*
+* Todo: сохранение нового списка групп при получении id добавленной группы
+* */
 export const addGroup = data => {
     console.log("Сохраняем новую группу с данными:", data)
     const endpoint = url + '/groups';
@@ -36,8 +43,17 @@ export const changePriority = groups => {
     }).catch(err => console.log("При сохранении нового порядка групп произошла ошибка:", err))
 }
 
+export const fetchGroupDetailed = id => {
+    const endpoint = url + '/groups/' + id;
+    Axios.get(endpoint).then(res => console.log("Загрузили детальную информацию о группе:", res.data))
+        .catch(err => console.log("Ошибка при детальной загрузке информации о группе"))
+}
 
-
+export const saveChanges = data => {
+    const endpoint = url + '/groups';
+    console.log("Сохраняем изменения в группах", data)
+    Axios.put(endpoint, data).catch(err => console.log("При сохранении данных группы произошла ошибка", err))
+}
 
 
 

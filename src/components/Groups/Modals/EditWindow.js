@@ -1,11 +1,10 @@
 import React from 'react'
 import {Tooltip, Checkbox, Button} from "@material-ui/core";
 import RulesBlock from "./RulesBlock";
-import Axios from "axios";
-import url from "../../config";
 import {groupDetailed, hardCode} from "../../../template";
 import {SubmitButton, Container, Input, UsersContainer} from "./SharedStyledComponents";
 import {transformDataForSave, transformRights} from "../utils";
+import {fetchGroupDetailed, fetchUsers, saveChanges} from "../API/api";
 
 
 // hardcode - пользователи
@@ -20,14 +19,14 @@ const transformClients = array => {
 // TODO: полный список пользователей + добавить удаление из других групп тоже
 transformClients(hardCode)
 
-// props: название группы
-// получаем все данные по id группы
-// можем редачить:
+/*
+* TODO: отлавливать список добавленных/удалённых прав по сравнению с теми, что были в самом начале
+* */
 export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            clients: groupDetailed[1].users,
+            users: groupDetailed[1].users,
             rights: transformRights(groupDetailed[1].added_rights, groupDetailed[1].deleted_rights),
             isLoading: true,
             groupName: groupDetailed[1].name,
@@ -35,42 +34,22 @@ export default class extends React.Component {
         }
     }
     // подружаем список клиентов
-    /*componentDidMount() {
-        const endpoint = url + '/clients'
-        Axios.get(endpoint).then(res => {
-            this.setState({clients: res.data.clients, isLoading: false})
-        }).catch(err => console.log("Произошла ошибка при загрузке пользователей бота в разделе групп"))
-    }*/
+    componentDidMount() {
+        fetchUsers();
+        fetchGroupDetailed(this.props.id);
+    }
 
     postData = () => {
-        console.log("Data to send:", transformDataForSave(this.state))
+        console.log("Данные на сохранение в группах", transformDataForSave(this.state))
         if (!this.state.groupName)
             this.setState({formError: true})
         else {
-            // TODO: почистить selected у clients и rights и ещё тип
-            console.log("Данные на отправку:", this.state)
-            const endpoint = url + "/groups"
-            const {clients, rights, groupName} = this.state;
-            console.log("Posting data with:", this.state);
-            const added_rights = [];
-            const deleted_rights = [];
-            const clientsList = [];
-            Object.entries(rights).map(([key, value]) =>
-                value[1] ? added_rights.push(key) : deleted_rights.push(key)
-            )
-            clients.forEach(item => item.selected ? clientsList.push(item) : null)
-            Axios.post(endpoint, {
-                name: groupName,
-                added_rights,
-                deleted_rights,
-                users: clientsList
-            }).then(res => console.log("Результат добавление новой группы:", res.data))
+            saveChanges(transformDataForSave(this.state))
         }
-
     }
 
     handleSelect = (event, id) =>  {
-        const array = this.state.clients;
+        const array = this.state.users;
         let index = null;
         array.forEach((item, i) => {
             if (item.id === id) {
@@ -79,19 +58,17 @@ export default class extends React.Component {
             }
         })
         array[index].selected = event.target.checked;
-        this.setState({clients: array})
+        this.setState({users: array})
     }
 
     handleRule = (right, newValue, type) => {
-        console.log(`Performing action ${newValue} on rule ${right} of type ${type}`)
         const object = {...this.state.rights}
         object[right][1] = newValue;
         !newValue ? object[right][2] = null : object[right][2] = type;
         this.setState({rights: object})
     }
     render() {
-        console.log("Формат:", this.state.rights)
-        const {clients, rights, groupName, formError} = this.state;
+        const {users, rights, groupName, formError} = this.state;
         return (
             <Container>
                 <h2>Добавление пользователей и их прав в новую группу</h2>
@@ -103,7 +80,7 @@ export default class extends React.Component {
                     <div>
                         <h4>Добавление пользователей в группу</h4>
                         <UsersContainer>
-                            {clients.map((item, index) =>
+                            {users.map((item, index) =>
                                 <div key={index}>
                                     <span style={{marginRight: 20}}>{item.nick}</span>
                                     <span>{item.phone}</span>
@@ -123,11 +100,7 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <SubmitButton variant='contained' color='primary'
-                              onClick={() => {
-                                  // TODO
-                                  //this.props.handleAdd();
-                                  this.postData();
-                              }}>
+                              onClick={this.postData}>
                     Добавить группу
                 </SubmitButton>
             </Container>

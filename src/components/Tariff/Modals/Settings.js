@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {Typography, Button, TextField} from "@material-ui/core";
+import {fetchSettings, saveSettings} from "../API/api";
 
 const Wrapper = styled.div`
     display: flex;
@@ -36,6 +37,19 @@ export default function(props) {
     const [second, handleSecond] = useState(hardcode.second_discount_days)
     const [third, handleThird] = useState(hardcode.third_discount_days)
     const [upgrade, handleUpgrade] = useState(hardcode.upgrade_days)
+    useEffect(() => {
+        fetchSettings();
+    }, []);
+
+    const save = () => {
+        saveSettings({
+            upgrade_days: upgrade,
+            first_discount_days: first,
+            second_discount_days: second,
+            third_discount_days: third,
+        })
+    }
+
     return (
         <Wrapper>
             <Typography component='h2' style={{textAlign: 'center'}}>Настройки чата</Typography>
@@ -61,7 +75,7 @@ export default function(props) {
                                onChange={(e) => (handleThird(Number(e.target.value)))}/>
                 </div>
             </Container>
-            <Button variant='contained' color='primary'>Сохранить изменения</Button>
+            <Button variant='contained' color='primary' onClick={save}>Сохранить изменения</Button>
         </Wrapper>
     )
 }

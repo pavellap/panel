@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {
     Typography, Tooltip, List,
     ListItemIcon, ListItemText, TextField, ListItem, ListItemSecondaryAction,
@@ -8,6 +8,10 @@ import ReactDOM from "react-dom";
 import ModalAdvanced from "../Modal/ModalAdvanced";
 import ClearIcon from "@material-ui/icons/Clear";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import {addNewModer, deleteModer, fetchModers} from "./API/api";
+import Loader from "../UI/Loader";
+import DeleteModerator from "./Modals/DeleteModerator";
+import PasswordModal from "./Modals/PasswordModal";
 
 const Container = styled.div`
     display: flex;
@@ -34,7 +38,14 @@ const Button = styled.div`
   0px 1px 5px 0px rgba(0,0,0,0.12);
 `
 
+const logins = ['@trigognight', '@admin', '@durov', '@putin']
+
 export default function (props) {
+
+    useEffect(() => {
+        fetchModers();
+    }, [])
+
     // просматривает изменения в форме для нового пользователя
     const handleChange = (text) => {
         handleError(false);
@@ -44,78 +55,86 @@ export default function (props) {
         else
             handleForm(text);
     }
-    // Добавление нового модера на пробел
-    const addNewUser = (keyEvent = null) => {
-        console.log(keyEvent);
+
+    const addNewUser = (keyEvent) => {
         if ((keyEvent.key === 'Enter' || keyEvent === 'button') && text.length !== 0) {
             const newArray = usersList;
             newArray.push(text);
             handleList(newArray);
+            handleModal(true);
+            handleModalType('password')
             handleForm('');
+            addNewModer(text.slice(1)); // пропускаем первый символ @
         }
         else if (text.length === 0) {
             handleError(true);
             handleText('Поле  ввода не должно быть пустым')
         }
     }
-    // Удаление модера
+
+
     const removeUser = nick => {
         const array = usersList.filter(item => item !== nick);
         handleList(array);
+        deleteModer(nick);
     }
-
-
 
     const [text, handleForm] = useState('');
     const [error, handleError] = useState(false)
     const [errorText, handleText] = useState(null);
-    const [usersList, handleList] = useState(['@trigognight'])
+    const [usersList, handleList] = useState(logins)
     const [modalIsOpen, handleModal] = useState(false);
     const [userToDelete, handleDeletedUser] = useState(null);
+    const [componentIsLoading, handleLoading] = useState(false)
+    const [modalType, handleModalType] = useState(null);
 
+    console.log('Modal Type: ', modalType)
     return (
-        <Container onKeyDown={addNewUser}>
-            <Typography>Добавление и удаление новых модераторов</Typography>
-            <TextField onChange={(e) => handleChange(e.currentTarget.value)}
-                       variant='outlined' label='Логин нового модератора' value={text}
-                       required error={error} helperText={errorText}/>
-            {usersList.length !== 0 &&
-            <List>
-                {usersList.map((item, key) =>
-                    <ListItem key={key}>
-                        <ListItemIcon><AccountCircleIcon/></ListItemIcon>
-                        <ListItemText>{item}</ListItemText>
-                        <ListItemText>Сгенерированный пароль: aT512F7fs</ListItemText>
-                        <ListItemSecondaryAction>
-                            <ClearIcon onClick={() => {
-                                handleDeletedUser(item);
-                                handleModal(true);
-                            }}/>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                )}
-            </List>
-            }
-            <Tooltip placement='bottom-start' title='Добавляет нового пользователя к текущему списку приглашенных пользователей'>
-                <Button onClick={() => addNewUser('button')} variant='contained' color='primary'>
-                    Добавить модератора
-                </Button>
-            </Tooltip>
-            <Button variant='contained' color='primary'>Сохранить изменения</Button>
-            {ReactDOM.createPortal( modalIsOpen &&
-                <ModalAdvanced width={15} height='150px' toggleModal={() => handleModal(false)}>
-                    <Typography>Вы действительно хотите удалить модератора {userToDelete}?</Typography>
-                    <div style={{display: 'flex'}}>
-                        <Button style={{marginTop: '20px'}}  color='primary' variant='contained' onClick={() => {
-                            removeUser(userToDelete);
-                            handleModal(false);
-                        }}>Да</Button>
-                        <Button style={{marginTop: '20px'}} color='secondary' variant='contained' onClick={() => handleModal(false)}>
-                            Нет
-                        </Button>
-                    </div>
-                </ModalAdvanced>,
-                document.getElementById('portal'))}
-        </Container>
+        componentIsLoading ? <Loader/> :
+            <Container onKeyDown={addNewUser}>
+                <Typography>Добавление и удаление новых модераторов</Typography>
+                <TextField onChange={(e) => handleChange(e.currentTarget.value)}
+                           variant='outlined' label='Логин нового модератора' value={text}
+                           required error={error} helperText={errorText}/>
+                {usersList.length !== 0 &&
+                <List>
+                    {usersList.map(item =>
+                        <ListItem key={item} button>
+                            <ListItemIcon><AccountCircleIcon/></ListItemIcon>
+                            <ListItemText primary={item} secondary={'Сгенерированный пароль: aT512F7f'}>
+                                {item}
+                            </ListItemText>
+                            <ListItemSecondaryAction>
+                                <ClearIcon cursor='pointer' onClick={() => {
+                                    handleDeletedUser(item);
+                                    handleModalType('delete');
+                                    handleModal(true);
+                                }}/>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    )}
+                </List>
+                }
+                <Tooltip placement='bottom-start'
+                         title='Добавляет нового пользователя к текущему списку приглашенных пользователей'>
+                    <Button onClick={() => addNewUser('button')} variant='contained' color='primary'>
+                        Добавить модератора
+                    </Button>
+                </Tooltip>
+                <Button variant='contained' color='primary'>Сохранить изменения</Button>
+                {ReactDOM.createPortal( modalIsOpen &&
+                    <ModalAdvanced toggleModal={() => handleModal(false)}>
+                        {modalType === 'delete' ?
+                            <DeleteModerator removeUser={() => removeUser(userToDelete)}
+                                             handleModal={() => handleModal(false)}
+                                             user={userToDelete}
+                            />
+                            : <PasswordModal
+                                handleModal={() => handleModal(false)}
+                            />
+                        }
+                    </ModalAdvanced>,
+                    document.getElementById('portal'))}
+            </Container>
     )
 }

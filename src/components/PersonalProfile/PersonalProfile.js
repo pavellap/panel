@@ -10,10 +10,11 @@ import AddUser from "./AddUser";
 import DeleteUser from "./DeleteUser";
 import PersonalPage from "./PersonalPage";
 import Staff from "./Staff";
+import {fetchPersonalInfo, saveNewData} from "./API/api";
 
 const Container = styled.section`
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   flex-direction: column;
   background-color: #FAFAFA;
@@ -22,7 +23,6 @@ const Container = styled.section`
       align-items: center;
       width: 100%;
       height: 100%;
-      
   }
 `
 
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   border-left: 1px solid #DBDBDB;
   border-right: 1px solid #DBDBDB;
   background-color: #fff;
-  height: calc(100vh - 50px);
+  min-height: calc(100vh - 50px);
 `
 
 const Menu = styled.nav`
@@ -50,50 +50,62 @@ const Menu = styled.nav`
       cursor: pointer;
       display: flex;
       align-items: center;
-     
       :hover {
           background-color: rgb(250, 250, 250);
-          border-left: 2px solid rgb(219, 219, 219);;
+          border-left: 2px solid rgb(219, 219, 219);
       }
   }
   .active {
       border-left: 2px solid rgb(38, 38, 38);
   }
 `
+const hardCode = {
+    login: 'pavellap',
+    date: '2016-04-08 11:43:36.309721',
+    invitations: 10,
+    nicks: ['putin', 'batka', 'FBI'],
+    rights: [1, 3, 5, 7]
+}
 
-/**
- * Информация о пользователе:
- * Логин
- * Дата создания Аккаунта
- * Список прав
- * Список никнеймов, приглашенных пользователей
- * Максимальное чисто никнеймов, которые можно пригласить
- * Подразделы:
- * Изменение пароля
- * Добавление в телегу по нику
- * Удаление пользоватей, которые ты пригласил
- * Управление персоналом (только для админа)
- */
-/*
- * TODO:
- *  1. Моя страница
- *  2. Управление персоналом
- */
+const sections = ['Моя страница', 'Управление персоналом', 'Изменить пароль', 'Добавленные пользователи',
+    /*'Удалить приглашённых пользователей'*/];
+const links = ['/settings/', "/settings/stuff", "/settings/password",  "/settings/add_user",
+    "/settings/delete_user"]
+
+
+// todo: спросить насчёт удалённого роута с удалением пользователей
 export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sections: ['Моя страница', 'Управление персоналом', 'Изменить пароль', 'Добавить пользователя',
-            'Удалить приглашённых пользователей'],
             currentSection: 'Моя страница',
-            links: ['/settings/', "/settings/stuff", "/settings/password",  "/settings/add_user",
-                "/settings/delete_user"]
+            personalData: hardCode
         }
+    }
+
+    componentDidMount() {
+        // todo: здесь прокидывать логин из редакса
+        fetchPersonalInfo('admin');
+        this.setState({personalData: hardCode})
+    }
+
+    handleChanges = newUsers => {
+        const data = this.state.personalData;
+        data.nicks = newUsers;
+        this.setState({personalData: data}, () => {
+            saveNewData(this.state.personalData.login, {
+                invitations: this.state.personalData.invitations,
+                nicks: this.state.personalData.nicks,
+                rights: this.state.personalData.rights
+            })
+        });
     }
 
     switchSection = val => this.setState({currentSection: val})
 
     render() {
+
+        const {login, date, invitations, nicks, rights} = this.state.personalData;
         return (
             <Container>
             <PageHeader title='Настройки профиля'>
@@ -107,19 +119,26 @@ export default class extends React.Component {
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Menu>
-                    {this.state.sections.map((item, index) => <div onClick={() => this.switchSection(item)}
+                    {sections.map((item, index) => <div onClick={() => this.switchSection(item)}
                         className={item === this.state.currentSection ? 'active' : null} key={index}>
-                        <Link to={this.state.links[index]}>{item}</Link>
+                        <Link to={links[index]}>{item}</Link>
                     </div>)}
                     </Menu>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs style={{position: 'relative'}}>
                     <Switch>
-                        <Route exact path='/settings' render={() => <PersonalPage name='Admin' date='15.07.20'/>}/>
+                        <Route exact path='/settings' render={() =>
+                            <PersonalPage login={login} date={date}
+                            invitations={invitations} nicks={nicks} rights={rights}/>
+                        }
+                        />
                         <Route path='/settings/password' component={Password}/>
-                        <Route path='/settings/add_user' component={AddUser}/>
+                        <Route path='/settings/add_user' render={() => <AddUser users={nicks} limit={invitations}
+                        saveChanges={this.handleChanges}/>}/>
                         <Route path='/settings/stuff' component={Staff}/>
-                        <Route path='/settings/delete_user' render={() => <DeleteUser group={['trigo', 'pavellap', 'ekatze']}/>}/>
+                        <Route path='/settings/delete_user'>
+                            <DeleteUser group={['trigo', 'pavellap', 'ekatze']}/>
+                        </Route>
                     </Switch>
                 </Grid>
             </Grid>

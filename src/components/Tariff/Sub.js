@@ -39,7 +39,8 @@ export default class Sub extends React.Component {
         super(props);
         this.state = {
             subs: hardCode,
-            chatName: props.name
+            chatName: props.name,
+            editedSubs: []
         }
     }
 
@@ -60,16 +61,21 @@ export default class Sub extends React.Component {
         this.setState({subs: array})
     }
 
+    handleEditSub = id => {
+
+    }
+
     render() {
-        console.log("Отрисовываем подписки чата с id:", this.props.chat)
-        console.log("Отрисовываем новый список подписок:", this.state)
-        const {subs} = this.state;
+
+        const {subs, chatName} = this.state;
         return (
             <Container>
                 <header>
                     <div>
-                        <span style={{marginRight: 40}}>ID чата: {2}</span>
-                        <TextField title='Название чата' value={this.props.name} variant='outlined'/>
+                        <span style={{marginRight: 40}}>ID чата: {this.props.chat}</span>
+                        <TextField title='Название чата' value={chatName}
+                                   onChange={e => this.setState({chatName: e.currentTarget.value})} variant='outlined'/>
+                        <Button style={{marginLeft: 20}} variant='contained' color='primary'>Сохранить изменения</Button>
                     </div>
                     <div>
                         <Button style={{marginRight: 40}} color='primary' variant='contained'
@@ -79,11 +85,10 @@ export default class Sub extends React.Component {
                     </div>
                 </header>
                 {subs.map((item, index) => (
-                    <SubItem key={index} data={item} handleDelete={this.handleDeleteSub}/>
+                    <SubItem key={index} handleChange={id => this.handleEditSub(id)} data={item}
+                             handleDelete={this.handleDeleteSub}/>
                 ))}
-                <div style={{margin: "20px 0", display: 'flex', justifyContent: 'center'}}>
-                    <Button variant='contained' color='primary'>Сохранить изменения</Button>
-                </div>
+
             </Container>
         )
     }

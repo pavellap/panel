@@ -56,3 +56,31 @@ export const deleteSub = id => {
     Axios.delete(endpoint).catch(err => console.log("Произошла ошибка при удалении подписки.."))
 }
 
+export const editChatName = (id, name) => {
+    const endpoint = url + '/chats/' + id;
+    Axios.put(endpoint, {name}).catch(err => {
+        console.log('Произошла ошибка при сохранении имени чата..')
+        throw err;
+    })
+}
+
+export const fetchSettings = () => {
+    const endpoint = url + '/settings';
+    Axios.get(endpoint).then(res => console.log("Получили настройки для чатов:", res.data))
+        .catch(err => {
+        console.log('Произошла ошибка при загрузке настроек для чатов');
+        throw err;
+    })
+}
+
+export const saveSettings = (data) => {
+    const endpoint = url + '/settings';
+    Axios.put(endpoint, data).catch(err => {
+        console.log('Произошла ошибка при сохранении настроек чата');
+        throw err;
+    })
+}
+
+export const editSub = (data) => {
+    console.log("Конечные данные:", data)
+}

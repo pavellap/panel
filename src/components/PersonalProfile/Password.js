@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {TextField, Typography} from "@material-ui/core";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
+import {changePassword} from "./API/api";
 
 const Container = styled.div`
     display: flex;
@@ -14,54 +15,63 @@ const Container = styled.div`
     }
 `
 
-const errors = {
-    oldErrors: {
-        status: false,
-        errorMessage: null
-    },
-    newErrors: {
-        status: false,
-        errorMessage: null
-    },
-    confirmErrors: {
-        status: false,
-        errorMessage: null
-    }
-}
-
 export default function(props) {
     const [oldPassword, handleOld] = useState("");
     const [newPassword, handleNew] = useState("");
     const [confirmPassword, handleConfirm] = useState("");
-    // TODO настроить валидацию форм и переписать компонент в класс, потому что я ебал эти setState
+    const [oldError, handleOldError] = useState(false);
+    const [newError, handleNewError] = useState(false);
+    const [confirmError, handleConfirmError] = useState(false);
+    const [errorText, handleErrorText] = useState("")
 
-    const handler = () => {
+    // todo: Текст при успешном запросе
+    // todo: Значок визабитили, если будет время
+    const validation = () => {
         if (oldPassword.length === 0) {
-            console.log("Ты пидор")
-            errors.oldErrors.status = true;
-            errors.oldErrors.errorMessage = 'Поле не должно быть пустым!'
+            handleOldError(false)
+            handleErrorText('Поле не должно быть пустым!');
+        }
+        else if (newPassword.length === 0) {
+            handleNewError(false)
+            handleErrorText('Поле не должно быть пустым!');
+        }
+        else if (confirmPassword.length === 0) {
+            handleConfirmError(false)
+            handleErrorText('Поле не должно быть пустым!');
+        }
+        else if (newPassword !== confirmPassword) {
+            handleConfirmError(true);
+            handleErrorText('Значение не совпадает со значением в поле с новым паролем');
+        }
+        else {
+            // todo: Прокидывать здесь логин из редакса
+            changePassword(oldPassword, newPassword, 'admin')
         }
     }
-    /*
-     * TODO
-     *  1. Настроить валидацию форм
-     *  2. Сделать человеческий дизайн
-     *  3.
-     */
+
     return (
         <>
             <Typography display='block' variant='h4' align='center'>Смена пароля</Typography>
             <Container>
-                <TextField onChange={(e) => handleOld(e.currentTarget.value)}
+                <TextField onChange={(e) => {
+                    handleOld(e.currentTarget.value);
+                    handleNewError(false);
+                }}
                     variant='outlined' label='Старый пароль'
-                    required error={errors.oldErrors.status} helperText={errors.oldErrors.errorMessage}/>
-                <TextField onChange={(e) => handleNew(e.currentTarget.value)}
+                    required error={oldError} helperText={errorText}/>
+                <TextField onChange={(e) => {
+                    handleNew(e.currentTarget.value);
+                    handleNewError(false);
+                }}
                     variant='outlined' label='Новый пароль'
-                    required error={errors.newErrors.status} helperText={errors.newErrors.errorMessage}/>
-                <TextField onChange={(e) => handleConfirm(e.currentTarget.value)}
+                    required error={newError} helperText={errorText}/>
+                <TextField onChange={(e) => {
+                    handleConfirm(e.currentTarget.value);
+                    handleConfirmError(false);
+                }}
                     variant='outlined' label='Подтвердите новый пароль'
-                    required error={errors.confirmErrors.status} helperText={errors.confirmErrors.errorMessage}/>
-                <Button onClick={handler} variant='contained' color='primary'>Сменить пароль</Button>
+                    required error={confirmError} helperText={errorText}/>
+                <Button onClick={validation} variant='contained' color='primary'>Сменить пароль</Button>
             </Container>
         </>
     )

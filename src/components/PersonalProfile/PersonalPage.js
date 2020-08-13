@@ -3,8 +3,13 @@ import styled from "styled-components";
 import {Typography, Avatar, ListItem, List,
         ListItemText, ListSubheader, ListItemIcon,
         ListItemSecondaryAction, Switch, TextField} from "@material-ui/core";
-import {rules} from "../../template";
 import CreateIcon from '@material-ui/icons/Create';
+import {matches, parseDate} from "./utils";
+import PersonIcon from '@material-ui/icons/Person';
+
+const Nick = styled.span`
+    text-decoration: underline;
+`
 
 const Container = styled.div`
     display: flex;
@@ -14,43 +19,58 @@ const Container = styled.div`
 
 // TODO: фунциональность по списку приглашённых ников
 export default function(props) {
+    const normalizedDate = parseDate(props.date)
+    const {rights, nicks, invitations} = props;
     return (
         <Container>
             <header>
                 <div>
-                    <Avatar>{props.name[0]}</Avatar>
+                    <Avatar>{props.login[0]}</Avatar>
                 </div>
                 <Typography>
-                    {props.name}
+                    Пользователь: <Nick>{props.login}</Nick>
                 </Typography>
                 <Typography>
-                    Дата создания аккаунта: {props.date}
+                    Дата создания аккаунта: {normalizedDate}
                 </Typography>
-                {/*// TODO: сюда прикрепить основную логику*/}
                 <div>
                     <Typography>
-                        Максимальное количество людей для приглашения
+                        Максимальное количество людей для приглашения: {invitations}
                     </Typography>
+                    {/* todo: рендерить это для админа и главного модера
                     <TextField variant='outlined' label='Количество людей'
-                               required/>
+                               required value={invitations}/>*/}
                 </div>
             </header>
             <section>
              <List subheader={<ListSubheader>Мои права</ListSubheader>}>
-                 {rules.map((item, key) =>
-                     <ListItem>
+                 {Object.entries(matches).map(([key, value]) =>
+                     <ListItem key={value}>
                         <ListItemIcon><CreateIcon/></ListItemIcon>
-                         <ListItemText>{item[0]}</ListItemText>
+                         <ListItemText>{value}</ListItemText>
                          <ListItemSecondaryAction>
                              <Switch
                                  edge="end"
-                                 checked={item[1]}
+                                 checked={rights.includes(Number(key))}
                              />
                          </ListItemSecondaryAction>
                      </ListItem>
                  )}
              </List>
-
+             {/*<List style={{width: '60%', margin: '0 auto'}} subheader={<ListSubheader>Пользователи, приглашённые мной</ListSubheader>}>
+                 {nicks.map(item => (
+                     <ListItem key={item} button>
+                         <ListItemText>
+                             {item}
+                         </ListItemText>
+                         <ListItemSecondaryAction>
+                             <ListItemIcon>
+                                 <PersonIcon/>
+                             </ListItemIcon>
+                         </ListItemSecondaryAction>
+                     </ListItem>
+                 ))}
+             </List>*/}
             </section>
         </Container>
     )

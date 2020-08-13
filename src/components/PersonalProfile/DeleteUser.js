@@ -24,7 +24,7 @@ export default function(props) {
             {users.length !== 0 &&
                 <List>
                     {users.map((item, index) =>
-                    <ListItem>
+                    <ListItem key={index}>
                         <ListItemIcon><TelegramIcon/></ListItemIcon>
                         <ListItemText>{item}</ListItemText>
                         <ListItemSecondaryAction>

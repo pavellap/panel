@@ -6,6 +6,7 @@ import {TextField, Checkbox, List, ListItem, ListItemText,
 import {groupRules} from "../../template";
 import ModalAdvanced from "../Modal/ModalAdvanced";
 import DeleteSub from "./Modals/DeleteSub";
+import {editSub} from "./API/api";
 
 const titles = ['Цена без скидки', 'Цена при 1-й скидке', 'Цена при 2-й скидке', 'Цена при 3-й скидке'];
 
@@ -34,10 +35,10 @@ const Container = styled.div`
 `
 
 // принимает data с всеми свойствами
+    // todo: Починить disabled
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        console.log("Пропсы:", props);
         this.state = {...props.data, modalIsOpen: false, deleteID: null}
     }
 
@@ -67,6 +68,13 @@ export default class extends React.Component {
         this.setState({modalIsOpen: false})
     }
 
+    handleSave = () => {
+        const {rights, name, disabled, prices} = this.state;
+        editSub({
+            rights, name, disabled, prices: prices.map(item => Number(item))
+        })
+    }
+
     render() {
         const {id, rights, name, disabled, prices} = this.state;
         return (
@@ -80,7 +88,8 @@ export default class extends React.Component {
                     <span>
                         Тариф активен:
                         <Checkbox checked={!disabled}
-                                  onChange={(e) => this.setState({disabled: e.target.checked})}/>
+                                  onChange={(e) =>
+                                      this.setState({disabled: !e.currentTarget.checked})}/>
                         <Button style={{marginLeft: 30}} variant='contained' color='secondary'
                         onClick={() => this.handleModal(id)}>Удалить тариф</Button>
                     </span>
@@ -109,11 +118,15 @@ export default class extends React.Component {
                             </ListItem>
                         ))}
                     </List>
+
                 </section>
                 {createPortal(this.state.modalIsOpen && <ModalAdvanced>
                                     <DeleteSub approve={this.handleDelete} id={this.state.deleteID}/>
                               </ModalAdvanced>,
                     document.getElementById('portal'))}
+                <div style={{margin: "20px 0", display: 'flex', justifyContent: 'center'}}>
+                    <Button onClick={this.handleSave} variant='contained' color='secondary'>Сохранить изменения</Button>
+                </div>
             </Container>
         )
     }

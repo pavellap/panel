@@ -5,6 +5,7 @@ import {TextField, Typography,
         ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import TelegramIcon from '@material-ui/icons/Telegram';
 import ClearIcon from '@material-ui/icons/Clear';
+import './Animation.scss'
 
 const Container = styled.div`
     display: flex;
@@ -30,8 +31,19 @@ const Button = styled.div`
   0px 2px 2px 0px rgba(0,0,0,0.14), 
   0px 1px 5px 0px rgba(0,0,0,0.12);
 `
+const Error = styled.div`
+    width: 100%;
+    padding: 20px;
+    position: absolute;
+    top: -250px;
+    left: 0;
+    background-color: #ccc;
+    animation: errorBlockMove 8s ease-in-out;
+`
 
 export default function(props) {
+    const users = props.users.map(item => item[0] === '@' ? item : '@' + item);
+
     const handleChange = (text) => {
         handleError(false);
         handleText("");
@@ -41,9 +53,21 @@ export default function(props) {
             handleForm(text);
     }
 
-    const addNewUser = (keyEvent = null) => {
-        console.log(keyEvent);
-        if ((keyEvent.key === 'Enter' || keyEvent === 'button') && text.length !== 0) {
+    const addNewUser = (keyEvent) => {
+        console.log(usersList.includes(text));
+        if (usersList.length > props.limit) {
+            handleHelperText('Вы исчерпали свой лимит на добавление пользователей');
+            return
+        }
+        else
+            handleHelperText(null);
+
+        if (usersList.includes(text)) {
+            handleError(true)
+            handleText('Данный пользователь уже в списке')
+
+        }
+        else if ((keyEvent.key === 'Enter' || keyEvent === 'button') && text.length !== 0) {
             const newArray = usersList;
             newArray.push(text);
             handleList(newArray);
@@ -53,6 +77,9 @@ export default function(props) {
             handleError(true);
             handleText('Поле  ввода не должно быть пустым')
         }
+
+        else if (text.length === 1 && text[0] === '@')
+            handleHelperText('Введите полное имя пользователя')
     }
 
     const removeUser = nick => {
@@ -60,11 +87,11 @@ export default function(props) {
         handleList(array);
     }
 
-
     const [text, handleForm] = useState('');
-    const [error, handleError] = useState(false)
+    const [error, handleError] = useState(false);
     const [errorText, handleText] = useState(null);
-    const [usersList, handleList] = useState(['@trigognight'])
+    const [usersList, handleList] = useState(users);
+    const [helperText, handleHelperText] = useState(null);
 
 
     return (
@@ -74,24 +101,20 @@ export default function(props) {
                variant='outlined' label='Ник в телеграмме' value={text}
                required error={error} helperText={errorText}/>
             {usersList.length !== 0 &&
-            <List>
-                {usersList.map((item, key) =>
-                    <ListItem key={key}>
-                        <ListItemIcon><TelegramIcon/></ListItemIcon>
-                        <ListItemText>{item}</ListItemText>
-                        <ListItemSecondaryAction>
-                            <ClearIcon onClick={() => removeUser(item)}/>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                )}
-            </List>
-                }
-             {/*<Tooltip placement='bottom-start' title='Добавляет нового пользователя к текущему списку приглашенных пользователей'>
-                <Button onClick={() => addNewUser('button')} variant='contained' color='primary'>
-                    Добавить пользователя
-                </Button>
-             </Tooltip>*/}
-            <Button variant='contained' color='primary'>Отправить приглашение</Button>
+                <List style={{width: '60%', margin: '0 auto'}}>
+                    {usersList.map((item, key) =>
+                        <ListItem key={key} button>
+                            <ListItemIcon><TelegramIcon/></ListItemIcon>
+                            <ListItemText>{item}</ListItemText>
+                            <ListItemSecondaryAction>
+                                <ClearIcon cursor='pointer' onClick={() => removeUser(item)}/>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    )}
+                </List>
+            }
+            {helperText && <Error>{helperText}</Error>}
+            <Button onClick={() => props.saveChanges(usersList)} variant='contained' color='primary'>Сохранить изменения</Button>
         </Container>
     )
 }

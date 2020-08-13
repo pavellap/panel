@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faChevronDown, faPlus} from '@fortawesome/free-solid-svg-icons'
 import ConfigurationItem from "./ConfigurationItem";
 import Axios from "axios";
-import url from "../config";
+import url from "../../config";
 
 export default class Configuration extends React.Component {
     constructor(props) {

@@ -2,7 +2,7 @@ import React from 'react'
 import './Download.css'
 import PageHeader from "../UI/PageHeader";
 import DownloadEntry from "./DownloadEntry";
-import url from '../config'
+import url from '../../config'
 
 export default class Download extends React.Component {
     render() {

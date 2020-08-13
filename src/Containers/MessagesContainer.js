@@ -4,7 +4,7 @@ import Configuration from "../components/Messages/Configuration";
 import EditEntry from "../components/Messages/EditEntry";
 import Axios from "axios";
 import Loader from "../components/UI/Loader";
-import url from '../components/config'
+import url from '../config'
 import ReactDOM from "react-dom";
 import Modal from "../components/Modal/Modal";
 

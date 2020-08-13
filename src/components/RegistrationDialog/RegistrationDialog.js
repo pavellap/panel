@@ -5,7 +5,7 @@ import Configuration from "../Messages/Configuration";
 import EditEntry from "../Messages/EditEntry";
 import Axios from "axios";
 import Loader from "../UI/Loader";
-import url from '../config'
+import url from '../../config'
 import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
 

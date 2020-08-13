@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom'
 import Configuration from "../Messages/Configuration";
 import Axios from "axios";
 import Loader from "../UI/Loader";
-import url from "../config";
+import url from "../../config";
 
 export default class Profiles extends React.Component {
     constructor(props) {

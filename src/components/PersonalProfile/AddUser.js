@@ -5,7 +5,7 @@ import {TextField, Typography,
         ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import TelegramIcon from '@material-ui/icons/Telegram';
 import ClearIcon from '@material-ui/icons/Clear';
-import './Animation.scss'
+import './Styles/Animation.scss'
 
 const Container = styled.div`
     display: flex;

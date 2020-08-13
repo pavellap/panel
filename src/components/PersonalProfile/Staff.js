@@ -101,7 +101,7 @@ export default function (props) {
                     {usersList.map(item =>
                         <ListItem key={item} button>
                             <ListItemIcon><AccountCircleIcon/></ListItemIcon>
-                            <ListItemText primary={item} secondary={'Сгенерированный пароль: aT512F7f'}>
+                            <ListItemText primary={item}>
                                 {item}
                             </ListItemText>
                             <ListItemSecondaryAction>

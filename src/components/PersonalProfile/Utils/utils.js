@@ -1,5 +1,6 @@
 export const parseDate = date => date.slice(0, 10);
 
+//todo: пофиксить номера, как в тз
 export const matches = {
     1: 'Редактировать сообщения',
     2: 'Редактировать анкеты',

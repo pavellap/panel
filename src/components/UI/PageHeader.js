@@ -1,7 +1,7 @@
 import React from "react";
 import './PageHeader.css'
 import Axios from "axios";
-import url from '../config'
+import url from '../../config'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Menu, MenuItem} from "@material-ui/core";
 import {Link} from 'react-router-dom'
@@ -75,7 +75,7 @@ export default function PageHeader(props) {
                 onClose={handleClose}>
                 <MenuItem onClick={handleClose}><Link to='/settings/'>Мой профиль</Link></MenuItem>
                 <MenuItem onClick={handleClose}><Link to='/registration'>На главную</Link></MenuItem>
-                <MenuItem onClick={handleClose}>Управление персоналом</MenuItem>
+                <MenuItem onClick={handleClose}><Link to='/settings/stuff'>Управление персоналом</Link></MenuItem>
                 <MenuItem onClick={() => {handleClose(); handleClick()}}>Выйти из панели управления</MenuItem>
             </Menu>
         </Header>

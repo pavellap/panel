@@ -3,7 +3,7 @@ import './Mailing.css'
 import PageHeader from "../UI/PageHeader";
 import 'pretty-checkbox'
 import Axios from "axios";
-import url from '../config'
+import url from '../../config'
 import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
 

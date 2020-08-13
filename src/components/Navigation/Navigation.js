@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import './Navigation.css'
 import Axios from "axios";
-import url from '../config'
+import url from '../../config'
 import Typography from "@material-ui/core/Typography";
 
 

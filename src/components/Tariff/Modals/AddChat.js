@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {TextField, Button, Typography} from "@material-ui/core";
 import styled from "styled-components";
-import url from "../../config";
+import url from "../../../config";
 import Axios from "axios";
 
 

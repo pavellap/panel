@@ -1,7 +1,7 @@
 import React from 'react'
 import './ConfigurationItem.css'
 import Axios from "axios";
-import url from '../config'
+import url from '../../config'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 

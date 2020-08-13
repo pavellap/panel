@@ -3,8 +3,8 @@ import './Authorization.css'
 import Axios from "axios";
 import Modal from "../Modal/Modal";
 import ReactDOM from 'react-dom'
-import url from '../config'
-import {isDevMode} from "../config";
+import url from '../../config'
+import {isDevMode} from "../../config";
 
 
 export default class Authorization extends React.Component {

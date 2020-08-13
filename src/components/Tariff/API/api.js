@@ -1,4 +1,4 @@
-import url from "../../config";
+import url from "../../../config";
 import Axios from "axios";
 
 

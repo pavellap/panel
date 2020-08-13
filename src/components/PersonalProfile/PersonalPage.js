@@ -4,7 +4,7 @@ import {Typography, Avatar, ListItem, List,
         ListItemText, ListSubheader, ListItemIcon,
         ListItemSecondaryAction, Switch, TextField} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
-import {matches, parseDate} from "./utils";
+import {matches, parseDate} from "./Utils/utils";
 import PersonIcon from '@material-ui/icons/Person';
 
 const Nick = styled.span`

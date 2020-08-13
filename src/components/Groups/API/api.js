@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import url from "../../config";
+import url from "../../../config";
 
 export const fetchUsers = () => {
     const endpoint = url + '/clients';

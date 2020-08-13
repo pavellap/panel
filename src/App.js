@@ -8,7 +8,7 @@ import Download from "./components/Download/Download";
 import Profiles from "./components/Profiles/Profiles";
 import Subscription from "./components/Subscription/Subscription";
 import {Promo} from "./components/Promo/Promo";
-import url from './components/config'
+import url from './config'
 import MessagesTemplate from "./Containers/MessagesContainer";
 import Groups from "./components/Groups/Groups";
 import PersonalProfile from "./components/PersonalProfile/PersonalProfile";

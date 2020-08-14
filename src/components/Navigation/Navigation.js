@@ -67,7 +67,7 @@ export default class Navigation extends React.Component {
                             </AccordionSummary>
                             {messagesContent.map((item, index) => {
                                 let styles;
-                                if (window.location.pathname ===  "/" + links[index])
+                                if (window.location.pathname === '/' + item[1])
                                     styles = {backgroundColor: "#7289da"};
                                 return <NavigationItem key={index} content={item[0]} link={item[1]}
                                                 icon={item[2]} color={styles}

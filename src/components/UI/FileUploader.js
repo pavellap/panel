@@ -16,6 +16,11 @@ const Container = styled.div`
     padding: 12px;
 `
 
+/*
+* todo:
+*   1. При повтором нажатии на выбор файла при уже выбранном файле билд крашится
+*
+ */
 export default function() {
     const [selectedFile, handleSelected] = useState(null);
     const [size, handleSize] = useState(null);

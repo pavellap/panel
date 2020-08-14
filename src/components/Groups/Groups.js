@@ -11,7 +11,7 @@ import EditWindow from "./Modals/EditWindow";
 import AddWindow from "./Modals/AddWindow";
 import './scrollbar.scss'
 import {changePriority, fetchGroups, deleteGroup as removeGroup} from "./API/api";
-
+import {List} from "@material-ui/core";
 
 const MainWrapper = styled.section`
   position: relative;
@@ -35,8 +35,6 @@ export default class Groups extends React.Component {
             modalIsOpen: false,
             groups: groupBase,
             modalComponent: null,
-            widthModal: null,
-            heightModal: null
         }
     }
 
@@ -53,11 +51,14 @@ export default class Groups extends React.Component {
                                  }
                 }/>, widthModal: '150px', heightModal: 'auto'})
         else if (content === 'edit') {
-            this.setState({modalComponent: <EditWindow id={id}/>})
+            this.setState({modalComponent:
+                    <EditWindow id={id} handleSave={() => this.setState({modalIsOpen: false})}/>})
         }
         else if (content === 'add') {
             this.setState({
-                modalComponent: <AddWindow/>,
+                modalComponent: <AddWindow handleModal={() =>
+                    this.setState({modalIsOpen: false})}
+                />,
             })
         }
         this.setState({modalIsOpen: status})
@@ -105,18 +106,20 @@ export default class Groups extends React.Component {
                     </Button>
                 </Header>
                 <Wrapper>
-                    {this.state.groups.map((item, index) =>
-                        <Item name={item.name} id={item.id} key={index}
-                              toggleModal={(val, value, id) => this.handleModal(val, value, id)}
-                              handleDelete={(id) => this.deleteGroup(id)}
-                              handleMove={(id, action) => this.handleMove(id, action)}
-                        />)}
+                    <List>
+                        {this.state.groups.map((item, index) =>
+                            <Item name={item.name} id={item.id} key={index}
+                                  toggleModal={(val, value, id) => this.handleModal(val, value, id)}
+                                  handleDelete={(id) => this.deleteGroup(id)}
+                                  handleMove={(id, action) => this.handleMove(id, action)}
+                            />)}
+                    </List>
                 </Wrapper>
                 {ReactDOM.createPortal( this.state.modalIsOpen &&
                 <ModalAdvanced
-                width={this.state.widthModal} height={this.state.heightModal}
-                toggleModal={(status, content) => this.handleModal(status, content)}
-                approveAction={(status, id) => status ? this.deleteGroup(id) : this.handleModal(false)}>
+                    toggleModal={(status, content) => this.handleModal(status, content)}
+                    approveAction={(status, id) => status ?
+                        this.deleteGroup(id) : this.handleModal(false)}>
                     {this.state.modalComponent}
                 </ModalAdvanced>,
                 document.getElementById('portal'))}

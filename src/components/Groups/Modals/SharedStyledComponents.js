@@ -19,7 +19,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 670px;
   width: 100%;
   padding: 30px 8px;
   margin-right: 30px;

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
-import {Checkbox, Tooltip} from "@material-ui/core";
+import {Checkbox, Tooltip, ListItem, ListItemSecondaryAction, ListItemText, List} from "@material-ui/core";
 
 
 const Container = styled.div`
@@ -15,8 +15,9 @@ const Container = styled.div`
     }
 `
 
-const List = styled.div`
-    height: 335px;
+const Glist = styled.div`
+    max-height: 400px;
+    overflow-y: scroll;
     display:flex;
     flex-direction: column;
     border: 1px solid #ccc;
@@ -37,18 +38,20 @@ export default function(props) {
                 <div>
                     <List>
                         {Object.entries(rights).map(([key, value]) =>
-                            (<div key={value}>
-                                <span>{value[0]}</span>
-                                <span>
-                                    <Tooltip title='Добавление/удаление правила у новой группы' placement='top-end'>
-                                        <Checkbox checked={value[2] === type ? value[1] : false} onChange={(e) =>
-                                        handleMove(key, e.target.checked, type)} disabled={value[2] !== null &&
-                                        value[2] !== type
-                                        }/>
-                                    </Tooltip>
-                                </span>
-                            </div>
-                            ))}
+                            (
+                                <ListItem key={key} button>
+                                    <ListItemText>{value[0]}</ListItemText>
+                                    <ListItemSecondaryAction>
+                                        <Tooltip title='Добавление/удаление правила у новой группы' placement='top-end'>
+                                            <Checkbox checked={value[2] === type ? value[1] : false} onChange={(e) =>
+                                                handleMove(key, e.target.checked, type)} disabled={value[2] !== null &&
+                                            value[2] !== type
+                                            }/>
+                                        </Tooltip>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            )
+                            )}
                     </List>
                 </div>
             </Container>

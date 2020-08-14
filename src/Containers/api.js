@@ -16,3 +16,11 @@ export const fetchData = (config, section) => {
             throw err;
         })
 }
+
+export const saveChanges = (data, id) => {
+    const endpoint = url + '/messages/' + id;
+    Axios.put(endpoint, data).catch(err => {
+        console.log("Произошла ошибка при сохранении данных в разделе сообщений");
+        throw err;
+    })
+}

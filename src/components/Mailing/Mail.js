@@ -108,6 +108,7 @@ export default class extends Component {
                     </header>
                     <div className='textarea'>
                         <TextField variant='outlined' rows={4} multiline label='Краткое описание'/>
+                        <FileUploader/>
                     </div>
                     <Wrapper>
                         {type === 'text'
@@ -146,7 +147,7 @@ export default class extends Component {
                         {modalComponent}
                     </ModalAdvanced>,
                     document.getElementById('portal'))}
-                    <FileUploader/>
+
             </section>
         )
     }

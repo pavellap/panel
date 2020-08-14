@@ -1,26 +1,30 @@
 import React from 'react'
-import {Tooltip, Checkbox} from "@material-ui/core";
+import {Tooltip, Checkbox, List, ListItemText,
+    ListSubheader, ListItemSecondaryAction, ListItem} from "@material-ui/core";
 import RulesBlock from "./RulesBlock";
 import {groupRules, hardCode} from "../../../template";
-import {SubmitButton, Container, Input, UsersContainer} from "./SharedStyledComponents";
+import {SubmitButton, Container, Input} from "./SharedStyledComponents";
 import {transformDataForSave} from "../utils";
 import {addGroup} from "../API/api";
 
 // hardcode - пользователи
 // groupRules - права в группе
 
+export const userListStyles = {
+    maxWidth: 360,
+    margin: '0 auto',
+    maxHeight: 500,
+    overflowY: 'scroll'
+}
 
 const transformClients = array => {
     array.forEach(item => {
         item.selected = false
     })
 }
-
 transformClients(hardCode)
 
-// props: название группы
-// получаем все данные по id группы
-// можем редачить:
+
 export default class extends React.Component {
     constructor(props) {
         super(props);
@@ -41,10 +45,10 @@ export default class extends React.Component {
     }*/
 
     postData = () => {
-
         if (!this.state.groupName)
             this.setState({formError: true})
         else {
+            this.props.handleAdd();
             addGroup(transformDataForSave(this.state));
         }
     }
@@ -83,21 +87,23 @@ export default class extends React.Component {
                                    {groupName: e.currentTarget.value,
                                        formError: false})
                            }/>
-                    <div style={{display: 'flex', justifyContent: "space-between"}}>
-                        <div>
-                            <h4>Добавление пользователей в группу</h4>
-                            <UsersContainer>
-                                {clients.map((item, index) =>
-                                    <div key={index}>
-                                        <span style={{marginRight: 20}}>{item.nick}</span>
-                                        <span>{item.phone}</span>
+                    <div style={{display: 'flex', justifyContent: "space-between", flexDirection: 'column'}}>
+                        <List style={userListStyles} subheader={
+                            <ListSubheader>
+                                Добавление пользователей  в текущую группу
+                            </ListSubheader>}>
+                            {clients.map(item =>
+                                <ListItem button divider>
+                                    <ListItemText primary={item.nick} secondary={item.phone}/>
+                                    <ListItemSecondaryAction>
                                         <Tooltip title='Удаление/добавление пользователя' placement='top-start'>
                                             <Checkbox checked={item.selected} onChange={(e) =>
                                                 this.handleSelect(e, item.id)}/>
                                         </Tooltip>
-                                    </div>)}
-                            </UsersContainer>
-                        </div>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            )}
+                        </List>
                         <div style={{display: 'flex'}}>
                             <RulesBlock title='Добавленные права новой группы' type='add' rights={rights}
                                         handleMove={this.handleRule}/>

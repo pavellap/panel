@@ -1,6 +1,7 @@
 import {groupRules} from "../../template";
 
 export const transformDataForSave = data => {
+    console.log("Got data:", data)
     const added_rights = [];
     const deleted_rights = [];
     const users = [];
@@ -10,7 +11,7 @@ export const transformDataForSave = data => {
         else if(value[1] && value[2] === 'remove')
             deleted_rights.push(Number(key));
     })
-    data.users.forEach((item, index) => {
+    data.clients.forEach((item, index) => {
         if (item.selected)
             users.push(item.id);
     })

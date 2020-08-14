@@ -1,11 +1,20 @@
 import React from 'react'
-import {Tooltip, Checkbox, Button} from "@material-ui/core";
+import {
+    Tooltip,
+    Checkbox,
+    Button,
+    List,
+    ListSubheader,
+    ListItem,
+    ListItemText,
+    ListItemSecondaryAction
+} from "@material-ui/core";
 import RulesBlock from "./RulesBlock";
 import {groupDetailed, hardCode} from "../../../template";
 import {SubmitButton, Container, Input, UsersContainer} from "./SharedStyledComponents";
 import {transformDataForSave, transformRights} from "../utils";
 import {fetchGroupDetailed, fetchUsers, saveChanges} from "../API/api";
-
+import {userListStyles} from "./AddWindow";
 
 // hardcode - пользователи
 // groupRules - права в группе
@@ -26,7 +35,7 @@ export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: groupDetailed[1].users,
+            clients: groupDetailed[1].users,
             rights: transformRights(groupDetailed[1].added_rights, groupDetailed[1].deleted_rights),
             isLoading: true,
             groupName: groupDetailed[1].name,
@@ -40,16 +49,16 @@ export default class extends React.Component {
     }
 
     postData = () => {
-        console.log("Данные на сохранение в группах", transformDataForSave(this.state))
         if (!this.state.groupName)
             this.setState({formError: true})
         else {
+            this.props.handleSave();
             saveChanges(transformDataForSave(this.state))
         }
     }
 
     handleSelect = (event, id) =>  {
-        const array = this.state.users;
+        const array = this.state.clients;
         let index = null;
         array.forEach((item, i) => {
             if (item.id === id) {
@@ -58,7 +67,7 @@ export default class extends React.Component {
             }
         })
         array[index].selected = event.target.checked;
-        this.setState({users: array})
+        this.setState({clients: array})
     }
 
     handleRule = (right, newValue, type) => {
@@ -68,7 +77,7 @@ export default class extends React.Component {
         this.setState({rights: object})
     }
     render() {
-        const {users, rights, groupName, formError} = this.state;
+        const {clients, rights, groupName, formError} = this.state;
         return (
             <Container>
                 <h2>Добавление пользователей и их прав в новую группу</h2>
@@ -76,7 +85,7 @@ export default class extends React.Component {
                        value={groupName} error={formError} help-info='Имя группы не должно быть пустой строкой'
                        onChange={(e) =>
                            this.setState({groupName: e.currentTarget.value})}/>
-                <div style={{display: 'flex', justifyContent: "space-between"}}>
+                {/*<div style={{display: 'flex', justifyContent: "space-between"}}>
                     <div>
                         <h4>Добавление пользователей в группу</h4>
                         <UsersContainer>
@@ -98,14 +107,36 @@ export default class extends React.Component {
                         <RulesBlock title='Удалённые права новой группы' type='remove' rights={rights}
                                     handleMove={this.handleRule}/>
                     </div>
+                </div>*/}
+                <div style={{display: 'flex', justifyContent: "space-between", flexDirection: 'column'}}>
+                    <List style={userListStyles} subheader={
+                        <ListSubheader>
+                            Добавление пользователей  в текущую группу
+                        </ListSubheader>}>
+                        {clients.map(item =>
+                            <ListItem button divider>
+                                <ListItemText primary={item.nick} secondary={item.phone}/>
+                                <ListItemSecondaryAction>
+                                    <Tooltip title='Удаление/добавление пользователя' placement='top-start'>
+                                        <Checkbox checked={item.selected} onChange={(e) =>
+                                            this.handleSelect(e, item.id)}/>
+                                    </Tooltip>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        )}
+                    </List>
+                    <div style={{display: 'flex'}}>
+                        <RulesBlock title='Добавленные права новой группы' type='add' rights={rights}
+                                    handleMove={this.handleRule}/>
+                        <RulesBlock title='Удалённые права новой группы' type='remove' rights={rights}
+                                    handleMove={this.handleRule}/>
+                    </div>
                 </div>
                 <SubmitButton variant='contained' color='primary'
                               onClick={this.postData}>
-                    Добавить группу
+                    Сохранить изменения
                 </SubmitButton>
             </Container>
         )
     }
-
-
 }

@@ -11,6 +11,7 @@ const VerticalOrientation = styled.div`
     justify-content: space-between;
     padding-top: 12px;
     padding-bottom: 15px;
+    border-bottom: 1px solid #ccc;
     > div {
         margin-left: 20px;
         margin-top: 15px;
@@ -19,10 +20,11 @@ const VerticalOrientation = styled.div`
 
 export default function (props) {
     const {name, description, ans_type, text, response} = props;
+    const responseVisible = ans_type === 2 || ans_type === 3;
 
     return  (
         <React.Fragment>
-            <ListItem>
+            <ListItem divider={!responseVisible}>
                 <ListItemText primary={name} secondary={description}/>
                 <ListItemSecondaryAction>
                     <TextField variant='outlined' label='Текст сообщения' value={text}
@@ -30,7 +32,7 @@ export default function (props) {
                     />
                 </ListItemSecondaryAction>
             </ListItem>
-            {(ans_type === 2 || ans_type === 3) &&
+            {(responseVisible) &&
                 <VerticalOrientation>
                     <FileUploader/>
                     {response.map(item =>

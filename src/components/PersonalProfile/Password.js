@@ -25,6 +25,7 @@ export default function(props) {
     const [errorText, handleErrorText] = useState("")
 
     // todo: Текст при успешном запросе
+    // todo: сделать человеческую валидацию
     // todo: Значок визабитили, если будет время
     const validation = () => {
         if (oldPassword.length === 0) {

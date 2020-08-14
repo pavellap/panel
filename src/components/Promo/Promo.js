@@ -69,7 +69,6 @@ export function Promo() {
             //    handleLoading(false)
         })
     }, [])*/
-    console.log(handleLoading());
     const activated = [];
     const active = [];
     codes.forEach(item => {

@@ -2,12 +2,10 @@ import React from 'react'
 import PageHeader from "../UI/PageHeader";
 import AppsIcon from '@material-ui/icons/Apps';
 import {Link, Switch, Route} from 'react-router-dom'
-import {Tooltip} from "@material-ui/core";
+import {Tooltip, Grid} from "@material-ui/core";
 import styled from "styled-components";
-import Grid from "@material-ui/core/Grid";
 import Password from "./Password";
 import AddUser from "./AddUser";
-import DeleteUser from "./DeleteUser";
 import PersonalPage from "./PersonalPage";
 import Staff from "./Staff";
 import {fetchPersonalInfo, saveNewData} from "./API/api";
@@ -68,9 +66,8 @@ const hardCode = {
 }
 
 const sections = ['Моя страница', 'Управление персоналом', 'Изменить пароль', 'Добавленные пользователи',
-    /*'Удалить приглашённых пользователей'*/];
-const links = ['/settings/', "/settings/stuff", "/settings/password",  "/settings/add_user",
-    "/settings/delete_user"]
+    ];
+const links = ['/settings/', "/settings/stuff", "/settings/password",  "/settings/add_user"]
 
 
 // todo: спросить насчёт удалённого роута с удалением пользователей
@@ -128,7 +125,7 @@ export default class extends React.Component {
                 <Grid item xs style={{position: 'relative'}}>
                     <Switch>
                         <Route exact path='/settings' render={() =>
-                            <PersonalPage login={login} date={date}
+                            <PersonalPage login={login} date={date} isSuperUser={false}
                             invitations={invitations} nicks={nicks} rights={rights}/>
                         }
                         />
@@ -136,9 +133,6 @@ export default class extends React.Component {
                         <Route path='/settings/add_user' render={() => <AddUser users={nicks} limit={invitations}
                         saveChanges={this.handleChanges}/>}/>
                         <Route path='/settings/stuff' component={Staff}/>
-                        <Route path='/settings/delete_user'>
-                            <DeleteUser group={['trigo', 'pavellap', 'ekatze']}/>
-                        </Route>
                     </Switch>
                 </Grid>
             </Grid>

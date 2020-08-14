@@ -62,6 +62,9 @@ export const fetchModers = () => {
         })
 }
 
+/*
+* Сохраняем изменения модератора/главного админа
+ */
 export const saveNewData = (data, login) => {
     const endpoint = url + '/moders/' + login;
     Axios.put(endpoint, data).catch(err => {
@@ -69,3 +72,4 @@ export const saveNewData = (data, login) => {
         throw err;
     })
 }
+

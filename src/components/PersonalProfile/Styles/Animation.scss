@@ -2,13 +2,16 @@
   from {
       top: -250px;
   }
-  19% {
-      top: 0
+  1% {
+      bottom: -250px;
   }
-  75% {
-      top: 0
+  19% {
+    bottom: 100px;
+  }
+  99% {
+    bottom: 100px;
   }
   to {
-        top: -250px;
+    top: -250px;
   }
 }

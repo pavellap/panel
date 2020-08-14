@@ -11,6 +11,53 @@ import Axios from "axios";
 import Loader from "../UI/Loader";
 import url from "../../config";
 
+const hardCode = {
+    "type": "form",
+    "id": 5,
+    "disabled": false,
+    "name":
+        "Имя анкеты",
+    "hello":
+        "Приветственное сообщение",
+    "questions":
+        [
+
+            {
+                "id": 33,
+                "text":
+                    "Текст вопроса",
+                "type": "int",
+                "main": true
+            },
+
+            {
+                "id": 34,
+                "text":
+                    "Текст вопроса 2",
+                "type": "str",
+                "main": false
+            },
+
+            {
+                "id": 35,
+                "text":
+                    "Текст вопроса 3",
+                "type": "str",
+                "main": false
+            },
+
+            {
+                "id": 36,
+                "text":
+                    "Текст вопроса 4",
+                "type": "int",
+                "main": false
+
+            }
+
+        ]
+}
+
 export default class Profiles extends React.Component {
     constructor(props) {
         console.log("Current cookie:", document.cookie);
@@ -18,11 +65,11 @@ export default class Profiles extends React.Component {
         this.state = {
             modalOpen: false,
             typeOfModal: null,
-            profilesList: [],
+            profilesList: [hardCode],
             currentId: null,
             sectionId: 8,
             fetchingError: false,
-            componentIsLoading: true,
+            componentIsLoading: false,
             configs: [],
             currentProfile: null,
             counterID: 999,

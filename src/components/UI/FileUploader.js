@@ -8,12 +8,12 @@ import styled from "styled-components";
 
 
 const Container = styled.div`
-    display: flex;
+    display: inline-flex;
     min-width: 460px;
     width: 500px;
-    margin: 0 auto;
     align-items: center;
     justify-content: center;
+    padding: 12px;
 `
 
 export default function() {
@@ -37,7 +37,7 @@ export default function() {
                         <ListItemIcon>
                             <PostAddIcon fontSize='large'/>
                         </ListItemIcon>
-                        <ListItemText  primary={selectedFile.name} secondary={size}/>
+                        <ListItemText  primary={selectedFile.name.slice(0, 15)} secondary={size}/>
                         <ListItemSecondaryAction style={{marginLeft: 40}}>
                             <Tooltip title='Удаляет выбранный файл' placement='bottom-start'>
                                 <Clear fontSize='large' cursor='pointer'/>

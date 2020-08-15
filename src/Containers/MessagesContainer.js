@@ -30,7 +30,7 @@ class MessagesContainer extends Component {
 
     componentDidMount() {
         const {config, id} = this.props
-        console.log(`Играюсь с \n Разделом: ${id} \nКонфигом: ${config}`)
+        console.log("Замонтировали с конфигами: ", config)
         if (config)
             fetchData(config.id, id).then(res => {
                 this.setState({messages: res, componentIsLoading: false})
@@ -42,6 +42,7 @@ class MessagesContainer extends Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("Заапдейтили")
         if (prevProps.id !== this.props.id || prevProps.config !== this.props.config) {
             if (!prevState.componentIsLoading)
                 this.setState({componentIsLoading: true})
@@ -89,7 +90,7 @@ class MessagesContainer extends Component {
     render() {
         const {title} = this.props;
         const {componentIsLoading, configs, currentConfig, messages} = this.state;
-        console.log("Сообщения:", messages)
+        console.log("Рендерим сообщения...")
         return(
             <section style={{position: "relative"}}>
                 <PageHeader title={title}/>

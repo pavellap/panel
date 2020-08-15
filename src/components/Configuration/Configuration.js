@@ -16,15 +16,16 @@ function Config(props) {
     const {currentConfig, configs, addConfig, chooseConfig, deleteConfig, isLoading} = props;
 
     useEffect(() => {
-        console.log("Мы заапдейтили конфиги", configs)
+        console.log("Отрисовали конфигурации со значениями:", props)
     })
 
     return (
         <Container>
+            {console.log("Рендерим конфиги...")}
             <div>
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Текущая конфигурация: {currentConfig.id ? currentConfig.id : null}</Typography>
+                        <Typography>Текущая конфигурация: {currentConfig ? currentConfig.id : null}</Typography>
                     </AccordionSummary>
                     <StyledDetails>
                         {isLoading ? <LoaderWrapper><Loader/></LoaderWrapper> :
@@ -32,7 +33,7 @@ function Config(props) {
                                 <div style={{display: 'flex'}}>
                                     <TextField variant='outlined'
                                                label='Промежуток показа'
-                                               value={currentConfig.form_time}/>
+                                               value={currentConfig ? currentConfig.form_time : ""}/>
                                 </div>
                                 <StyledList subheader={<ListSubheader>Доступные конфигурации</ListSubheader>}>
                                     {configs.map(item => (

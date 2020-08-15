@@ -13,3 +13,8 @@ a {
     text-decoration: none;
     display: block;
 }
+
+.MuiListItemSecondaryAction-root {
+    display: flex;
+    align-items: center;
+}

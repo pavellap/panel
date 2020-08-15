@@ -7,7 +7,7 @@ import {SubmitButton, Container, Input} from "./SharedStyledComponents";
 import {transformDataForSave} from "../utils";
 import {addGroup} from "../API/api";
 
-// hardcode - пользователи
+// hardcode.js - пользователи
 // groupRules - права в группе
 
 export const userListStyles = {

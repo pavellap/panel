@@ -108,7 +108,7 @@ export default class extends React.Component {
             <PageHeader title='Настройки профиля'>
                 <Tooltip title='Переход на домашнюю страницу'>
                     <Link to='/registration'>
-                        <AppsIcon fontSize={'large'} cursor='pointer' color={'#333'}/>
+                        <AppsIcon fontSize={'large'} cursor='pointer' color='action'/>
                     </Link>
                 </Tooltip>
             </PageHeader>

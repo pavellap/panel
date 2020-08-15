@@ -39,7 +39,7 @@ export default function (props) {
                 <VerticalOrientation>
                     <FileUploader id={id}/>
                     {response.map(item =>
-                        <TextField variant='outlined'
+                        <TextField variant='outlined' key={item.id}
                                    label='Текст обратной связи'
                                    value={item.text}
                                    onChange={e => props.handleResponse(e.currentTarget.value, item.id)}

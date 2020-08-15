@@ -105,10 +105,8 @@ export default function (props) {
     const [modalIsOpen, handleModal] = useState(false);
     const [userToDelete, handleDeletedUser] = useState(null);
     const [componentIsLoading, handleLoading] = useState(false)
-    const [modalType, handleModalType] = useState(null);
     const [modalComponent, handleModalComponent] = useState(null)
 
-    console.log('Modal Type: ', modalType)
     return (
         componentIsLoading ? <Loader/> :
             <Container onKeyDown={addNewUser}>

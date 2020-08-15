@@ -15,19 +15,23 @@ export default function(props) {
             <ListItemSecondaryAction>
                 <Tooltip title='Изменяет приоритетность группы' placement='right-start'>
                     <span onClick={() => props.handleMove(id, 'up')}>
-                        <KeyboardArrowUpIcon cursor='pointer' fontSize='large'/>
+                        <KeyboardArrowUpIcon
+                            cursor='pointer' color='action'
+                            fontSize='large'/>
                     </span>
                 </Tooltip>
                 <Tooltip title='Изменяет приоритетность группы' placement='right-start'>
                     <span onClick={() => props.handleMove(id, 'down')}>
-                        <KeyboardArrowDownIcon cursor='pointer' fontSize='large'/>
+                        <KeyboardArrowDownIcon cursor='pointer' color='action'
+                                               fontSize='large'/>
                     </span>
 
                 </Tooltip>
                 <Tooltip title='Удалить группу' placement='right-start'>
                     <span style={{marginRight: 30}}
                           onClick={() => props.toggleModal(true, 'delete', id)}>
-                    <DeleteIcon cursor='pointer' fontSize='large'/>
+                    <DeleteIcon cursor='pointer' color='action'
+                                fontSize='large'/>
                     </span>
                 </Tooltip>
             </ListItemSecondaryAction>

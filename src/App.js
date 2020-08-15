@@ -30,10 +30,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        // Загружаем конфиги
+        console.log("Отрендерили приложение")
         this.props.fetchConfigs()
-        console.log("Получаем конфиги:", this.props.configs);
-        console.log("Получаем конфиги альтернативно:", localStorage.getItem('configs'));
     }
 
     changeConfiguration = (newId) => {
@@ -55,6 +53,7 @@ class App extends React.Component {
     *
      */
     render() {
+        console.log("Рендерим приложение..")
         return (
             <Layout>
                 <Switch>
@@ -63,7 +62,7 @@ class App extends React.Component {
                     <Route  path='/settings/' render={() => <PersonalProfile/>}/>
 
                     {sections.map(item =>
-                        <Route path={item.path}>
+                        <Route path={item.path} key={item.id}>
                             <Wrapper id={this.state.currentConfig}
                                      isAuthorized={this.state.isAuthorized}>
                                 <MessagesTemplate title={item.title} handleConfig={val => this.changeConfiguration(val)}

@@ -46,7 +46,7 @@ export default class extends React.Component {
 
     removeUser = nick => {
         this.setState({nicks: this.state.nicks.filter(item => item !== nick)})
-        //deleteModer(nick);
+        deleteModer(nick);
     }
 
     handleSave = () => {

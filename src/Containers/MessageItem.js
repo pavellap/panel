@@ -1,6 +1,6 @@
 import React from 'react'
 import {ListItemText, ListItem,
-    ListItemSecondaryAction, TextField, List} from "@material-ui/core";
+    ListItemSecondaryAction, TextField} from "@material-ui/core";
 import styled from "styled-components";
 import FileUploader from "../components/UI/FileUploader";
 
@@ -18,10 +18,10 @@ const VerticalOrientation = styled.div`
     }
 `
 
-export default function (props) {
-    const {name, description, ans_type, text, response} = props;
-    const responseVisible = ans_type === 2 || ans_type === 3;
 
+export default function (props) {
+    const {name, description, ans_type, text, response, id} = props;
+    const responseVisible = ans_type === 2 || ans_type === 3;
     return  (
         <React.Fragment>
             <ListItem divider={!responseVisible}>
@@ -32,9 +32,12 @@ export default function (props) {
                     />
                 </ListItemSecondaryAction>
             </ListItem>
+            {!responseVisible && <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <FileUploader id={id}/>
+            </div>}
             {(responseVisible) &&
                 <VerticalOrientation>
-                    <FileUploader/>
+                    <FileUploader id={id}/>
                     {response.map(item =>
                         <TextField variant='outlined'
                                    label='Текст обратной связи'

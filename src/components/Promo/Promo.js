@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import PageHeader from "../UI/PageHeader";
 import { List, ListSubheader} from "@material-ui/core";
-//import url from "../config";
-//import Axios from "axios";
 import Loader from "../UI/Loader";
+import Axios from "axios";
+import url from "../../config";
 
 const Container = styled.section`
     display: flex;
@@ -38,7 +38,7 @@ const PromoItem = styled.div`
     }
 `
 
-const codes =  [
+const codesHardcode =  [
     {
         code: '1GD5hS',
         owner: "admin",
@@ -60,18 +60,23 @@ const codes =  [
 // TODO: загрузка промокодов с сервера - убрать заглушки и раскомментить код
 export function Promo() {
     const [isLoading, handleLoading] = useState(false) // заменить на true
-    //let codes;
-    /*useEffect(() => {
+    let codes = [];
+    useEffect(() => {
         const endpoint = url + "/promocodes"
         Axios.get(endpoint).then(res => {
-            // codes = res.data.codes.slice();
-            // if (res.status > 200 && res.status < 300)
-            //    handleLoading(false)
+             codes = res.data.codes.slice();
+             console.log("Получили данные в промокодах:", res.data)
+             if (res.status > 200 && res.status < 300)
+                handleLoading(false)
+        }).catch(err => {
+            console.log("Произошла ошибка при загрузке промокодов..")
+            throw err;
         })
-    }, [])*/
+    }, [])
     const activated = [];
     const active = [];
-    codes.forEach(item => {
+    // Todo: заменить на codes
+    codesHardcode.forEach(item => {
         item.activated ? activated.push(item) : active.push(item);
     })
     return (

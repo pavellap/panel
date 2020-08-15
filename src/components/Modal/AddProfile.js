@@ -1,6 +1,6 @@
 import React from "react";
 import './AddProfile.css'
-import EditEntry from "../Messages/EditEntry";
+import EditEntry from "../Configuration/EditEntry";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 

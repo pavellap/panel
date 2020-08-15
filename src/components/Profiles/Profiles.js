@@ -6,7 +6,7 @@ import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import ProfileEntry from "./ProfileEntry";
 import Modal from "../Modal/Modal";
 import ReactDOM from 'react-dom'
-import Configuration from "../Messages/Configuration";
+import Configuration from "../Configuration/Configuration";
 import Axios from "axios";
 import Loader from "../UI/Loader";
 import url from "../../config";

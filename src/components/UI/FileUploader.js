@@ -21,20 +21,22 @@ const Container = styled.div`
 *   1. При повтором нажатии на выбор файла при уже выбранном файле билд крашится
 *
  */
-export default function() {
+export default function(props) {
     const [selectedFile, handleSelected] = useState(null);
     const [size, handleSize] = useState(null);
-
-    console.log(selectedFile)
+    const {id} = props;
+    const buttonText = !size ? 'Прикрепить файл' : 'Заменить файл';
     return (
         <Container>
-            <label className='file-input-label' htmlFor="file-input">Загрузить файл</label>
-            <input id='file-input' className='file-input' type="file"
-                   onChange={e => {
-                       handleSelected(e.target.files[0]);
-                       handleSize(String
-                       (e.target.files[0].size / 1024 / 1024).slice(0, 4) + ' МБ')
-                   }}/>
+            <label className='file-input-label' htmlFor={'file-input-' + id}>{buttonText}</label>
+            <form>
+                <input id={'file-input-' + id} className='file-input' type="file"
+                       onChange={e => {
+                           handleSelected(e.target.files[0]);
+                           handleSize(String
+                           (e.target.files[0].size / 1024 / 1024).slice(0, 4) + ' МБ')
+                       }}/>
+            </form>
             {selectedFile &&
             <div style={{minWidth: 260}}>
                 <List disablePadding>
@@ -42,10 +44,15 @@ export default function() {
                         <ListItemIcon>
                             <PostAddIcon fontSize='large'/>
                         </ListItemIcon>
-                        <ListItemText  primary={selectedFile.name.slice(0, 15)} secondary={size}/>
+                        <ListItemText primary={selectedFile.name.slice(0, 15)} secondary={size}/>
                         <ListItemSecondaryAction style={{marginLeft: 40}}>
                             <Tooltip title='Удаляет выбранный файл' placement='bottom-start'>
-                                <Clear fontSize='large' cursor='pointer'/>
+                                <Clear fontSize='large' cursor='pointer'
+                                       onClick={() => {
+                                           handleSelected(false);
+                                           handleSize(false)
+                                       }}
+                                />
                             </Tooltip>
                         </ListItemSecondaryAction>
                     </ListItem>

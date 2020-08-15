@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Tooltip,
     Checkbox,
-    Button,
     List,
     ListSubheader,
     ListItem,
@@ -11,13 +10,10 @@ import {
 } from "@material-ui/core";
 import RulesBlock from "./RulesBlock";
 import {groupDetailed, hardCode} from "../../../template";
-import {SubmitButton, Container, Input, UsersContainer} from "./SharedStyledComponents";
+import {SubmitButton, Container, Input} from "./SharedStyledComponents";
 import {transformDataForSave, transformRights} from "../utils";
 import {fetchGroupDetailed, fetchUsers, saveChanges} from "../API/api";
 import {userListStyles} from "./AddWindow";
-
-// hardcode - пользователи
-// groupRules - права в группе
 
 
 const transformClients = array => {
@@ -85,29 +81,6 @@ export default class extends React.Component {
                        value={groupName} error={formError} help-info='Имя группы не должно быть пустой строкой'
                        onChange={(e) =>
                            this.setState({groupName: e.currentTarget.value})}/>
-                {/*<div style={{display: 'flex', justifyContent: "space-between"}}>
-                    <div>
-                        <h4>Добавление пользователей в группу</h4>
-                        <UsersContainer>
-                            {users.map((item, index) =>
-                                <div key={index}>
-                                    <span style={{marginRight: 20}}>{item.nick}</span>
-                                    <span>{item.phone}</span>
-                                    <Button variant='contained' color='primary'>Удалить из других групп</Button>
-                                    <Tooltip title='Удаление/добавление пользователя' placement='top-start'>
-                                        <Checkbox checked={item.selected} onChange={(e) =>
-                                            this.handleSelect(e, item.id)}/>
-                                    </Tooltip>
-                                </div>)}
-                        </UsersContainer>
-                    </div>
-                    <div style={{display: 'flex'}}>
-                        <RulesBlock title='Добавленные права новой группы' type='add' rights={rights}
-                                    handleMove={this.handleRule}/>
-                        <RulesBlock title='Удалённые права новой группы' type='remove' rights={rights}
-                                    handleMove={this.handleRule}/>
-                    </div>
-                </div>*/}
                 <div style={{display: 'flex', justifyContent: "space-between", flexDirection: 'column'}}>
                     <List style={userListStyles} subheader={
                         <ListSubheader>

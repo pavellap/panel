@@ -15,15 +15,6 @@ const Container = styled.div`
     }
 `
 
-const Glist = styled.div`
-    max-height: 400px;
-    overflow-y: scroll;
-    display:flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    padding: 20px 25px;
-    margin-top: 20px;
-`
 
 
 // props: rules

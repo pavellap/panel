@@ -6,16 +6,22 @@ import Axios from "axios";
 * Params: config id, section id
  */
 export const fetchData = (config, section) => {
-    const endpoint = url + '/messages/config_id=' + config + '&section=' + section;
-    Axios.get(endpoint).then(res => {
-        console.log(`Получили данные в разделе ${section} с конфигом ${config} \n ${res.data}`);
-    })
-        .catch(err => {
-            console.log("Произошла ошибка при загрузке сообщений в разделе:", section
-            , '\n Конфиг: ', config);
-            throw err;
+    return new Promise((resolve, reject) => {
+        const endpoint = url + '/messages/config_id=' + config + '&section=' + section;
+        let data = null;
+        Axios.get(endpoint).then(res => {
+            data = res.data.messages;
+            resolve(data)
         })
+            .catch(err => {
+                console.log("Произошла ошибка при загрузке сообщений в разделе:", section
+                    , '\n Конфиг: ', config);
+                reject(null)
+                throw err;
+            })
+    });
 }
+
 
 export const saveChanges = (data, id) => {
     const endpoint = url + '/messages/' + id;

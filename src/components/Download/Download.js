@@ -5,6 +5,8 @@ import DownloadEntry from "./DownloadEntry";
 import url from '../../config'
 
 export default class Download extends React.Component {
+    endpoint = url + '/statistics';
+
     render() {
         return (
             <section>
@@ -12,9 +14,8 @@ export default class Download extends React.Component {
                     <div className='download-wrapper'>
                         <h4>Доступные файлы</h4>
                         <DownloadEntry title='Отчёт' description={'Загрузить отчёты'}
-                        handleClick={() => window.open(url + "/statistics" + "/" +
-                            localStorage.getItem('token'), "_blank")}
-                                       file='csv'/>
+                        handleClick={() => window.open(this.endpoint, "_blank")}
+                                       file='xlsx'/>
                     </div>
             </section>
         )

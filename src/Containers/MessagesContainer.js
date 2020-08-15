@@ -1,13 +1,12 @@
 import React,  {Component} from "react";
 import PageHeader from "../components/UI/PageHeader";
-import Configuration from "../components/Messages/Configuration";
-import Axios from "axios";
+import Configuration from "../components/Configuration/Configuration";
 import Loader from "../components/UI/Loader";
-import url from '../config'
 import MessageItem from "./MessageItem";
 import {List, Button} from "@material-ui/core";
 import styled from "styled-components";
 import {fetchData} from "./api";
+import {connect} from 'react-redux'
 
 const MessagesWrapper = styled.section`
     margin: 0 auto;
@@ -16,73 +15,52 @@ const MessagesWrapper = styled.section`
     max-width: 850px;
 `
 
-const hardCode = [
-    {
-	    id: 1,
-	    name: 'Первое сообщение',
-	    description: 'Описание к первому сообщению',
-	    text: 'Текст сообщения',
-	    ans_type: 0,
-        file: 'attachment.json',
-    },
-    {
-        id: 2,
-        name: 'Второе сообщение',
-        description: 'Описание ко второму сообщению',
-        text: 'Текст сообщения',
-        ans_type: 2,
-        response: [{
-                id: 2,
-                text: 'Текст обратной связи',
-                description: 'Описание обратной связи'
-            },
-            {
-                id: 3,
-                text: 'Шаблон',
-                description: 'Шаблон'
-            },
-        ],
-        file: 'attachment.json',
-    },
-    {
-        id: 3,
-        name: 'Третье сообщение',
-        description: 'Описание к первому сообщению',
-        text: 'Текст сообщения',
-        ans_type: 0,
-        file: 'attachment.json',
-    },
-
-]
-
 // в пропсах: название раздела, id раздела
-export default class extends Component {
+class MessagesContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: hardCode, // все поля для ввода сообщений
-            sectionId: props.id,
-            componentIsLoading: false, // статус получения данных с сервера
+            messages: [], // все поля для ввода сообщений
+            componentIsLoading: true, // статус получения данных с сервера
             modalIsOpen: false,
+            changedMessages: [],
+            changedResponses: []
         }
     }
-    // в редаксе будем хранить: все конфиги, текущий конфиг
-    // данные по разделу получаем по: sectionId, currentConfig
-    componentDidMount() {
-        const {currentConfig, sectionId} = this.state;
-        fetchData(currentConfig, sectionId)
-    }
-    postData = () => {
 
+    componentDidMount() {
+        const {config, id} = this.props
+        console.log(`Играюсь с \n Разделом: ${id} \nКонфигом: ${config}`)
+        if (config)
+            fetchData(config.id, id).then(res => {
+                this.setState({messages: res, componentIsLoading: false})
+            })
+    }
+
+    postData = () => {
+        console.log("Данные на отправку:", this.state)
     };
 
-
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.id !== this.props.id || prevProps.config !== this.props.config) {
+            if (!prevState.componentIsLoading)
+                this.setState({componentIsLoading: true})
+            const {config, id} = this.props
+            if (config)
+                fetchData(config.id, id).then(res => {
+                    this.setState({messages: res, componentIsLoading: false})
+                })
+        }
+    }
 
     handleChange = (val, id) => {
         let pos;
         this.state.messages.forEach((item, index) => {
-            if (item.id === id)
+            if (item.id === id) {
                 pos = index;
+                this.setState({})
+            }
+
         });
         this.setState(() => {
             const newArray = this.state.messages;
@@ -109,29 +87,21 @@ export default class extends Component {
     }
 
     render() {
-
         const {title} = this.props;
         const {componentIsLoading, configs, currentConfig, messages} = this.state;
+        console.log("Сообщения:", messages)
         return(
             <section style={{position: "relative"}}>
                 <PageHeader title={title}/>
                 {componentIsLoading ? <Loader/> :
                     <React.Fragment>
-                        <Configuration configs={configs} handleConfig={val => {
-                            this.props.handleConfig(val);
-                            console.log("Меняем на конфиг:", val);
-                            // пофиксить баг с текущим конфигом
-                            Axios.get(url + "/config/choose/id=" + val + "/" +
-                                localStorage.getItem('token')).then(() => {
-                                window.location.reload(false)
-                            });
-                        }} currentConfig={currentConfig}/>
+                        <Configuration/>
                         <MessagesWrapper>
                             <List>
-                                {messages.map(item => (
+                                {messages && messages.map(item => (
                                     <MessageItem key={item.id} name={item.name}
                                                  description={item.description}
-                                                 ans_type={item.ans_type}
+                                                 ans_type={item.ans_type} id={item.id}
                                                  text={item.text} response={item.response}
                                                  handleChange={val => this.handleChange(val, item.id)}
                                                  handleResponse={this.handleResponse}
@@ -141,12 +111,23 @@ export default class extends Component {
                         </MessagesWrapper>
                     </React.Fragment>
                 }
-
                 <div style={{display: 'flex', justifyContent: 'center', paddingTop: 20}}>
-                    <Button variant='contained' color='primary'>Сохранить изменения</Button>
+                    <Button variant='contained'
+                            color='primary'
+                            onClick={this.postData}
+                    >
+                        Сохранить изменения
+                    </Button>
                 </div>
             </section>
         )
     }
-
 }
+
+function mapStateToProps(state) {
+    return {
+        config: state.config.currentConfig
+    }
+}
+
+export default connect(mapStateToProps, null)(MessagesContainer)

@@ -1,5 +1,5 @@
 import React from 'react'
-import EditEntry from "../Messages/EditEntry";
+import EditEntry from "../Configuration/EditEntry";
 
 
 export default class extends React.Component {

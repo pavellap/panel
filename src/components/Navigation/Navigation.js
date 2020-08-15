@@ -6,17 +6,13 @@ import {withStyles, Accordion} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import './Navigation.css'
-import Axios from "axios";
-import url from '../../config'
 import Typography from "@material-ui/core/Typography";
+import {connect} from 'react-redux'
 
 
 /*
- * Для иконок в навигации используется готовая React-библиотека от FontAwesome
- * Подробнее здесь: https://fontawesome.com/how-to-use/on-the-web/using-with/react
- */
-
-/*Стили для аккордеона*/
+*    Стили для аккордеона
+* */
 const AccordionSummary = withStyles({
     root: {
         backgroundColor: "#26262b",
@@ -28,14 +24,7 @@ const AccordionSummary = withStyles({
 
 })(MuiAccordionSummary)
 
-let config;
-
-Axios.get(url + "/config/current" + "/" +
-    localStorage.getItem('token')).then(res => {
-    config = res.data.id
-});
-
-export default class Navigation extends React.Component {
+ class Navigation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,10 +44,12 @@ export default class Navigation extends React.Component {
     };
 
     render() {
+        const {config} = this.props
+        console.log("Конфиг в header:", config)
         return (
             <aside className='Menu-container'>
                 <NavigationHeader userName={this.state.user} status={this.state.status}/>
-                <div className='Menu-description'>Текущая конфигурация: {config}</div>
+                <div className='Menu-description'>Текущая конфигурация: {config ? config.id : null}</div>
                     <nav>
                         <Accordion expanded={this.state.accordIsOpen} onChange={this.handleAccord}>
                             <AccordionSummary
@@ -90,3 +81,11 @@ export default class Navigation extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        config: state.config.currentConfig,
+        configs: state.config.configs
+    }
+}
+
+export default connect(mapStateToProps, null)(Navigation)

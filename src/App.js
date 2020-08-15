@@ -15,8 +15,10 @@ import PersonalProfile from "./components/PersonalProfile/PersonalProfile";
 import {sections} from "./Constants/AppTemplate";
 import Mail from "./components/Mailing/Mail";
 import Tariff from "./components/Tariff/Tariff";
+import {fetchConfigs} from "./Redux/Actions/ConfigActions";
+import {connect} from 'react-redux'
 
-export default class extends React.Component {
+class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,13 +30,10 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        const localURL = url + "/config/get";
-        Axios.get(localURL + "/" +
-            localStorage.getItem('token')).then((response) => {
-                this.setState({configurationsList: response.data,
-                    currentConfig: response.data[0].id});
-            }
-        );
+        // Загружаем конфиги
+        this.props.fetchConfigs()
+        console.log("Получаем конфиги:", this.props.configs);
+        console.log("Получаем конфиги альтернативно:", localStorage.getItem('configs'));
     }
 
     changeConfiguration = (newId) => {
@@ -68,7 +67,7 @@ export default class extends React.Component {
                             <Wrapper id={this.state.currentConfig}
                                      isAuthorized={this.state.isAuthorized}>
                                 <MessagesTemplate title={item.title} handleConfig={val => this.changeConfiguration(val)}
-                                id={item.id} configs={this.state.configurationsList}/>
+                                id={item.id}/>
                             </Wrapper>
                         </Route>
                     )}
@@ -104,3 +103,16 @@ export default class extends React.Component {
     }
 }
 
+function mapStateToProps(state){
+    return {
+        configs: state.config.configs
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchConfigs: () => dispatch(fetchConfigs())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

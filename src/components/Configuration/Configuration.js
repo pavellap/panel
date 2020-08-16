@@ -36,7 +36,7 @@ function Config(props) {
                                                value={currentConfig ? currentConfig.form_time : ""}/>
                                 </div>
                                 <StyledList subheader={<ListSubheader>Доступные конфигурации</ListSubheader>}>
-                                    {configs.map(item => (
+                                    {configs && configs.map(item => (
                                         <ListItem button key={item.id}
                                                   selected={item.id === currentConfig.id}
                                                   onClick={() => chooseConfig(item)}

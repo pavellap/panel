@@ -31,6 +31,31 @@ class App extends React.Component {
 
     componentDidMount() {
         console.log("Отрендерили приложение")
+        Axios.post(url + '/forms', {
+            "disabled": false,
+            configs: [1],
+            "name":
+                "Тестовая анкета",
+            "hello":
+                "Приветственное сообщение",
+            "hello_file": 'ЗдароваУёба.pdf',
+            ending: 'Аревуар, адьос, братик',
+            ending_file: 'Пока,браток.pdf',
+            "questions":
+                [
+
+                    {
+                        "text": "Текст вопроса",
+                        "type": "int",
+                        "main": true
+                    },
+                    {
+                        "text": "Текст вопроса",
+                        "type": "str",
+                        "main": true
+                    },
+                ]
+        }).then(res => console.log("А шо, звучит хайпово:", res.data))
         this.props.fetchConfigs()
     }
 
@@ -46,12 +71,6 @@ class App extends React.Component {
                 console.log("Status", this.state.isAuthorized)
             });
     }
-    /*
-    * TODO:
-    *  1. Роли прокидывать в редакс, чтобы не ебаться с кучей пропсов
-    *  2. Нормально доделать структуру App.js
-    *
-     */
     render() {
         console.log("Рендерим приложение..")
         return (

@@ -1,62 +1,59 @@
 import React, {Component}  from "react";
-import styled from "styled-components";
 import PageHeader from "../UI/PageHeader";
 import Configuration from "../Configuration/Configuration";
 import {connect} from 'react-redux'
 import {
-    List, ListItemSecondaryAction, ListItemText, ListItem,
-     Tooltip, ListSubheader, Switch, withStyles
+    ListItemSecondaryAction, ListItemText, ListItem,
+     Tooltip, ListSubheader, Button
 } from "@material-ui/core";
 import {KeyboardArrowDown, KeyboardArrowUp, Delete} from "@material-ui/icons";
-import {changeProfilePosition, fetchProfiles} from "../../Redux/Actions/ProfileActions";
+import {
+    addNewProfile, changeProfilePosition, closeModal,
+    fetchProfile, fetchProfiles
+} from "../../Redux/Actions/ProfileActions";
 import Loader from "../UI/Loader";
 import {createPortal} from 'react-dom'
 import ModalAdvanced from "../Modal/ModalAdvanced";
 import {fetchConfigs} from "../../Redux/Actions/ConfigActions";
-
-
-const StyledList = withStyles({
-    root: {
-        minWidth: 300,
-        width: 700,
-        maxWidth: '70%'
-    }
-})(List)
-
-const Wrapper = styled.main`
-    position: relative;
-`
-const ProfilesContainer = styled.div`
-    display: flex;
-`
+import {StyledList, ProfilesContainer, Wrapper} from "./SharedStyledComponents";
+import EditProfile from "./Modals/EditProfile";
 
 
 class Profiles extends Component {
 
     componentDidMount() {
-        console.log("Отрендерили анкеты")
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("Заапдейтили профили...", this.props.config)
+        //this.props.fetchProfiles()
     }
 
     render() {
         console.log("Рендерим анкеты...")
         const {changePosition, profiles,
-            componentIsLoading, modalIsOpen, config} = this.props;
+            componentIsLoading, modalIsOpen,
+            config, fetchProfile, closeModal, addProfile} = this.props;
+
 
         return (
             <Wrapper>
                 <PageHeader title='Анкеты'/>
                 <Configuration/>
+                <header>
+                    <Button variant='contained'
+                            color='primary'
+                            onClick={addProfile}
+                    >
+                        Добавить новую анкету
+                    </Button>
+                </header>
                 {componentIsLoading ? <Loader/> :
                     <ProfilesContainer>
                         <StyledList
                             subheader={<ListSubheader>Все доступные анкеты</ListSubheader>}
                         >
                             {profiles.map((item, index) =>
-                                <ListItem button key={item.id}>
+                                <ListItem button
+                                          key={item.id}
+                                          onClick={() => fetchProfile(item.id)}
+                                >
                                     <ListItemText
                                         primary={'ID: ' + item.id}
                                         secondary={item.name}
@@ -90,7 +87,10 @@ class Profiles extends Component {
                             )}
                         </StyledList >
                     </ProfilesContainer>}
-                {createPortal(modalIsOpen && <ModalAdvanced/>,
+                {createPortal(modalIsOpen &&
+                    <ModalAdvanced toggleModal={closeModal}>
+                        <EditProfile/>
+                    </ModalAdvanced>,
                     document.getElementById('portal'))}
             </Wrapper>
         )
@@ -102,7 +102,10 @@ function mapDispatchToProps(dispatch) {
         changePosition: (index, action, profiles) =>
             dispatch(changeProfilePosition(index, action, profiles)),
         fetchProfiles: () => dispatch(fetchProfiles()),
-        fetchConfigs: () => dispatch(fetchConfigs())
+        fetchConfigs: () => dispatch(fetchConfigs()),
+        fetchProfile: () => dispatch(fetchProfile()),
+        closeModal: () => dispatch(closeModal()),
+        addProfile: () => dispatch(addNewProfile())
     }
 }
 

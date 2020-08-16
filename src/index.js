@@ -8,8 +8,12 @@ import {Provider} from 'react-redux'
 import {applyMiddleware, createStore} from "redux";
 import reducer from './Redux/Reducers/RootReducer'
 import thunk from "redux-thunk";
+import url from "./config";
+import Axios from "axios";
 
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = createStore(reducer, applyMiddleware(thunk) )
+
+
 
 const app =
     (<Provider store={store}>

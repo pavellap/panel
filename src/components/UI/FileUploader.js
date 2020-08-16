@@ -17,9 +17,7 @@ const Container = styled.div`
 `
 
 /*
-* todo:
-*   1. При повтором нажатии на выбор файла при уже выбранном файле билд крашится
-*
+* TODO: Сделать загрузку файла на сервер
  */
 export default function(props) {
     const [selectedFile, handleSelected] = useState(null);

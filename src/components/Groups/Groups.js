@@ -9,7 +9,6 @@ import Button from "@material-ui/core/Button";
 import DeleteWindow from "./Modals/DeleteWindow";
 import EditWindow from "./Modals/EditWindow";
 import AddWindow from "./Modals/AddWindow";
-import './scrollbar.scss'
 import {changePriority, fetchGroups, deleteGroup as removeGroup} from "./API/api";
 import {List} from "@material-ui/core";
 
@@ -94,7 +93,7 @@ export default class Groups extends React.Component {
         changePriority(this.state.groups);
     }
 
-    // TODO кнопку для сохранения изменений ???
+    // TODO кнопку для сохранения изменений
     render() {
         return (
             <MainWrapper>

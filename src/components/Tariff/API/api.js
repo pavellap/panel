@@ -5,26 +5,37 @@ import Axios from "axios";
 /*
 *   Подрузка списка всех чатов
 * */
-export const fetchChats = () => {
+export async function fetchChats() {
     const endpoint = url + '/chats';
-    Axios.get(endpoint).then(res => {
-            console.log("Получили данные при загрузке чатов:", res.data)
-    }).catch(err => {
+    try {
+        const response = await Axios.get(endpoint);
+        return response.data
+    }
+    catch (err) {
         console.log("Произошла ошибка при загрузке списка чатов")
         throw err;
-    });
+    }
 }
 /*
 * Создание нового чата
 * */
-export const addChat = data => {
-    const {chat_id, name} = data;
-    const endpoint = url + 'chats';
-    Axios.post(endpoint, {
-        chat_id,
-        name
-    }).then(res => console.log("Это заглушка для метода для добавления нового чата:", res.data))
-        .catch(err => console.log("Произошла ошибка при добавлении нового чата.."))
+export async function addChat(data) {
+    const {id, name} = data;
+    const endpoint = url + '/chats';
+    try {
+        await Axios.post(endpoint, {
+            id,
+            name
+        })
+        let newChats = null;
+        //fetchChats().then(res => newChats = res.chats);
+        console.log("Structure: ", newChats)
+        return newChats
+    }
+    catch (err) {
+        console.log("Произошла ошибка при добавлении нового чата..");
+        throw err;
+    }
 }
 /*
 * Загрузка списка подписок по id чата

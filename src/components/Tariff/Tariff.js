@@ -10,6 +10,7 @@ import AddChat from "./Modals/AddChat";
 import DeleteChat from "./Modals/DeleteChat";
 import Settings from "./Modals/Settings";
 import Sub from "./Sub";
+import {fetchChats, addChat} from "./API/api";
 
 const ChatList = withStyles({
     root: {
@@ -53,14 +54,15 @@ export default class Tariff extends React.Component {
         }
     }
 
+    componentDidMount() {
+        fetchChats().then(data => this.setState({chats: data.chats}))
+    }
 
-    handleAddNewChat = (chat_id, name) => {
-        const array = this.state.chats;
-        array.push({chat_id, name});
-        this.setState({
+    handleAddNewChat = (id, name) => {
+        addChat({id, name}).then(data => this.setState({
             modalIsOpen: false,
-            chats: array
-        })
+            chats: data
+        }))
     }
 
     handleDeleteChat = (action, id) => {
@@ -95,11 +97,11 @@ export default class Tariff extends React.Component {
                         <ChatList subheader={<ListHeader openAdd={this.handleModal} openSettings={this.handleModal}/>}>
                             {chats.map((item, index) => (
                                 <ListItem button key={index} onClick={() => this.setState({subIsOpen: true,
-                                    currChat: item.chat_id, currName: item.name})}>
-                                    <ListItemText primary={`ID: ${item.chat_id}`} secondary={`${item.name}`}/>
+                                    currChat: item.id, currName: item.name})}>
+                                    <ListItemText primary={`ID: ${item.id}`} secondary={`${item.name}`}/>
                                     <ListItemSecondaryAction>
                                         <ListItemIcon
-                                            onClick={() => this.handleModal(true, 'remove', item.chat_id)}>
+                                            onClick={() => this.handleModal(true, 'remove', item.id)}>
                                             <Close cursor='pointer'/>
                                         </ListItemIcon>
                                     </ListItemSecondaryAction>

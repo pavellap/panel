@@ -12,6 +12,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "chalk": "^4.1.0",
+    "express": "^4.17.1",
     "password-generator": "^2.3.2",
     "pretty-checkbox": "^3.0.3",
     "react": "^16.13.1",
@@ -30,7 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prod": "npm install && react-scripts build && start http://localhost:9000 && node server.js"
   },
   "eslintConfig": {
     "extends": "react-app"

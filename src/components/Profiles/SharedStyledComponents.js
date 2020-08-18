@@ -19,4 +19,6 @@ export const Wrapper = styled.main`
 `
 export const ProfilesContainer = styled.div`
     display: flex;
+    align-items: center;
+    flex-direction: column;
 `

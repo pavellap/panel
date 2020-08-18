@@ -31,7 +31,7 @@ class App extends React.Component {
 
     componentDidMount() {
         console.log("Отрендерили приложение")
-        Axios.post(url + '/forms', {
+        /*Axios.post(url + '/forms', {
             "disabled": false,
             configs: [1],
             "name":
@@ -55,7 +55,7 @@ class App extends React.Component {
                         "main": true
                     },
                 ]
-        }).then(res => console.log("А шо, звучит хайпово:", res.data))
+        }).then(res => console.log("А шо, звучит хайпово:", res.data))*/
         this.props.fetchConfigs()
     }
 

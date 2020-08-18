@@ -37,4 +37,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(ErrorModal)
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorModal)

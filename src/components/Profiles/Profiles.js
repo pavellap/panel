@@ -8,8 +8,9 @@ import {
 } from "@material-ui/core";
 import {KeyboardArrowDown, KeyboardArrowUp, Delete} from "@material-ui/icons";
 import {
-    addNewProfile, changeProfilePosition, closeModal,
-    fetchProfile, fetchProfiles
+    acceptDeleteProfile,
+    addNewProfile, changeProfilePosition, closeModal, deleteProfile,
+    fetchProfile, fetchProfiles, saveData
 } from "../../Redux/Actions/ProfileActions";
 import Loader from "../UI/Loader";
 import {createPortal} from 'react-dom'
@@ -17,21 +18,26 @@ import ModalAdvanced from "../Modal/ModalAdvanced";
 import {fetchConfigs} from "../../Redux/Actions/ConfigActions";
 import {StyledList, ProfilesContainer, Wrapper} from "./SharedStyledComponents";
 import EditProfile from "./Modals/EditProfile";
+import DeleteModal from "./Modals/DeleteModal";
 
 
 class Profiles extends Component {
 
     componentDidMount() {
-        //this.props.fetchProfiles()
+        if (this.props.config)
+            this.props.getProfiles(this.props.config.id)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.config && !prevProps.config && this.props.profiles.length === 0)
+            this.props.getProfiles(this.props.config.id)
     }
 
     render() {
-        console.log("Рендерим анкеты...")
         const {changePosition, profiles,
             componentIsLoading, modalIsOpen,
-            config, fetchProfile, closeModal, addProfile} = this.props;
-
-
+            config, fetchProfile, closeModal,
+            addProfile, acceptDelete, type, saveData} = this.props;
         return (
             <Wrapper>
                 <PageHeader title='Анкеты'/>
@@ -80,7 +86,10 @@ class Profiles extends Component {
                                         <Tooltip title='Удаление анкеты'
                                                  placement='right-start'>
                                             <Delete fontSize='large'
-                                                    color='action' cursor='pointer'/>
+                                                    color='action'
+                                                    cursor='pointer'
+                                                    onClick={() => acceptDelete(item.id, config)}
+                                            />
                                         </Tooltip>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -89,9 +98,16 @@ class Profiles extends Component {
                     </ProfilesContainer>}
                 {createPortal(modalIsOpen &&
                     <ModalAdvanced toggleModal={closeModal}>
-                        <EditProfile/>
+                        {type === 'accept' ? <DeleteModal/> : <EditProfile/>}
                     </ModalAdvanced>,
                     document.getElementById('portal'))}
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <Button onClick={() => saveData(profiles, config)}
+                            variant='contained'
+                            color='primary' >
+                            Сохранить порядок анкет
+                        </Button>
+                    </div>
             </Wrapper>
         )
     }
@@ -101,11 +117,12 @@ function mapDispatchToProps(dispatch) {
     return {
         changePosition: (index, action, profiles) =>
             dispatch(changeProfilePosition(index, action, profiles)),
-        fetchProfiles: () => dispatch(fetchProfiles()),
-        fetchConfigs: () => dispatch(fetchConfigs()),
-        fetchProfile: () => dispatch(fetchProfile()),
+        getProfiles: config => dispatch(fetchProfiles(config)),
         closeModal: () => dispatch(closeModal()),
-        addProfile: () => dispatch(addNewProfile())
+        addProfile: () => dispatch(addNewProfile()),
+        fetchProfile: (id) => dispatch(fetchProfile(id)),
+        acceptDelete: (id, config) => dispatch(acceptDeleteProfile(id, config)),
+        saveData: (profiles, config) => dispatch(saveData(profiles, config))
     }
 }
 
@@ -114,7 +131,8 @@ function mapStateToProps(state) {
         profiles: state.profile.profiles,
         modalIsOpen: state.profile.modalIsOpen,
         componentIsLoading: state.profile.componentIsLoading,
-        config: state.config.currentConfig
+        config: state.config.currentConfig,
+        type: state.profile.modalType
     }
 }
 

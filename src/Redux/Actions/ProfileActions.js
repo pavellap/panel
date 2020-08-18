@@ -7,12 +7,13 @@ import {
     FETCH_PROFILE_FAILED, FETCH_PROFILE_STARTED,
     FETCH_PROFILE_SUCCESS, ADD_NEW_PROFILE_FAILED, ADD_NEW_PROFILE_STARTED,
     ADD_NEW_PROFILE_SUCCESS, ADD_NEW_PROFILE, UPDATE_PROFILE_FAILED,
-    UPDATE_PROFILE_STARTED, UPDATE_PROFILE_SUCCESS
+    UPDATE_PROFILE_STARTED, UPDATE_PROFILE_SUCCESS, DELETE_PROFILE
 } from "./ActionTypes";
 import url from "../../config";
 import Axios from "axios";
 
 export const fetchProfiles = (config) => {
+    console.log("Грузим профили...", config)
     const endpoint = url + '/forms/config/' + config ;
     return async dispatch => {
         try {
@@ -20,6 +21,7 @@ export const fetchProfiles = (config) => {
                 type: FETCH_PROFILES_STARTED
             })
             const response = await Axios.get(endpoint);
+            console.log("Получили данные профилей:", response)
             dispatch({
                 type: FETCH_PROFILES_SUCCESS,
                 data: response.data.forms
@@ -57,17 +59,29 @@ export const changeProfilePosition = (index, action, profiles) => {
     }
 }
 
-export const deleteProfile = id => {
+export const acceptDeleteProfile = (id, config) => dispatch => {
+    console.log("Deletim with:", id, config)
+    return dispatch({
+        type: DELETE_PROFILE,
+        currentProfile: {
+            id, config
+        }
+    })
+}
+
+export const deleteProfile = (id, config) => {
     return async dispatch => {
         dispatch({
             type: DELETE_PROFILES_STARTED
         })
         const endpoint = url + '/forms/' + id;
+        const getEndpoint = url + '/forms/config/' + config
         try {
             await Axios.delete(endpoint);
+            const response = await Axios.get(getEndpoint)
             dispatch({
                 type: DELETE_PROFILES_SUCCESS,
-                id
+                data: response.data.forms
             })
         }
         catch (e) {
@@ -85,7 +99,7 @@ export const saveData = (profiles, config) => {
             type: CHANGE_PROFILE_POSITION_STARTED
         })
         try {
-            const endpoint = url + '/forms/order/' + config
+            const endpoint = url + '/forms/order/' + config.id
             console.log("Отправляем новый порядок:", profiles.map(item => item.id))
             await Axios.put(endpoint, {
                 order: profiles.map(item => item.id)
@@ -111,7 +125,6 @@ export const fetchProfile = profile => {
         try {
             const endpoint = url + '/forms/' + profile
             const response = await Axios.get(endpoint);
-            console.log("Получили данные при загрузке профиля");
             dispatch({
                 type: FETCH_PROFILE_SUCCESS,
                 data: response.data
@@ -127,13 +140,14 @@ export const fetchProfile = profile => {
     }
 }
 
-export const saveChanges = (data) => {
+export const saveChanges = (data, id) => {
+    console.log("Data to save: ", data)
     return async dispatch => {
         dispatch({
             type: UPDATE_PROFILE_STARTED
         })
         try {
-            const endpoint = url + "/forms"
+            const endpoint = url + "/forms/" + id;
             await Axios.put(endpoint, data);
             dispatch({
                 type: UPDATE_PROFILE_SUCCESS
@@ -150,16 +164,19 @@ export const saveChanges = (data) => {
 }
 
 export const uploadNewProfile = data => {
+    console.log("Загрузка нового профиля профиля с данными:", data)
     return async dispatch => {
         dispatch({
             type: ADD_NEW_PROFILE_STARTED
         })
         try {
             const endpoint = url + '/forms';
+
             const response = await Axios.post(endpoint, data);
+            console.log("Ответ на добавление нового профиля: ", response.data)
             dispatch({
                 type: ADD_NEW_PROFILE_SUCCESS,
-                data: response
+                data: response.data
             })
         }
         catch (e) {
@@ -174,5 +191,7 @@ export const uploadNewProfile = data => {
 export const addNewProfile = () => dispatch => dispatch({type: ADD_NEW_PROFILE})
 
 export const closeModal = () => dispatch => dispatch({type: CLOSE_PROFILE_MODAL})
+
+
 
 

@@ -37,8 +37,11 @@ export default function(props) {
     const [second, handleSecond] = useState(hardcode.second_discount_days)
     const [third, handleThird] = useState(hardcode.third_discount_days)
     const [upgrade, handleUpgrade] = useState(hardcode.upgrade_days)
+
     useEffect(() => {
-        fetchSettings();
+        fetchSettings().then(data => {
+            console.log("Data: ", data)
+        });
     }, []);
 
     const save = () => {

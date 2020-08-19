@@ -10,7 +10,7 @@ import AddChat from "./Modals/AddChat";
 import DeleteChat from "./Modals/DeleteChat";
 import Settings from "./Modals/Settings";
 import Sub from "./Sub";
-import {fetchChats, addChat} from "./API/api";
+import {fetchChats, addChat, deleteChat} from "./API/api";
 
 const ChatList = withStyles({
     root: {
@@ -58,18 +58,13 @@ export default class Tariff extends React.Component {
         fetchChats().then(data => this.setState({chats: data.chats}))
     }
 
-    handleAddNewChat = (id, name) => {
-        addChat({id, name}).then(data => this.setState({
-            modalIsOpen: false,
-            chats: data
-        }))
+    handleAddNewChat = (newList) => {
+        this.setState({chats: newList, modalIsOpen: false})
     }
 
     handleDeleteChat = (action, id) => {
-        if (action) {
-            const array = this.state.chats.filter(item => item.chat_id !== id);
-            this.setState({chats: array, modalIsOpen: false})
-        }
+        if (action)
+            deleteChat(id).then(data => this.setState({chats: data, modalIsOpen: false}))
         else
             this.setState({modalIsOpen: false})
     }
@@ -84,6 +79,7 @@ export default class Tariff extends React.Component {
         else if (component === 'settings')
             render = <Settings/>
         this.setState({modalIsOpen: value, component: render})
+
     }
 
 

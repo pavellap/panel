@@ -2,6 +2,7 @@ import React from 'react'
 import styled from "styled-components";
 import {TextField, Button} from "@material-ui/core";
 import SubItem from "./SubItem";
+import {fetchSubs} from "./API/api";
 
 const Container = styled.div`
     > header {
@@ -42,6 +43,10 @@ export default class Sub extends React.Component {
             chatName: props.name,
             editedSubs: []
         }
+    }
+
+    componentDidMount() {
+        fetchSubs(this.props.chat).then(data => this.setState({subs: data}))
     }
 
     handleDeleteSub = id => {

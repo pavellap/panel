@@ -8,7 +8,9 @@ import Axios from "axios";
 export async function fetchChats() {
     const endpoint = url + '/chats';
     try {
-        const response = await Axios.get(endpoint);
+        const response = await Axios.get(endpoint,{
+            onDownloadProgress: progressEvent => console.log("Процесс загрузки: ", progressEvent.loaded)
+        });
         return response.data
     }
     catch (err) {
@@ -20,16 +22,17 @@ export async function fetchChats() {
 * Создание нового чата
 * */
 export async function addChat(data) {
-    const {id, name} = data;
+    const {chat_id, name} = data;
     const endpoint = url + '/chats';
     try {
         await Axios.post(endpoint, {
-            id,
+            chat_id,
             name
         })
         let newChats = null;
-        //fetchChats().then(res => newChats = res.chats);
-        console.log("Structure: ", newChats)
+        await fetchChats().then(res => {
+            newChats = res.chats
+        });
         return newChats
     }
     catch (err) {
@@ -40,11 +43,19 @@ export async function addChat(data) {
 /*
 * Загрузка списка подписок по id чата
 * */
-export const fetchSubs = id => {
-    const endpoint = url + 'subs/chat_id=' + id;
-    Axios.get(endpoint).then(res => console.log("Получили список подписок чата c id: ", id, '\n', res.data))
-        .catch(err => console.log("Ошибка при загрузке списка подписок"))
+export async function fetchSubs(id) {
+    const endpoint = url + '/subs/chat_id=' + id;
+    try {
+        const response = await Axios.get(endpoint);
+        console.log("Fetched detailed data: ", response.data)
+        return response.data
+    }
+    catch (err) {
+        console.log("Ошибка при загрузке списка подписок");
+        throw err
+    }
 }
+
 
 export const addNewSub = id => {
     const endpoint = url + '/subs/chat_id' + id
@@ -57,9 +68,19 @@ export const addNewSub = id => {
         .catch(err => console.log("Произошла ошибка при добавлении подписки", err))
 }
 
-export const deleteChat = id => {
-    const endpoint = url + '/chats/' + id;
-    Axios.delete(endpoint).catch(err => console.log("Произошла ошибка при удалении чата.."))
+export async function deleteChat(id) {
+    try {
+        const endpoint = url + '/chats/' + id;
+        await Axios.delete((endpoint));
+        let newChats = null;
+        await fetchChats().then(res => {
+            newChats = res.chats
+        });
+        return newChats
+    }
+    catch(err) {
+        console.log("Произошла ошибка при удалении чата..")
+    }
 }
 
 export const deleteSub = id => {
@@ -75,13 +96,17 @@ export const editChatName = (id, name) => {
     })
 }
 
-export const fetchSettings = () => {
+export async function fetchSettings() {
     const endpoint = url + '/settings';
-    Axios.get(endpoint).then(res => console.log("Получили настройки для чатов:", res.data))
-        .catch(err => {
+    try {
+        const response = await Axios.get(endpoint);
+        console.log("Fetched settings: ", response.data)
+        return response.data
+    }
+    catch (err) {
         console.log('Произошла ошибка при загрузке настроек для чатов');
         throw err;
-    })
+    }
 }
 
 export const saveSettings = (data) => {

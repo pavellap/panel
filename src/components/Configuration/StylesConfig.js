@@ -29,6 +29,11 @@ export const Container = styled.div`
     border-bottom: 1px solid #e7e8ec;
     background-color: #fafbfc;
     height: 50px;
+    @media screen and (max-width: 1090px) {
+        > button {
+            margin-right: 30px !important;
+        }
+    }
     > div {
         position: absolute;
         top: 0;

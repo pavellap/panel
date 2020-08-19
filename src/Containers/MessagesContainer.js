@@ -31,6 +31,7 @@ class MessagesContainer extends Component {
     componentDidMount() {
         const {config, id} = this.props
         console.log("Замонтировали с конфигами: ", config)
+
         if (config)
             fetchData(config.id, id).then(res => {
                 this.setState({messages: res, componentIsLoading: false})

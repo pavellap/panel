@@ -1,0 +1,17 @@
+.Navigation-item {
+  display: flex;
+  width: 100%;
+  padding: 17px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-decoration: none;
+  &:hover {
+    background-color: #263445 !important;
+  }
+  span {
+    margin-left: 18px;
+    text-decoration: none;
+  }
+}
+

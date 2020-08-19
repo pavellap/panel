@@ -3,7 +3,7 @@ import {TextField, Button, Typography} from "@material-ui/core";
 import styled from "styled-components";
 import url from "../../../config";
 import Axios from "axios";
-
+import {addChat} from "../API/api";
 
 const Wrapper = styled.div`
     display: flex;
@@ -20,28 +20,23 @@ export default function(props) {
     const [charErr, handleChatErr] = useState(false);
     const [nameErr, handleNameErr] = useState(false);
 
+    // валидация форм
     const handleSubmit = () => {
-        if (!chat_id)
+        if (!chat_id || isNaN(Number(chat_id)))
             handleChatErr(true);
         else if (!name)
             handleNameErr(true);
         else
-            postData()
-    }
-    // TODO: API is ready => fix this
-    const postData = () => {
-        props.handleAdd(chat_id, name);
-        const endpoint = url + '/chats';
-        Axios.post(endpoint, {
-            chat_id, name
-        }).then(res => {
-            console.log(res.data);
-        })
+            addChat({chat_id, name})
+                .then(res => props.handleAdd(res))
     }
 
     return (
         <Wrapper>
-            <Typography component='h2' style={{textAlign: 'center'}}>Добавление нового чата</Typography>
+            <Typography component='h2'
+                        style={{textAlign: 'center'}}>
+                Добавление нового чата
+            </Typography>
             <TextField label="ID нового чата" variant="outlined" required error={charErr}
                        value={chat_id} onChange={(e) => {
                 handleChatID(e.target.value);

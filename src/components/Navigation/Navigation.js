@@ -1,6 +1,5 @@
 import React from 'react'
 import {titles, links, icons, messagesContent} from "../../Constants/NavigationTemplate";
-import NavigationHeader from "./Navigation-header";
 import NavigationItem from "./Navigation-item";
 import {withStyles, Accordion} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -8,17 +7,40 @@ import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import './Navigation.css'
 import Typography from "@material-ui/core/Typography";
 import {connect} from 'react-redux'
+import {sideNavColor, sideNavColorActive} from "../../config";
+import styled from "styled-components";
 
+
+const Wrapper = styled.aside`
+    background-color: ${sideNavColor};
+    min-height: 100vh;
+    height: 100%;
+    color: rgb(191, 203, 217);
+    font-weight: lighter;
+    header {
+        display: flex;
+        background-color: ${sideNavColor};
+        justify-content: center;
+        padding-top: 10px;
+        h4 {
+            margin: 0;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-weight: normal;
+            color: #fff;
+        }
+    }
+`
 
 /*
 *    Стили для аккордеона
 * */
 const AccordionSummary = withStyles({
     root: {
-        backgroundColor: "#26262b",
+        backgroundColor: sideNavColor,
         color: "#fff",
         '&:hover': {
-            backgroundColor: "#656568"
+            backgroundColor: sideNavColorActive
         }
     },
 
@@ -28,14 +50,15 @@ const AccordionSummary = withStyles({
     constructor(props) {
         super(props);
         this.state = {
-            user: 'admin', // TODO эта хуйня потом через редакс будет прокидываться
-            status: "online",
             active: "Диалог Регистрации",
             accordIsOpen: false
         }
     }
 
-    handleAccord = () => this.setState({accordIsOpen: !this.state.accordIsOpen})
+    handleAccord = () => {
+        localStorage.setItem('navMessagesIsOpen',
+            localStorage.getItem('navMessagesIsOpen') === 'true' ? 'false' : 'true')
+    }
 
     handleChangeCurrent = item => {
         // TODO: убрать лог после дебагга
@@ -44,31 +67,38 @@ const AccordionSummary = withStyles({
     };
 
     render() {
+        if (typeof localStorage.getItem('navMessagesIsOpen') === undefined) {
+            console.log("Ининциализируем localstorage...")
+            localStorage.setItem("navMessagesIsOpen", 'false')
+        }
+
         const {config} = this.props
         console.log("Конфиг в header:", config)
         return (
-            <aside className='Menu-container'>
-                <NavigationHeader userName={this.state.user} status={this.state.status}/>
+            <Wrapper>
+                <header>
+                    <h4>Панель управления</h4>
+                </header>
                 <div className='Menu-description'>Текущая конфигурация: {config ? config.id : null}</div>
                     <nav>
-                        <Accordion expanded={this.state.accordIsOpen} onChange={this.handleAccord}>
+                        <Accordion onChange={this.handleAccord} expanded={localStorage.getItem('navMessagesIsOpen') !== 'true'}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon style={{color: "#fff"}}/>}>
                                 <Typography>Раздел сообщений</Typography>
                             </AccordionSummary>
                             {messagesContent.map((item, index) => {
-                                let styles;
+                                let styles = {backgroundColor: sideNavColor};
                                 if (window.location.pathname === '/' + item[1])
-                                    styles = {backgroundColor: "#7289da"};
+                                    styles = {backgroundColor: sideNavColorActive};
                                 return <NavigationItem key={index} content={item[0]} link={item[1]}
                                                 icon={item[2]} color={styles}
                                                 handleClick={() => this.handleChangeCurrent(item)}/>
                             })}
                         </Accordion>
                         {titles.map((item, index) => {
-                            let styles = null;
+                            let styles = {backgroundColor: sideNavColor};
                             if (window.location.pathname ===  "/" + links[index])
-                                styles = {backgroundColor: "#7289da"};
+                                styles = {backgroundColor: sideNavColorActive};
                             return (
                                 <NavigationItem content={item} icon={icons[index]}
                                     link={links[index]}  key={index} color={styles}
@@ -76,7 +106,7 @@ const AccordionSummary = withStyles({
                             )
                         })}
                     </nav>
-            </aside>
+            </Wrapper>
         )
     }
 }

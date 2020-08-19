@@ -30,40 +30,10 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Отрендерили приложение")
-        /*Axios.post(url + '/forms', {
-            "disabled": false,
-            configs: [1],
-            "name":
-                "Тестовая анкета",
-            "hello":
-                "Приветственное сообщение",
-            "hello_file": 'ЗдароваУёба.pdf',
-            ending: 'Аревуар, адьос, братик',
-            ending_file: 'Пока,браток.pdf',
-            "questions":
-                [
-
-                    {
-                        "text": "Текст вопроса",
-                        "type": "int",
-                        "main": true
-                    },
-                    {
-                        "text": "Текст вопроса",
-                        "type": "str",
-                        "main": true
-                    },
-                ]
-        }).then(res => console.log("А шо, звучит хайпово:", res.data))*/
         this.props.fetchConfigs()
+
     }
 
-    changeConfiguration = (newId) => {
-        Axios.get(url + "/config/choose/id=" + newId + "/" +
-            localStorage.getItem('token'));
-        this.setState({currentConfig: newId});
-    };
 
     handleAuth = (val) => {
         if (val)
@@ -71,8 +41,8 @@ class App extends React.Component {
                 console.log("Status", this.state.isAuthorized)
             });
     }
+
     render() {
-        console.log("Рендерим приложение..")
         return (
             <Layout>
                 <Switch>
@@ -84,7 +54,7 @@ class App extends React.Component {
                         <Route path={item.path} key={item.id}>
                             <Wrapper id={this.state.currentConfig}
                                      isAuthorized={this.state.isAuthorized}>
-                                <MessagesTemplate title={item.title} handleConfig={val => this.changeConfiguration(val)}
+                                <MessagesTemplate title={item.title}
                                 id={item.id}/>
                             </Wrapper>
                         </Route>
@@ -92,7 +62,7 @@ class App extends React.Component {
 
                     <Route path='/profiles' render={() => <Wrapper id={this.state.currentConfig}
                                                                         isAuthorized={this.state.isAuthorized}
-                    children={<Profiles  handleConfig={val => this.changeConfiguration(val)}
+                    children={<Profiles
                     id={this.state.currentConfig} configs={this.state.configurationsList} token={this.state.token}/>}/>}/>
 
                     <Route path='/mailing' render={() => <Wrapper isAuthorized={this.state.isAuthorized}

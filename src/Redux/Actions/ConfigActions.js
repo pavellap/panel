@@ -5,7 +5,7 @@ import {
     DELETE_CONFIG_FAILED,
     DELETE_CONFIG_SUCCESS,
     FETCH_CONFIG_FAILED,
-    FETCH_CONFIG_SUCCESS, DELETE_CONFIG_STARTED, CREATE_CONFIG_STARTED
+    FETCH_CONFIG_SUCCESS, DELETE_CONFIG_STARTED, CREATE_CONFIG_STARTED, CHANGE_CONFIG_SUCCESS, CHANGE_CONFIG_FAILED, CHANGE_CONFIG_STARTED
 } from "./ActionTypes";
 
 export function fetchConfigs() {
@@ -77,7 +77,11 @@ export const addConfig = () => {
     }
 }
 
-// todo: дождаться ответа Андрея
-export const changeConfig = (id, active=null, form_time) => {
 
+export const changeConfig = (id, active=null, form_time) => {
+    return async dispatch => {
+        dispatch({
+            type: CHANGE_CONFIG_STARTED
+        })
+    }
 }

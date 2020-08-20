@@ -1,14 +1,11 @@
 import React from 'react';
 import {Switch, Route} from "react-router-dom";
-import Axios from "axios";
 import Layout from "./components/hoc/Layout";
 import Authorization from "./components/Authorization/Authorization";
 import Wrapper from "./components/hoc/Wrapper";
 import Download from "./components/Download/Download";
 import Profiles from "./components/Profiles/Profiles";
-import Subscription from "./components/Subscription/Subscription";
 import {Promo} from "./components/Promo/Promo";
-import url from './config'
 import MessagesTemplate from "./Containers/MessagesContainer";
 import Groups from "./components/Groups/Groups";
 import PersonalProfile from "./components/PersonalProfile/PersonalProfile";
@@ -72,10 +69,6 @@ class App extends React.Component {
                     <Route path='/download' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
                         id={this.state.currentConfig}
                     children={<Download/>}/>}/>
-
-                    <Route path='/subscription' render={() => <Wrapper id={this.state.currentConfig}
-                                                                            isAuthorized={this.state.isAuthorized}
-                    children={<Subscription id={this.state.currentConfig}/>}/>}/>
 
                     <Route path='/groups' render={() => <Wrapper isAuthorized={this.state.isAuthorized}
                                                                  id={this.state.currentConfig} children={

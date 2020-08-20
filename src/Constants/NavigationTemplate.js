@@ -11,20 +11,20 @@ import {
 
 
 const titles =
-    ["Анкеты", "Рассылки", "Подписки",
+    ["Анкеты", "Рассылки",
         "Загрузка отчётов", 'Группы', 'Промокоды', 'Тарифы'
     ]
 
 const links = [ // ссылки на вкладки
     'profiles',
-    'mailing', 'subscription', 'download', 'groups', 'promo', 'tariff'
+    'mailing', 'download', 'groups', 'promo', 'tariff'
 ]
 
 
 
 const icons = [ // соответствующие компоненты иконок
     faUsers, faMailBulk,
-    faUserPlus, faDownload, faUser, faAd, faMoneyBill
+    faDownload, faUser, faAd, faMoneyBill
 ]
 
 const messagesContent = [

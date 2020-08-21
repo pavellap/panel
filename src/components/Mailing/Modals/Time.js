@@ -20,24 +20,37 @@ months.forEach((item, index) => {
     month.push({item: limits[index]})
 })
 
+const dateParser = date => {
+    // example date to parse: 2022-4-10 23:6:00.000000
+    return [date.slice(0, 4), date.slice(5, 7), date.slice(8, 10), date.slice(11, 13), date.slice(14, 16)]
+}
+
 export default function(props) {
-    const [currentMonth, handleMonth] = useState(0);
-    const [currentDay, handleCurrentDay] = useState(0);
-    const [currentYear, handleCurrentYear] = useState(2020);
-    const [currentHour, handleCurrentHour] = useState(0);
-    const [currentMinute, handleCurrentMinute] = useState(0);
+    const date = dateParser(props.data);
+    const [currentMonth, handleMonth] = useState(Number(date[1]) - 1);
+    const [currentDay, handleCurrentDay] = useState(Number(date[2]) - 1);
+    const [currentYear, handleCurrentYear] = useState(Number(date[0]));
+    const [currentHour, handleCurrentHour] = useState(Number(date[3]) - 1);
+    const [currentMinute, handleCurrentMinute] = useState(String(date[4]));
     const [minuteError, handleError] = useState(false)
+
+
+    console.log(dateParser("2016-04-08 11:43:36.309721"));
     const submit = () => {
         if (!(currentMinute >= 0 && currentMinute <= 59))
             handleError(true)
         else {
-            const data = `${currentYear}-${currentMonth + 1}-${currentDay + 1} 
-            ${currentHour + 1}:${currentMinute + 1}:00.000000`
+            const minuteHelper = currentMinute < 10 ? '0' + String(currentMinute) : currentMinute
+            const monthHelper = currentMonth < 9 ? '0' + String(currentMonth + 1) : currentMonth + 1
+            const dateHelper = currentDay < 9 ? '0' + String(currentDay + 1) : currentDay + 1
+            const hourHelper = currentHour < 9 ? '0' + String(currentHour + 1) : currentHour + 1
+            const data = `${currentYear}-${monthHelper}-${dateHelper} 
+            ${currentHour + 1}:${minuteHelper}:00.000000`
             console.log("Data to send:", data);
             props.handleSubmit(data);
         }
     }
-    // TODO: самбит для минут нормальный
+
     return (
         <WrapperModal>
                 <div>
@@ -73,8 +86,8 @@ export default function(props) {
                     </StyledSelect>
                 </div>
                 <div>
-                    <TextField variant='outlined' label='Минуты' value={currentMinute + 1}
-                               onChange={e => handleCurrentMinute(Number(e.currentTarget.value))}
+                    <TextField variant='outlined' label='Минуты' value={currentMinute}
+                               onChange={e => handleCurrentMinute(e.currentTarget.value)}
                                error={minuteError}/>
                 </div>
                 <div>

@@ -67,10 +67,7 @@ const AccordionSummary = withStyles({
     };
 
     render() {
-        if (typeof localStorage.getItem('navMessagesIsOpen') === undefined) {
-            console.log("Ининциализируем localstorage...")
-            localStorage.setItem("navMessagesIsOpen", 'false')
-        }
+
 
         const {config} = this.props
         console.log("Конфиг в header:", config)
@@ -81,7 +78,7 @@ const AccordionSummary = withStyles({
                 </header>
                 <div className='Menu-description'>Текущая конфигурация: {config ? config.id : null}</div>
                     <nav>
-                        <Accordion onChange={this.handleAccord} expanded={localStorage.getItem('navMessagesIsOpen') !== 'true'}>
+                        <Accordion>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon style={{color: "#fff"}}/>}>
                                 <Typography>Раздел сообщений</Typography>

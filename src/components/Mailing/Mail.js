@@ -29,7 +29,7 @@ export default class extends Component {
             type: "text",
             text: "",
             form: null, // это анкета
-            time: null,
+            time: "2020-04-08 11:43:36",
             period: null,
             groups: [],
             users: [],
@@ -68,7 +68,7 @@ export default class extends Component {
         console.log('Got index: ', index)
         this.setState({modalIsOpen: true})
         if (index === 0)
-            this.setState({modalComponent: <Time handleSubmit={(data) => {
+            this.setState({modalComponent: <Time data={this.state.time} handleSubmit={(data) => {
                     this.setState({modalIsOpen: false, time: data})}
                 }/>})
         else if (index === 1)
@@ -76,6 +76,10 @@ export default class extends Component {
         else // todo: прокидывать сюда селектеды
             this.setState({modalComponent: <ListContainer selectedItems={selected} type={index}
                                  handleSave={(data) => this.handleSave(data, index)}/> })
+    }
+
+    sendData = () => {
+        console.table(this.state)
     }
 
     render() {
@@ -107,7 +111,8 @@ export default class extends Component {
                         <Button variant='contained' color='secondary'>Посмотреть текущие рассылки</Button>
                     </header>
                     <div className='textarea'>
-                        <TextField variant='outlined' rows={4} multiline label='Краткое описание'/>
+                        <TextField onChange={e => this.setState({description: e.currentTarget.value})}
+                                   variant='outlined' rows={4} multiline label='Краткое описание'/>
                         <FileUploader/>
                     </div>
                     <Wrapper>
@@ -115,7 +120,8 @@ export default class extends Component {
                             ?
                             <div>
                                 <h3>Текст рассылки</h3>
-                                <textarea placeholder='Текст рассылки'/>
+                                <textarea onChange={e => this.setState({text: e.currentTarget.value})}
+                                          placeholder='Текст рассылки'/>
                                 <br/>
                                 <FormControlLabel
                                     control={
@@ -139,7 +145,7 @@ export default class extends Component {
                                 </Button>)}
                     </footer>
                     <div style={{display: 'flex', justifyContent: 'center', padding: 30}}>
-                        <Button variant='contained' color='primary'>Отравить рассылку</Button>
+                        <Button variant='contained' color='primary' onClick={this.sendData}>Отравить рассылку</Button>
                     </div>
                 </Container>
                 {createPortal(modalIsOpen &&
